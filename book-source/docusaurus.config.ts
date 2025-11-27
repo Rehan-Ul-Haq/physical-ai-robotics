@@ -27,17 +27,18 @@ const config: Config = {
   },
 
   // Set the production url of your site here
-  url: "https://ai-native.panaversity.org",
+  // For GitHub Pages: https://<organizationName>.github.io
+  url: "https://Rehan-Ul-Haq.github.io",
   // Set the /<baseUrl>/ pathname under which your site is served
   // For GitHub pages deployment, it is often '/<projectName>/'
-  baseUrl: "/",
+  baseUrl: "/physical-ai-robotics/",
 
   // Sitemap is configured via the classic preset's sitemap option below
 
   // GitHub pages deployment config.
   // If you aren't using GitHub pages, you don't need these.
-  organizationName: "panaversity", // Usually your GitHub org/user name.
-  projectName: "ai-native-software-development", // Usually your repo name.
+  organizationName: "Rehan-Ul-Haq", // Usually your GitHub org/user name.
+  projectName: "physical-ai-robotics", // Usually your repo name.
   trailingSlash: false,
 
   onBrokenLinks: "warn",
@@ -216,11 +217,11 @@ const config: Config = {
       { property: "og:type", content: "website" },
       {
         property: "og:image",
-        content: "https://ai-native.panaversity.org/img/book-cover-page.png",
+        content: "https://Rehan-Ul-Haq.github.io/physical-ai-robotics/img/book-cover-page.png",
       },
       { property: "og:image:width", content: "1200" },
       { property: "og:image:height", content: "630" },
-      { property: "og:url", content: "https://ai-native.panaversity.org" },
+      { property: "og:url", content: "https://Rehan-Ul-Haq.github.io/physical-ai-robotics" },
       { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:title", content: "Physical AI & Humanoid Robotics" },
       {
@@ -230,7 +231,7 @@ const config: Config = {
       },
       {
         name: "twitter:image",
-        content: "https://ai-native.panaversity.org/img/book-cover-page.png",
+        content: "https://Rehan-Ul-Haq.github.io/physical-ai-robotics/img/book-cover-page.png",
       },
     ],
 
