@@ -30,7 +30,7 @@ description: "Complete index of all chapters in Physical AI & Humanoid Robotics"
 
 | Ch | Title | Week | Proficiency | Status |
 |----|-------|------|-------------|--------|
-| 1 | Introduction to Physical AI | 1 | A2 | 📋 Planned |
+| 1 | Introduction to Physical AI | 1 | A2 | ✅ Complete |
 | 2 | ROS 2 Fundamentals | 2 | A2 | 📋 Planned |
 | 3 | ROS 2 Communication Patterns | 3 | B1 | 📋 Planned |
 | 4 | ROS 2 Advanced Concepts | 4 | B1 | 📋 Planned |
