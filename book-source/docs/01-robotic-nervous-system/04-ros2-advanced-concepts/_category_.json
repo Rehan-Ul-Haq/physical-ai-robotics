@@ -1,0 +1,24 @@
+{
+  "position": 4,
+  "label": "Chapter 4: ROS 2 Advanced Concepts",
+  "collapsible": true,
+  "collapsed": true,
+  "link": {
+    "type": "generated-index",
+    "title": "ROS 2 Advanced Concepts",
+    "description": "Master lifecycle nodes, QoS policies, launch files, and parameters. These advanced patterns are essential for production-grade robotics."
+  },
+  "customProps": {
+    "chapter": 4,
+    "week": 4,
+    "proficiency": "B1",
+    "hardwareTier": "Simulation Only",
+    "prerequisites": ["Chapter 3", "Topics, Services, Actions"],
+    "learningObjectives": [
+      "Implement lifecycle nodes for managed state transitions",
+      "Configure QoS policies for reliable sensor communication",
+      "Create launch files to orchestrate multi-node systems",
+      "Use parameters for runtime configuration"
+    ]
+  }
+}

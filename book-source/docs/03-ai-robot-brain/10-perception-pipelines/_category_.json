@@ -1,0 +1,26 @@
+{
+  "position": 10,
+  "label": "Chapter 10: Perception Pipelines",
+  "collapsible": true,
+  "collapsed": true,
+  "link": {
+    "type": "generated-index",
+    "title": "Perception Pipelines",
+    "description": "Give your robot eyes that see and understand. Build perception pipelines using Isaac ROS for object detection, depth estimation, and scene understanding."
+  },
+  "customProps": {
+    "chapter": 10,
+    "week": 9,
+    "proficiency": "B2",
+    "hardwareTier": "RTX Workstation",
+    "cloudAlternative": "AWS g5.2xlarge for training, download to Jetson for inference",
+    "prerequisites": ["Chapter 9", "Isaac Sim basics"],
+    "learningObjectives": [
+      "Build object detection pipelines with Isaac ROS",
+      "Implement depth perception for 3D understanding",
+      "Create visual SLAM (VSLAM) for robot localization",
+      "Fuse multiple sensor modalities for robust perception",
+      "Optimize perception for real-time performance"
+    ]
+  }
+}

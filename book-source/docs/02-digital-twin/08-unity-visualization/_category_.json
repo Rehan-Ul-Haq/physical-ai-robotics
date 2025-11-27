@@ -1,0 +1,26 @@
+{
+  "position": 8,
+  "label": "Chapter 8: Unity Visualization",
+  "collapsible": true,
+  "collapsed": true,
+  "link": {
+    "type": "generated-index",
+    "title": "Unity Visualization",
+    "description": "Create high-fidelity visualizations and human-robot interaction scenarios in Unity. Bridge Unity with ROS 2 for advanced simulation capabilities."
+  },
+  "customProps": {
+    "chapter": 8,
+    "week": 7,
+    "proficiency": "B1-B2",
+    "hardwareTier": "Simulation Only",
+    "prerequisites": ["Chapter 7", "Gazebo basics"],
+    "learningObjectives": [
+      "Set up Unity with ROS 2 TCP connector",
+      "Import robot models into Unity",
+      "Create realistic environments for human-robot interaction",
+      "Visualize ROS data streams in Unity",
+      "Build interactive robot control interfaces"
+    ],
+    "optional": true
+  }
+}

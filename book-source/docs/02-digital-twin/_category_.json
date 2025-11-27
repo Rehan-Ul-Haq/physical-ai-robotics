@@ -1,0 +1,17 @@
+{
+  "position": 2,
+  "label": "Part 2: The Digital Twin (Gazebo & Unity)",
+  "collapsible": true,
+  "collapsed": true,
+  "link": {
+    "type": "generated-index",
+    "title": "Part 2: The Digital Twin",
+    "description": "Build and test robots in simulation before physical deployment. Master URDF modeling, Gazebo physics, and Unity visualization. Weeks 6-7."
+  },
+  "customProps": {
+    "module": 2,
+    "weeks": "6-7",
+    "hardwareTier": "Simulation Only",
+    "technologies": ["URDF/SDF", "Gazebo Harmonic", "Unity", "Physics Simulation"]
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "position": 3,
+  "label": "Part 3: The AI-Robot Brain (NVIDIA Isaac)",
+  "collapsible": true,
+  "collapsed": true,
+  "link": {
+    "type": "generated-index",
+    "title": "Part 3: The AI-Robot Brain",
+    "description": "Integrate NVIDIA Isaac for perception, navigation, and Sim-to-Real transfer. Train robots to see, navigate, and act. Weeks 8-10."
+  },
+  "customProps": {
+    "module": 3,
+    "weeks": "8-10",
+    "hardwareTier": "RTX Workstation (cloud alternative available)",
+    "technologies": ["NVIDIA Isaac Sim", "Isaac ROS", "Nav2", "VSLAM", "Perception Pipelines"]
+  }
+}

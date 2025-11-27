@@ -1,0 +1,25 @@
+{
+  "position": 13,
+  "label": "Chapter 13: Voice-to-Action",
+  "collapsible": true,
+  "collapsed": true,
+  "link": {
+    "type": "generated-index",
+    "title": "Voice-to-Action",
+    "description": "Give your robot ears and a voice. Integrate speech recognition with OpenAI Whisper and convert natural language commands into robot actions."
+  },
+  "customProps": {
+    "chapter": 13,
+    "week": 11,
+    "proficiency": "B2",
+    "hardwareTier": "Jetson + USB Microphone",
+    "prerequisites": ["Part 3 complete", "Sim-to-Real understanding"],
+    "learningObjectives": [
+      "Integrate OpenAI Whisper for speech-to-text",
+      "Process voice commands in real-time on Jetson",
+      "Map natural language to robot action primitives",
+      "Handle multi-step voice commands",
+      "Provide audio feedback to users"
+    ]
+  }
+}

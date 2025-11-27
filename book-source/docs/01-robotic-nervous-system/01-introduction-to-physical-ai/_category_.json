@@ -1,0 +1,24 @@
+{
+  "position": 1,
+  "label": "Chapter 1: Introduction to Physical AI",
+  "collapsible": true,
+  "collapsed": true,
+  "link": {
+    "type": "generated-index",
+    "title": "Introduction to Physical AI",
+    "description": "Understand the paradigm shift from digital AI to embodied intelligence. Learn why humanoid robots are the future and how Sim-to-Real transfer bridges simulation and reality."
+  },
+  "customProps": {
+    "chapter": 1,
+    "week": 1,
+    "proficiency": "A2",
+    "hardwareTier": "None",
+    "prerequisites": ["Python fundamentals"],
+    "learningObjectives": [
+      "Explain the difference between digital AI and Physical AI",
+      "Describe the Sim-to-Real transfer challenge",
+      "Identify the key technologies in the Physical AI stack",
+      "Articulate why humanoid robots excel in human environments"
+    ]
+  }
+}

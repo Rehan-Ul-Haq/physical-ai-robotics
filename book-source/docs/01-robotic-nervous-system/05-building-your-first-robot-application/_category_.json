@@ -1,0 +1,25 @@
+{
+  "position": 5,
+  "label": "Chapter 5: Building Your First Robot Application",
+  "collapsible": true,
+  "collapsed": true,
+  "link": {
+    "type": "generated-index",
+    "title": "Building Your First Robot Application",
+    "description": "Apply everything from Part 1 to build a complete robot application. Integrate sensors, control actuators, and orchestrate multi-node behavior."
+  },
+  "customProps": {
+    "chapter": 5,
+    "week": 5,
+    "proficiency": "B1",
+    "hardwareTier": "Simulation Only",
+    "prerequisites": ["Chapters 1-4", "All ROS 2 fundamentals"],
+    "learningObjectives": [
+      "Design a robot system architecture using ROS 2 patterns",
+      "Integrate multiple nodes for sensor processing and actuation",
+      "Debug ROS 2 systems using CLI tools and visualization",
+      "Deploy a complete robot application in simulation"
+    ],
+    "capstone": true
+  }
+}

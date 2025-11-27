@@ -1,0 +1,26 @@
+{
+  "position": 12,
+  "label": "Chapter 12: Sim-to-Real Transfer",
+  "collapsible": true,
+  "collapsed": true,
+  "link": {
+    "type": "generated-index",
+    "title": "Sim-to-Real Transfer",
+    "description": "Bridge the reality gap. Learn domain randomization, reality gap analysis, and techniques to transfer robot behaviors from simulation to physical robots."
+  },
+  "customProps": {
+    "chapter": 12,
+    "week": 10,
+    "proficiency": "B2-C1",
+    "hardwareTier": "RTX Workstation + optional Jetson",
+    "prerequisites": ["Chapters 9-11", "Isaac perception and navigation"],
+    "learningObjectives": [
+      "Understand the Sim-to-Real gap and its causes",
+      "Implement domain randomization for robust training",
+      "Export trained models for edge deployment",
+      "Flash and configure NVIDIA Jetson for inference",
+      "Validate simulation-trained behaviors on real sensors"
+    ],
+    "capstone": true
+  }
+}

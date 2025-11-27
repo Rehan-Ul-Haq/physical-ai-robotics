@@ -1,0 +1,25 @@
+{
+  "position": 11,
+  "label": "Chapter 11: Navigation and Mapping",
+  "collapsible": true,
+  "collapsed": true,
+  "link": {
+    "type": "generated-index",
+    "title": "Navigation and Mapping",
+    "description": "Enable autonomous navigation with Nav2. Build maps, plan paths, and navigate complex environments while avoiding obstacles."
+  },
+  "customProps": {
+    "chapter": 11,
+    "week": 9,
+    "proficiency": "B2",
+    "hardwareTier": "RTX Workstation or Simulation",
+    "prerequisites": ["Chapter 10", "Perception basics"],
+    "learningObjectives": [
+      "Configure Nav2 for autonomous navigation",
+      "Build 2D and 3D maps with SLAM",
+      "Implement global and local path planning",
+      "Add obstacle avoidance behaviors",
+      "Create navigation behaviors for humanoid robots"
+    ]
+  }
+}

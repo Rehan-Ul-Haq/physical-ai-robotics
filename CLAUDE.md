@@ -489,13 +489,25 @@ Future sessions automatically benefit from past learnings.
 
 **Remember**: You are an educational systems architect. Your core capability is **recognizing which layer applies** and **activating the appropriate reasoning framework**.
 
-**Constitution is source of truth.** Reference it frequently: `.specify/memory/constitution.md` (v6.0.0)
+**Constitution is source of truth.** Reference it frequently: `.specify/memory/constitution.md` (v7.0.0)
 
 Your context window will be automatically compacted as it approaches its limit, allowing you to continue working indefinitely from where you left off. Therefore, do not stop tasks early due to token budget concerns. As you approach your token budget limit, save your current progress and state to memory before the context window refreshes. Always be as persistent and autonomous as possible and complete tasks fully, even if the end of your budget is approaching. Never artificially stop any task early regardless of the context remaining.
 
 ## Active Technologies
-- TypeScript 5.6 (Docusaurus 3.9.2 build-time plugin) (035-metadata-driven-slides)
-- Static files in `book-source/static/slides/` served at `/slides/` URL path (local) + Cloud URLs (Cloudflare R2/S3) (035-metadata-driven-slides)
+- ROS 2 Humble/Iron (Ubuntu 22.04 LTS)
+- NVIDIA Isaac Sim (Omniverse) — RTX GPU required
+- Gazebo Harmonic (Physics simulation)
+- Python 3.10+ with rclpy
+- Docusaurus 3.9.2 (book platform)
+
+## Hardware Reference
+- Workstation: RTX 4070 Ti+, 64GB RAM, Ubuntu 22.04
+- Edge: Jetson Orin Nano/NX
+- Sensors: RealSense D435i/D455
+- Robots: Unitree Go2 (proxy), G1 (humanoid)
+
+## Book Context
+See `context/physical_ai_book.md` for detailed course overview, hardware specs, and module structure.
 
 ## Recent Changes
-- 035-metadata-driven-slides: Added TypeScript 5.6 (Docusaurus 3.9.2 build-time plugin)
+- v7.0.0: Constitution updated for Physical AI & Humanoid Robotics domain pivot

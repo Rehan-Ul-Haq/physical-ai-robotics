@@ -1,0 +1,25 @@
+{
+  "position": 14,
+  "label": "Chapter 14: LLM Cognitive Planning",
+  "collapsible": true,
+  "collapsed": true,
+  "link": {
+    "type": "generated-index",
+    "title": "LLM Cognitive Planning",
+    "description": "Add a reasoning brain to your robot. Use LLMs (GPT/Claude) to translate high-level goals into sequences of ROS 2 actions for intelligent task execution."
+  },
+  "customProps": {
+    "chapter": 14,
+    "week": 12,
+    "proficiency": "B2-C1",
+    "hardwareTier": "Jetson + Cloud API access",
+    "prerequisites": ["Chapter 13", "Voice-to-Action"],
+    "learningObjectives": [
+      "Connect LLMs (GPT-4/Claude) to robot control systems",
+      "Design prompts for task decomposition",
+      "Generate ROS 2 action sequences from natural language",
+      "Handle planning failures and re-planning",
+      "Implement safety constraints in LLM planning"
+    ]
+  }
+}

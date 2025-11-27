@@ -1,0 +1,26 @@
+{
+  "position": 9,
+  "label": "Chapter 9: NVIDIA Isaac Introduction",
+  "collapsible": true,
+  "collapsed": true,
+  "link": {
+    "type": "generated-index",
+    "title": "NVIDIA Isaac Introduction",
+    "description": "Enter the world of GPU-accelerated robotics with NVIDIA Isaac. Set up Isaac Sim, understand the Isaac ROS ecosystem, and run your first AI-powered robot."
+  },
+  "customProps": {
+    "chapter": 9,
+    "week": 8,
+    "proficiency": "B1-B2",
+    "hardwareTier": "RTX Workstation",
+    "cloudAlternative": "AWS g5.2xlarge or g6e.xlarge (~$205/quarter)",
+    "prerequisites": ["Part 1 & 2 complete", "Gazebo simulation experience"],
+    "learningObjectives": [
+      "Understand the NVIDIA Isaac platform architecture",
+      "Install Isaac Sim on RTX workstation or cloud",
+      "Navigate the Isaac Sim interface and asset library",
+      "Connect Isaac Sim to ROS 2",
+      "Run pre-built Isaac examples"
+    ]
+  }
+}

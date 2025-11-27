@@ -1,0 +1,25 @@
+{
+  "position": 7,
+  "label": "Chapter 7: Gazebo Simulation",
+  "collapsible": true,
+  "collapsed": true,
+  "link": {
+    "type": "generated-index",
+    "title": "Gazebo Simulation",
+    "description": "Bring your robots to life in Gazebo Harmonic. Simulate physics, sensors, and environments for safe robot development before physical deployment."
+  },
+  "customProps": {
+    "chapter": 7,
+    "week": 7,
+    "proficiency": "B1",
+    "hardwareTier": "Simulation Only",
+    "prerequisites": ["Chapter 6", "URDF fundamentals"],
+    "learningObjectives": [
+      "Set up Gazebo Harmonic with ROS 2 integration",
+      "Create simulation worlds with obstacles and terrain",
+      "Spawn URDF robots into Gazebo environments",
+      "Simulate sensors (cameras, LiDAR) and get data via ROS topics",
+      "Control robots in simulation via ROS 2"
+    ]
+  }
+}

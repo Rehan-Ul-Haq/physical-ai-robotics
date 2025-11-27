@@ -1,0 +1,27 @@
+{
+  "position": 15,
+  "label": "Chapter 15: Autonomous Humanoid Capstone",
+  "collapsible": true,
+  "collapsed": true,
+  "link": {
+    "type": "generated-index",
+    "title": "Autonomous Humanoid Capstone",
+    "description": "The culmination of your Physical AI journey. Build an autonomous humanoid robot that understands voice commands, reasons about tasks, navigates environments, and manipulates objects."
+  },
+  "customProps": {
+    "chapter": 15,
+    "week": 13,
+    "proficiency": "C1",
+    "hardwareTier": "Full Stack (Jetson + optional physical robot)",
+    "prerequisites": ["All previous chapters"],
+    "learningObjectives": [
+      "Design a complete autonomous robot system specification",
+      "Integrate voice, vision, planning, and navigation",
+      "Orchestrate multi-modal perception and action",
+      "Deploy to physical robot or high-fidelity simulation",
+      "Demonstrate end-to-end autonomous behavior"
+    ],
+    "capstone": true,
+    "finalProject": true
+  }
+}

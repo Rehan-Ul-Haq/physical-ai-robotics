@@ -1,0 +1,24 @@
+{
+  "position": 2,
+  "label": "Chapter 2: ROS 2 Fundamentals",
+  "collapsible": true,
+  "collapsed": true,
+  "link": {
+    "type": "generated-index",
+    "title": "ROS 2 Fundamentals",
+    "description": "Master the Robot Operating System 2—the nervous system of modern robots. Install ROS 2, understand workspaces, packages, and write your first node."
+  },
+  "customProps": {
+    "chapter": 2,
+    "week": 2,
+    "proficiency": "A2",
+    "hardwareTier": "Simulation Only",
+    "prerequisites": ["Chapter 1", "Python basics", "Ubuntu 22.04 or WSL2"],
+    "learningObjectives": [
+      "Install ROS 2 Humble/Iron on Ubuntu",
+      "Create and build a ROS 2 workspace",
+      "Understand the ROS 2 package structure",
+      "Write and run a basic ROS 2 node with rclpy"
+    ]
+  }
+}

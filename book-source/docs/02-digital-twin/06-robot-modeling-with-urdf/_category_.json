@@ -1,0 +1,25 @@
+{
+  "position": 6,
+  "label": "Chapter 6: Robot Modeling with URDF",
+  "collapsible": true,
+  "collapsed": true,
+  "link": {
+    "type": "generated-index",
+    "title": "Robot Modeling with URDF",
+    "description": "Create digital representations of robots using URDF (Unified Robot Description Format). Define links, joints, sensors, and collision geometry."
+  },
+  "customProps": {
+    "chapter": 6,
+    "week": 6,
+    "proficiency": "B1",
+    "hardwareTier": "Simulation Only",
+    "prerequisites": ["Part 1 complete", "ROS 2 fundamentals"],
+    "learningObjectives": [
+      "Understand URDF syntax for robot description",
+      "Define robot links with visual and collision geometry",
+      "Create joints with proper kinematics and limits",
+      "Add sensors (cameras, LiDAR, IMU) to URDF models",
+      "Validate and visualize URDF in RViz2"
+    ]
+  }
+}

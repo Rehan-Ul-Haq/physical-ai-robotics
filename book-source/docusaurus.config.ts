@@ -16,9 +16,9 @@ const panaversityEnabled = process.env.PANAVERSITY_PLUGIN_ENABLED === "true";
 const docsPath = panaversityEnabled ? "docsfs" : "docs";
 
 const config: Config = {
-  title: "AI Native Software Development",
+  title: "Physical AI & Humanoid Robotics",
   tagline:
-    "Colearning Agentic AI with Python and TypeScript – Spec Driven Reusable Intelligence",
+    "Embodied Intelligence from Simulation to Reality — ROS 2, Gazebo, NVIDIA Isaac",
   favicon: "img/favicon.ico",
 
   // Future flags, see https://docusaurus.io/docs/api/docusaurus-config#future
@@ -207,11 +207,11 @@ const config: Config = {
 
     // Open Graph metadata for social media sharing
     metadata: [
-      { property: "og:title", content: "AI Native Software Development" },
+      { property: "og:title", content: "Physical AI & Humanoid Robotics" },
       {
         property: "og:description",
         content:
-          "Colearning Agentic AI with Python and TypeScript – Spec Driven Reusable Intelligence",
+          "Embodied Intelligence from Simulation to Reality — ROS 2, Gazebo, NVIDIA Isaac",
       },
       { property: "og:type", content: "website" },
       {
@@ -222,11 +222,11 @@ const config: Config = {
       { property: "og:image:height", content: "630" },
       { property: "og:url", content: "https://ai-native.panaversity.org" },
       { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:title", content: "AI Native Software Development" },
+      { name: "twitter:title", content: "Physical AI & Humanoid Robotics" },
       {
         name: "twitter:description",
         content:
-          "Colearning Agentic AI with Python and TypeScript – Spec Driven Reusable Intelligence",
+          "Embodied Intelligence from Simulation to Reality — ROS 2, Gazebo, NVIDIA Isaac",
       },
       {
         name: "twitter:image",
@@ -243,7 +243,7 @@ const config: Config = {
       },
     },
     navbar: {
-      title: "AI Native Development",
+      title: "Physical AI Robotics",
       // logo: {
       //   alt: 'Panaversity Logo',
       //   src: 'img/book-cover.png',

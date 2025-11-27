@@ -1,0 +1,17 @@
+{
+  "position": 1,
+  "label": "Part 1: The Robotic Nervous System (ROS 2)",
+  "collapsible": true,
+  "collapsed": true,
+  "link": {
+    "type": "generated-index",
+    "title": "Part 1: The Robotic Nervous System",
+    "description": "Master ROS 2—the middleware that connects sensors, actuators, and AI to create intelligent robotic systems. Weeks 1-5 of the Physical AI journey."
+  },
+  "customProps": {
+    "module": 1,
+    "weeks": "1-5",
+    "hardwareTier": "Simulation Only",
+    "technologies": ["ROS 2 Humble/Iron", "rclpy", "Topics", "Services", "Actions"]
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "position": 3,
+  "label": "Chapter 3: ROS 2 Communication Patterns",
+  "collapsible": true,
+  "collapsed": true,
+  "link": {
+    "type": "generated-index",
+    "title": "ROS 2 Communication Patterns",
+    "description": "Learn the three pillars of ROS 2 communication: Topics for streaming data, Services for request/response, and Actions for long-running tasks."
+  },
+  "customProps": {
+    "chapter": 3,
+    "week": 3,
+    "proficiency": "B1",
+    "hardwareTier": "Simulation Only",
+    "prerequisites": ["Chapter 2", "ROS 2 node creation"],
+    "learningObjectives": [
+      "Implement Publishers and Subscribers for sensor data streams",
+      "Create Services for on-demand robot operations",
+      "Build Action Servers/Clients for navigation and manipulation",
+      "Choose the appropriate communication pattern for each use case"
+    ]
+  }
+}
