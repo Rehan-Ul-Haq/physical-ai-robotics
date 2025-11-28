@@ -83,6 +83,13 @@ const config: Config = {
           },
         ]
       : []),
+    // Book Assistant API URL - Configure with environment variable
+    // Used by ChatWidget component to connect to the RAG-powered backend
+    {
+      tagName: "script",
+      attributes: {},
+      innerHTML: `window.__BOOK_ASSISTANT_API_URL__ = "${process.env.BOOK_ASSISTANT_API_URL || 'http://localhost:8001'}";`,
+    },
   ],
 
   // Even if you don't use internationalization, you can use this field to set
