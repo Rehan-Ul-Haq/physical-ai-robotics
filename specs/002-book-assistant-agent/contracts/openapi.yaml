@@ -1,0 +1,438 @@
+openapi: 3.1.0
+info:
+  title: Book Assistant AI Agent API
+  description: |
+    RAG-powered chatbot API for the Physical AI & Humanoid Robotics book.
+    Built on OpenAI ChatKit Server pattern with ThreadStore persistence.
+    Provides Q&A functionality with source citations and conversation history.
+  version: 1.0.0
+  contact:
+    name: Book Assistant Support
+  license:
+    name: MIT
+
+servers:
+  - url: http://localhost:8001
+    description: Local development server
+  - url: https://api.book.example.com
+    description: Production server
+
+tags:
+  - name: ChatKit
+    description: ChatKit server endpoints (via server.process())
+  - name: Threads
+    description: Thread management (ChatKit ThreadStore)
+  - name: Feedback
+    description: User feedback collection
+  - name: Index
+    description: Book content indexing operations
+  - name: Health
+    description: System health checks
+
+paths:
+  /assistant/chatkit:
+    post:
+      tags:
+        - ChatKit
+      summary: ChatKit server endpoint
+      description: |
+        Main ChatKit endpoint using server.process(). Handles user queries,
+        performs RAG search, and streams AI-generated responses with citations.
+        Implements ChatKit protocol for thread management and streaming.
+      operationId: chatkit_endpoint
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ChatKitRequest'
+      responses:
+        '200':
+          description: Successful response with SSE streaming
+          content:
+            text/event-stream:
+              schema:
+                type: string
+                description: Server-Sent Events stream (ChatKit protocol)
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '429':
+          $ref: '#/components/responses/RateLimited'
+        '500':
+          $ref: '#/components/responses/InternalError'
+
+  /assistant/thread/{thread_id}:
+    get:
+      tags:
+        - Threads
+      summary: Get thread with items
+      description: Retrieves a ChatKit thread and its items (messages)
+      operationId: get_thread
+      parameters:
+        - $ref: '#/components/parameters/ThreadId'
+      responses:
+        '200':
+          description: Thread found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ThreadResponse'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+    delete:
+      tags:
+        - Threads
+      summary: Delete thread
+      description: Deletes a thread and all its items (new conversation)
+      operationId: delete_thread
+      parameters:
+        - $ref: '#/components/parameters/ThreadId'
+      responses:
+        '204':
+          description: Thread deleted
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+  /assistant/feedback:
+    post:
+      tags:
+        - Feedback
+      summary: Submit feedback
+      description: Submits thumbs up/down feedback for a message
+      operationId: submit_feedback
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FeedbackCreate'
+      responses:
+        '201':
+          description: Feedback recorded
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FeedbackResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '409':
+          description: Feedback already exists for this message/session
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /assistant/reindex:
+    post:
+      tags:
+        - Index
+      summary: Reindex book content
+      description: |
+        Triggers re-indexing of book content from markdown files.
+        This is a CLI-triggered operation for content maintainers.
+      operationId: reindex_content
+      security:
+        - ApiKeyAuth: []
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReindexRequest'
+      responses:
+        '202':
+          description: Reindex job started
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReindexResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+  /assistant/index/status:
+    get:
+      tags:
+        - Index
+      summary: Get index status
+      description: Returns current index statistics and status
+      operationId: get_index_status
+      responses:
+        '200':
+          description: Index status
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IndexStatus'
+
+  /assistant/health:
+    get:
+      tags:
+        - Health
+      summary: Health check
+      description: Returns service health status
+      operationId: health_check
+      responses:
+        '200':
+          description: Service healthy
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HealthResponse'
+        '503':
+          description: Service unhealthy
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HealthResponse'
+
+components:
+  schemas:
+    ChatKitRequest:
+      type: object
+      required:
+        - query
+      properties:
+        query:
+          type: string
+          maxLength: 2000
+          description: User's question
+          example: "What is Physical AI?"
+        thread_id:
+          type: string
+          maxLength: 255
+          description: Existing thread ID (ChatKit manages thread creation)
+        context:
+          $ref: '#/components/schemas/BookAssistantContext'
+          description: Thread context (context_mode, selected_text)
+
+    BookAssistantContext:
+      type: object
+      description: Context metadata for BookAssistant threads
+      properties:
+        session_id:
+          type: string
+          minLength: 32
+          maxLength: 255
+          description: Browser session identifier
+        context_mode:
+          type: string
+          enum: [full_book, selected_text]
+          default: full_book
+          description: Query context mode
+        selected_text:
+          type: string
+          maxLength: 2000
+          nullable: true
+          description: User-selected text for context-specific queries
+
+    ThreadResponse:
+      type: object
+      description: ChatKit Thread with items
+      properties:
+        id:
+          type: string
+          description: Thread identifier
+        metadata:
+          $ref: '#/components/schemas/BookAssistantContext'
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/ThreadItemResponse'
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+
+    ThreadItemResponse:
+      type: object
+      description: ChatKit ThreadItem (message)
+      properties:
+        id:
+          type: string
+          description: Item identifier
+        role:
+          type: string
+          enum: [user, assistant]
+        content:
+          type: string
+        sources:
+          type: array
+          nullable: true
+          items:
+            $ref: '#/components/schemas/Source'
+        created_at:
+          type: string
+          format: date-time
+
+    Source:
+      type: object
+      properties:
+        chapter:
+          type: integer
+          minimum: 1
+        section:
+          type: string
+        url:
+          type: string
+          format: uri-reference
+        relevance_score:
+          type: number
+          minimum: 0
+          maximum: 1
+
+    FeedbackCreate:
+      type: object
+      required:
+        - thread_item_id
+        - session_id
+        - feedback_type
+      properties:
+        thread_item_id:
+          type: string
+          description: Thread item (message) ID
+        session_id:
+          type: string
+        feedback_type:
+          type: string
+          enum: [thumbs_up, thumbs_down]
+
+    FeedbackResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        thread_item_id:
+          type: string
+        feedback_type:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+
+    ReindexRequest:
+      type: object
+      properties:
+        chapters:
+          type: array
+          items:
+            type: integer
+          description: Specific chapters to reindex (all if omitted)
+        force:
+          type: boolean
+          default: false
+          description: Force reindex even if content unchanged
+
+    ReindexResponse:
+      type: object
+      properties:
+        job_id:
+          type: string
+          format: uuid
+        status:
+          type: string
+          enum: [started, queued]
+        message:
+          type: string
+
+    IndexStatus:
+      type: object
+      properties:
+        total_chunks:
+          type: integer
+        chapters_indexed:
+          type: array
+          items:
+            type: integer
+        last_indexed_at:
+          type: string
+          format: date-time
+        vector_dimension:
+          type: integer
+          example: 1536
+
+    HealthResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          enum: [healthy, unhealthy]
+        version:
+          type: string
+        checks:
+          type: object
+          properties:
+            database:
+              type: string
+              enum: [ok, error]
+            qdrant:
+              type: string
+              enum: [ok, error]
+            openai:
+              type: string
+              enum: [ok, error]
+
+    Error:
+      type: object
+      properties:
+        error:
+          type: string
+        message:
+          type: string
+        details:
+          type: object
+
+  parameters:
+    ThreadId:
+      name: thread_id
+      in: path
+      required: true
+      schema:
+        type: string
+        maxLength: 255
+      description: ChatKit Thread identifier
+
+  responses:
+    BadRequest:
+      description: Invalid request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    NotFound:
+      description: Resource not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Unauthorized:
+      description: Authentication required
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    RateLimited:
+      description: Rate limit exceeded (20 requests/minute)
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            error: "rate_limited"
+            message: "Rate limit exceeded. Please wait before making another request."
+    InternalError:
+      description: Internal server error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: X-API-Key
+      description: Admin API key for CLI operations
