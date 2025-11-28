@@ -7,6 +7,7 @@
  */
 
 import React, { useState, useRef, useEffect, FormEvent } from 'react';
+import ReactMarkdown from 'react-markdown';
 import styles from './styles.module.css';
 
 // Get API URL from environment or use default
@@ -223,6 +224,7 @@ export default function ChatWidget() {
   const [selectedText, setSelectedText] = useState<string | null>(null);
   const [sessionId, setSessionId] = useState('');
   const [showFullContext, setShowFullContext] = useState(false);
+  const [isMaximized, setIsMaximized] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const chatWindowRef = useRef<HTMLDivElement>(null);
 
@@ -488,15 +490,34 @@ export default function ChatWidget() {
               message.role === 'user' ? styles.userMessage : styles.assistantMessage
             }`}
           >
-            {/* Show context indicator for user messages that had selected text */}
-            {message.role === 'user' && message.contextText && (
-              <div className={styles.messageContext}>
-                <small>Asked about: "{message.contextText.slice(0, 40)}..."</small>
-              </div>
-            )}
             <div className={styles.messageContent}>
-              {message.content}
-              {message.isStreaming && <span className={styles.cursor} />}
+              {/* Show combined view for user messages with selected text */}
+              {message.role === 'user' && message.contextText ? (
+                <div className={styles.messageWithContext}>
+                  <div className={styles.selectedTextSection}>
+                    <div className={styles.selectedTextLabel}>Selected from book:</div>
+                    <div className={styles.selectedTextContent}>
+                      {message.contextText}
+                    </div>
+                  </div>
+                  <div className={styles.questionSection}>
+                    <div className={styles.questionLabel}>Question:</div>
+                    <div className={styles.questionContent}>
+                      {message.content}
+                    </div>
+                  </div>
+                </div>
+              ) : message.role === 'assistant' ? (
+                <div className={styles.markdownContent}>
+                  <ReactMarkdown>{message.content}</ReactMarkdown>
+                  {message.isStreaming && <span className={styles.cursor} />}
+                </div>
+              ) : (
+                <>
+                  {message.content}
+                  {message.isStreaming && <span className={styles.cursor} />}
+                </>
+              )}
             </div>
           </div>
         ))}
