@@ -73,14 +73,11 @@ def inject_context_into_message(item: UserMessageItem, context: dict[str, Any]) 
     elif isinstance(item.content, str):
         original_text = item.content
 
-    # Create new message with context prefix
-    new_content = [UserMessageTextContent(type="text", text=prefix + original_text)]
+    # Create new message with context prefix (type must be "input_text" per ChatKit schema)
+    new_content = [UserMessageTextContent(type="input_text", text=prefix + original_text)]
 
-    return UserMessageItem(
-        id=item.id,
-        type=item.type,
-        content=new_content,
-    )
+    # Use model_copy to preserve all required fields from original item
+    return item.model_copy(update={"content": new_content})
 
 
 async def to_agent_input(

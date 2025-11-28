@@ -104,10 +104,10 @@ class QdrantService:
         if filter_conditions:
             search_filter = Filter(must=filter_conditions)
 
-        # Perform search
-        results = await client.search(
+        # Perform search using query_points (newer qdrant-client API)
+        results = await client.query_points(
             collection_name=settings.qdrant_collection,
-            query_vector=query_embedding,
+            query=query_embedding,
             query_filter=search_filter,
             limit=limit,
             with_payload=True,
@@ -115,8 +115,8 @@ class QdrantService:
 
         # Convert to typed results
         typed_results = []
-        for result in results:
-            payload = result.payload
+        for point in results.points:
+            payload = point.payload
             if payload:
                 chunk = BookChunkPayload(
                     text=payload.get("text", ""),
@@ -132,11 +132,11 @@ class QdrantService:
                 # If text_filter is provided, boost results containing the text
                 if text_filter:
                     if text_filter.lower() in chunk.text.lower():
-                        typed_results.append((chunk, result.score * 1.2))  # Boost
+                        typed_results.append((chunk, point.score * 1.2))  # Boost
                     else:
-                        typed_results.append((chunk, result.score))
+                        typed_results.append((chunk, point.score))
                 else:
-                    typed_results.append((chunk, result.score))
+                    typed_results.append((chunk, point.score))
 
         # Sort by score if text filter was used (to account for boosting)
         if text_filter:
