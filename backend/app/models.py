@@ -13,6 +13,14 @@ class ContextMode(str, Enum):
     SELECTED_TEXT = "selected_text"
 
 
+class SearchScope(str, Enum):
+    """Search scope for RAG queries."""
+
+    CURRENT_PAGE = "current_page"  # Strict filter to current lesson only
+    CURRENT_CHAPTER = "current_chapter"  # Strict filter to current chapter
+    FULL_BOOK = "full_book"  # Search everything, boost current chapter
+
+
 class Source(BaseModel):
     """Source citation from RAG search."""
 
@@ -35,12 +43,20 @@ class BookChunkPayload(BaseModel):
     token_count: int
 
 
+class PageContext(BaseModel):
+    """Current page context from frontend."""
+
+    current_chapter: int | None = Field(None, ge=1, le=14, description="Chapter number user is viewing")
+    current_lesson: str | None = Field(None, description="Lesson slug user is viewing")
+
+
 class BookAssistantContext(BaseModel):
     """Context metadata for BookAssistant threads."""
 
     session_id: str | None = None
     context_mode: ContextMode = ContextMode.FULL_BOOK
     selected_text: str | None = None
+    page_context: PageContext | None = Field(None, description="Current page context from frontend")
 
 
 class ThreadItemCreate(BaseModel):

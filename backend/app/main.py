@@ -40,7 +40,9 @@ app = FastAPI(
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
-        "http://localhost:5173",  # Vite dev server
+        "http://localhost:3000",   # Docusaurus dev server
+        "http://127.0.0.1:3000",
+        "http://localhost:5173",   # Vite dev server
         "http://localhost:5174",
         "http://127.0.0.1:5173",
         "http://127.0.0.1:5174",
@@ -59,32 +61,70 @@ async def chatkit_endpoint(request: Request) -> StreamingResponse:
     Handles user queries, performs RAG search, and streams AI-generated
     responses with citations. Implements ChatKit protocol for thread
     management and streaming.
+
+    Accepts simple format: {query, thread_id?, context?}
+    Transforms to ChatKit format: {type, thread_id?, content}
     """
+    import json
+
     try:
-        # Get the raw body for ChatKit processing
+        # Get the raw body
         body = await request.body()
+        data = json.loads(body)
 
         # Build context from request
         context: dict[str, Any] = {
             "request": request,
         }
 
-        # Parse request to extract context_mode and selected_text
-        try:
-            import json
-            data = json.loads(body)
-            if "context" in data and data["context"]:
-                if "context_mode" in data["context"]:
-                    context["context_mode"] = data["context"]["context_mode"]
-                if "selected_text" in data["context"]:
-                    context["selected_text"] = data["context"]["selected_text"]
-                if "session_id" in data["context"]:
-                    context["session_id"] = data["context"]["session_id"]
-        except Exception:
-            pass
+        # Extract context fields from frontend request
+        if "context" in data and data["context"]:
+            frontend_ctx = data["context"]
+            if "context_mode" in frontend_ctx:
+                context["context_mode"] = frontend_ctx["context_mode"]
+            if "selected_text" in frontend_ctx:
+                context["selected_text"] = frontend_ctx["selected_text"]
+            if "session_id" in frontend_ctx:
+                context["session_id"] = frontend_ctx["session_id"]
+            if "page_context" in frontend_ctx:
+                context["page_context"] = frontend_ctx["page_context"]
+
+        # Transform simple format to ChatKit protocol format
+        thread_id = data.get("thread_id")
+        query = data.get("query", "")
+
+        # Build the ChatKit protocol request structure
+        # See: chatkit.types.ThreadsCreateReq, ThreadsAddUserMessageReq
+        user_input = {
+            "content": [{"type": "input_text", "text": query}],
+            "attachments": [],
+            "inference_options": {},
+        }
+
+        if thread_id:
+            # Add message to existing thread
+            # ChatKit expects thread_id inside params for ThreadsAddUserMessageReq
+            chatkit_request = {
+                "type": "threads.add_user_message",
+                "params": {
+                    "thread_id": thread_id,
+                    "input": user_input,
+                },
+            }
+        else:
+            # Create new thread with first message
+            chatkit_request = {
+                "type": "threads.create",
+                "params": {
+                    "input": user_input,
+                },
+            }
+
+        # Convert to bytes for ChatKit processing
+        chatkit_body = json.dumps(chatkit_request).encode()
 
         # Process through ChatKit server
-        result = await book_assistant_server.process(body, context)
+        result = await book_assistant_server.process(chatkit_body, context)
 
         return StreamingResponse(
             result,

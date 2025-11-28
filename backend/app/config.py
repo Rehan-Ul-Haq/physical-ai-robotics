@@ -1,5 +1,6 @@
 """Configuration module using pydantic Settings."""
 
+import os
 from pydantic_settings import BaseSettings
 from functools import lru_cache
 
@@ -43,7 +44,12 @@ class Settings(BaseSettings):
 @lru_cache
 def get_settings() -> Settings:
     """Get cached settings instance."""
-    return Settings()  # type: ignore
+    instance = Settings()  # type: ignore
+    # Export OpenAI API key to environment for agents SDK
+    # The agents SDK requires OPENAI_API_KEY as an environment variable
+    if instance.openai_api_key and "OPENAI_API_KEY" not in os.environ:
+        os.environ["OPENAI_API_KEY"] = instance.openai_api_key
+    return instance
 
 
 settings = get_settings()

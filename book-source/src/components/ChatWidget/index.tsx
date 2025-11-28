@@ -21,16 +21,38 @@ interface Message {
   isStreaming?: boolean;
 }
 
+interface PageContext {
+  current_chapter: number | null;
+  current_lesson: string | null;
+}
+
 interface ChatKitContext {
   session_id?: string;
   context_mode?: 'full_book' | 'selected_text';
   selected_text?: string;
+  page_context?: PageContext;
 }
 
 interface ChatKitRequest {
   query: string;
   thread_id?: string;
   context?: ChatKitContext;
+}
+
+// ChatKit SSE event types
+interface ChatKitEvent {
+  type: string;
+  thread?: { id: string };
+  update?: {
+    type: string;
+    delta?: string;
+  };
+}
+
+// Stream result type
+interface StreamResult {
+  text?: string;
+  threadId?: string;
 }
 
 // Generate session ID
@@ -52,8 +74,49 @@ function getSessionId(): string {
   return sessionId;
 }
 
-// Stream chat API
-async function* streamChat(request: ChatKitRequest): AsyncGenerator<string, void, unknown> {
+/**
+ * Extract current chapter number from Docusaurus URL
+ */
+function getCurrentChapter(): number | null {
+  if (typeof window === 'undefined') return null;
+  const pathname = window.location.pathname;
+  const match = pathname.match(/\/docs\/(\d{2})-/);
+  if (match) {
+    const chapterNum = parseInt(match[1], 10);
+    return chapterNum >= 1 && chapterNum <= 14 ? chapterNum : null;
+  }
+  return null;
+}
+
+/**
+ * Extract current lesson slug from Docusaurus URL
+ */
+function getCurrentLesson(): string | null {
+  if (typeof window === 'undefined') return null;
+  const pathname = window.location.pathname;
+  const parts = pathname.split('/').filter(Boolean);
+  if (parts.length >= 3 && parts[0] === 'docs') {
+    const lessonSlug = parts[2];
+    if (/^\d{2}-/.test(lessonSlug)) {
+      return lessonSlug;
+    }
+  }
+  return null;
+}
+
+/**
+ * Get current page context from URL
+ */
+function getPageContext(): PageContext {
+  return {
+    current_chapter: getCurrentChapter(),
+    current_lesson: getCurrentLesson(),
+  };
+}
+
+
+// Stream chat API - handles ChatKit protocol SSE events
+async function* streamChat(request: ChatKitRequest): AsyncGenerator<StreamResult, void, unknown> {
   const response = await fetch(`${API_URL}/assistant/chatkit`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
@@ -86,16 +149,22 @@ async function* streamChat(request: ChatKitRequest): AsyncGenerator<string, void
           const data = line.slice(6);
           if (data === '[DONE]') return;
           try {
-            const parsed = JSON.parse(data);
-            if (parsed.type === 'text_delta' && parsed.delta) {
-              yield parsed.delta;
-            } else if (parsed.type === 'content' && parsed.content) {
-              yield parsed.content;
-            } else if (typeof parsed === 'string') {
-              yield parsed;
+            const parsed: ChatKitEvent = JSON.parse(data);
+
+            // Handle thread.created - extract thread ID
+            if (parsed.type === 'thread.created' && parsed.thread?.id) {
+              yield { threadId: parsed.thread.id };
+            }
+            // Handle text deltas from ChatKit protocol
+            else if (
+              parsed.type === 'thread.item.updated' &&
+              parsed.update?.type === 'assistant_message.content_part.text_delta' &&
+              parsed.update.delta
+            ) {
+              yield { text: parsed.update.delta };
             }
           } catch {
-            if (data.trim()) yield data;
+            // Ignore parse errors for non-JSON lines
           }
         }
       }
@@ -159,10 +228,14 @@ export default function ChatWidget() {
     setIsLoading(true);
     setError(null);
 
+    // Get current page context from URL
+    const pageContext = getPageContext();
+
     // Build context
     const context: ChatKitContext = {
       session_id: sessionId,
       context_mode: selectedText ? 'selected_text' : 'full_book',
+      page_context: pageContext,
     };
 
     if (selectedText) {
@@ -182,19 +255,26 @@ export default function ChatWidget() {
     try {
       let fullResponse = '';
 
-      for await (const chunk of streamChat({
+      for await (const result of streamChat({
         query: userMessage.content,
         thread_id: threadId || undefined,
         context,
       })) {
-        fullResponse += chunk;
-        setMessages((prev) =>
-          prev.map((msg) =>
-            msg.id === assistantMessageId
-              ? { ...msg, content: fullResponse }
-              : msg
-          )
-        );
+        // Handle thread ID from stream
+        if (result.threadId && !threadId) {
+          setThreadId(result.threadId);
+        }
+        // Handle text content
+        if (result.text) {
+          fullResponse += result.text;
+          setMessages((prev) =>
+            prev.map((msg) =>
+              msg.id === assistantMessageId
+                ? { ...msg, content: fullResponse }
+                : msg
+            )
+          );
+        }
       }
 
       // Mark streaming as complete
@@ -205,11 +285,6 @@ export default function ChatWidget() {
             : msg
         )
       );
-
-      // Generate thread_id if this is first message
-      if (!threadId) {
-        setThreadId(`thread_${Date.now().toString(16)}`);
-      }
 
       // Clear selected text after successful query
       setSelectedText(null);

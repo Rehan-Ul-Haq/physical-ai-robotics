@@ -88,7 +88,7 @@ const config: Config = {
     {
       tagName: "script",
       attributes: {},
-      innerHTML: ,
+      innerHTML: `window.__BOOK_ASSISTANT_API_URL__ = "${process.env.BOOK_ASSISTANT_API_URL || 'http://localhost:8001'}";`,
     },
   ],
 

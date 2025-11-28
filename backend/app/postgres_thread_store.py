@@ -46,6 +46,7 @@ class PostgresThreadStore(Store[dict[str, Any]]):
                 id=thread_id,
                 title=None,
                 metadata={},
+                created_at=datetime.now(timezone.utc),
             )
 
         metadata = row["metadata"] if row["metadata"] else {}
@@ -56,6 +57,7 @@ class PostgresThreadStore(Store[dict[str, Any]]):
             id=row["id"],
             title=row["title"],
             metadata=metadata,
+            created_at=row["created_at"] or datetime.now(timezone.utc),
         )
 
     async def save_thread(
@@ -150,23 +152,37 @@ class PostgresThreadStore(Store[dict[str, Any]]):
         self, row: Any, sources: Any, metadata: Any
     ) -> ThreadItem:
         """Convert a database row to a ThreadItem."""
-        from chatkit.types import AssistantMessageItem, UserMessageItem, HiddenContextItem
+        from chatkit.types import (
+            AssistantMessageItem,
+            AssistantMessageContent,
+            UserMessageItem,
+            HiddenContextItem,
+            UserMessageTextContent,
+            InferenceOptions,
+        )
 
         item_type = row["type"]
         role = row["role"]
 
         if role == "user":
+            # Convert stored text content back to UserMessageContent format
+            text_content = row["content"] or ""
+            content_list = [UserMessageTextContent(type="input_text", text=text_content)]
             return UserMessageItem(
                 id=row["id"],
                 thread_id=row["thread_id"],
-                content=row["content"] or "",
+                content=content_list,
+                inference_options=InferenceOptions(),
                 created_at=row["created_at"],
             )
         elif role == "assistant":
+            # Convert stored text to AssistantMessageContent format
+            text_content = row["content"] or ""
+            content_list = [AssistantMessageContent(type="output_text", text=text_content)]
             return AssistantMessageItem(
                 id=row["id"],
                 thread_id=row["thread_id"],
-                content=[row["content"]] if row["content"] else [],
+                content=content_list,
                 created_at=row["created_at"],
             )
         elif item_type == "hidden_context":
@@ -177,11 +193,13 @@ class PostgresThreadStore(Store[dict[str, Any]]):
                 created_at=row["created_at"],
             )
         else:
-            # Default to AssistantMessageItem
+            # Default to AssistantMessageItem with proper content format
+            text_content = row["content"] or ""
+            content_list = [AssistantMessageContent(type="output_text", text=text_content)]
             return AssistantMessageItem(
                 id=row["id"],
                 thread_id=row["thread_id"],
-                content=[row["content"]] if row["content"] else [],
+                content=content_list,
                 created_at=row["created_at"],
             )
 
@@ -198,10 +216,29 @@ class PostgresThreadStore(Store[dict[str, Any]]):
 
         if isinstance(item, UserMessageItem):
             role = "user"
-            content = item.content
+            # item.content is a list of UserMessageContent objects (text or tag)
+            # Extract text from the content items
+            if isinstance(item.content, list):
+                text_parts = []
+                for c in item.content:
+                    if hasattr(c, "text"):
+                        text_parts.append(c.text)
+                    elif hasattr(c, "tag"):
+                        text_parts.append(f"@{c.tag}")
+                content = " ".join(text_parts)
+            else:
+                content = str(item.content) if item.content else None
         elif isinstance(item, AssistantMessageItem):
             role = "assistant"
-            content = item.content[0] if item.content else None
+            # item.content is a list of AssistantMessageContent objects
+            if isinstance(item.content, list) and item.content:
+                first_content = item.content[0]
+                if hasattr(first_content, "text"):
+                    content = first_content.text
+                else:
+                    content = str(first_content)
+            else:
+                content = str(item.content) if item.content else None
         else:
             # Handle other types
             item_type = getattr(item, "type", "message")
@@ -270,6 +307,16 @@ class PostgresThreadStore(Store[dict[str, Any]]):
             thread_id,
         )
 
+    async def delete_thread_item(
+        self, thread_id: str, item_id: str, context: dict[str, Any]
+    ) -> None:
+        """Delete a thread item from Postgres."""
+        await db.execute(
+            "DELETE FROM thread_items WHERE id = $1 AND thread_id = $2",
+            item_id,
+            thread_id,
+        )
+
     async def load_threads(
         self,
         limit: int,
@@ -325,6 +372,7 @@ class PostgresThreadStore(Store[dict[str, Any]]):
                     id=row["id"],
                     title=row["title"],
                     metadata=metadata,
+                    created_at=row["created_at"] or datetime.now(timezone.utc),
                 )
             )
 

@@ -10,13 +10,15 @@ from chatkit.types import ThreadMetadata, ThreadStreamEvent, UserMessageItem
 from app.book_assistant_agent import book_assistant_agent
 from app.postgres_thread_store import PostgresThreadStore
 from app.thread_item_converter import to_agent_input
+from app.models import PageContext
 
 
-class BookAssistantContext(AgentContext):
-    """Extended AgentContext with selected_text support."""
+class BookAssistantAgentContext(AgentContext):
+    """Extended AgentContext with page context and selected text support."""
 
     selected_text: str | None = None
     context_mode: str = "full_book"
+    page_context: PageContext | None = None
 
 
 class BookAssistantServer(ChatKitServer[dict[str, Any]]):
@@ -38,12 +40,12 @@ class BookAssistantServer(ChatKitServer[dict[str, Any]]):
 
         This method:
         1. Converts the user message to agent input format
-        2. Creates an AgentContext with thread and store
+        2. Creates an AgentContext with thread, store, and page context
         3. Runs the agent with streaming
         4. Yields ChatKit events for the response
         """
-        # Create agent context
-        agent_context = AgentContext(
+        # Create agent context with page context support
+        agent_context = BookAssistantAgentContext(
             thread=thread,
             store=self.store,
             request_context=context,
@@ -51,12 +53,27 @@ class BookAssistantServer(ChatKitServer[dict[str, Any]]):
 
         # Extract selected_text from context if present
         if "selected_text" in context:
-            setattr(agent_context, "selected_text", context["selected_text"])
+            agent_context.selected_text = context["selected_text"]
         if "context_mode" in context:
-            setattr(agent_context, "context_mode", context["context_mode"])
+            agent_context.context_mode = context["context_mode"]
+        
+        # Extract page context (current_chapter, current_lesson) from frontend
+        if "page_context" in context and context["page_context"]:
+            page_ctx = context["page_context"]
+            agent_context.page_context = PageContext(
+                current_chapter=page_ctx.get("current_chapter"),
+                current_lesson=page_ctx.get("current_lesson"),
+            )
+        elif "current_chapter" in context or "current_lesson" in context:
+            # Also support flat structure
+            agent_context.page_context = PageContext(
+                current_chapter=context.get("current_chapter"),
+                current_lesson=context.get("current_lesson"),
+            )
 
         # Convert user message to agent input
         agent_input = await to_agent_input(thread, item, self.store, context)
+
 
         if not agent_input:
             return

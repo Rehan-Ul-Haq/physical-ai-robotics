@@ -6,9 +6,81 @@ from chatkit.agents import simple_to_agent_input
 from chatkit.store import Store
 from chatkit.types import (
     AssistantMessageItem,
+    UserMessageTextContent,
+    ThreadItem,
     ThreadMetadata,
     UserMessageItem,
 )
+
+
+def build_context_prefix(context: dict[str, Any]) -> str:
+    """
+    Build a context prefix to prepend to the user message.
+
+    This ensures the agent knows about:
+    - Selected text (if any)
+    - Current chapter and lesson
+    """
+    parts = []
+
+    # Add page context info
+    page_context = context.get("page_context", {})
+    current_chapter = page_context.get("current_chapter") if page_context else context.get("current_chapter")
+    current_lesson = page_context.get("current_lesson") if page_context else context.get("current_lesson")
+
+    if current_chapter or current_lesson:
+        location_parts = []
+        if current_chapter:
+            location_parts.append(f"Chapter {current_chapter}")
+        if current_lesson:
+            # Clean up lesson slug for display
+            lesson_name = current_lesson.replace("-", " ").title()
+            location_parts.append(f"Lesson: {lesson_name}")
+        parts.append(f"[User is viewing: {', '.join(location_parts)}]")
+
+    # Add selected text if present
+    selected_text = context.get("selected_text")
+    if selected_text:
+        # Truncate if very long
+        if len(selected_text) > 1500:
+            selected_text = selected_text[:1500] + "..."
+        parts.append(f"[User has selected this text from the book:]\n\"\"\"\n{selected_text}\n\"\"\"")
+
+    if parts:
+        return "\n".join(parts) + "\n\n[User's question:]\n"
+    return ""
+
+
+def inject_context_into_message(item: UserMessageItem, context: dict[str, Any]) -> UserMessageItem:
+    """
+    Inject context prefix into the user message content.
+
+    This modifies the message to include context information that
+    the agent needs to understand the user's question.
+    """
+    prefix = build_context_prefix(context)
+    if not prefix:
+        return item
+
+    # Extract original text content
+    original_text = ""
+    if isinstance(item.content, list):
+        for content_item in item.content:
+            if hasattr(content_item, "text"):
+                original_text += content_item.text
+            elif isinstance(content_item, str):
+                original_text += content_item
+    elif isinstance(item.content, str):
+        original_text = item.content
+
+    # Create new message with context prefix
+    new_content = [UserMessageTextContent(type="text", text=prefix + original_text)]
+
+    return UserMessageItem(
+        id=item.id,
+        type=item.type,
+        content=new_content,
+    )
 
 
 async def to_agent_input(
@@ -23,12 +95,13 @@ async def to_agent_input(
     This handles:
     1. Converting the current user message
     2. Loading conversation history for context
+    3. Injecting page context and selected text into the current message
 
     Args:
         thread: Thread metadata
         item: Current user message item (may be None)
         store: Thread store for loading history
-        context: Request context
+        context: Request context (contains selected_text, page_context, etc.)
 
     Returns:
         List of agent input items or None if no input
@@ -36,8 +109,8 @@ async def to_agent_input(
     if item is None:
         return None
 
-    # Use the simple converter from chatkit.agents
-    agent_input = await simple_to_agent_input(item)
+    # Collect all items to convert (history + current)
+    all_items: list[ThreadItem] = []
 
     # Load conversation history if this is a continuing thread
     if thread.id:
@@ -52,33 +125,22 @@ async def to_agent_input(
             )
 
             if history_page.data:
-                # Convert history items to agent input format
-                history_input = []
+                # Only include user and assistant messages from history
                 for history_item in history_page.data:
-                    if isinstance(history_item, UserMessageItem):
-                        history_input.append({
-                            "role": "user",
-                            "content": history_item.content,
-                        })
-                    elif isinstance(history_item, AssistantMessageItem):
-                        content = history_item.content
-                        if isinstance(content, list):
-                            content = "\n".join(str(c) for c in content)
-                        history_input.append({
-                            "role": "assistant",
-                            "content": content,
-                        })
-
-                # Prepend history to current input
-                if history_input:
-                    # The current input from simple_to_agent_input should be added after history
-                    return history_input + agent_input
+                    if isinstance(history_item, (UserMessageItem, AssistantMessageItem)):
+                        all_items.append(history_item)
 
         except Exception:
             # If loading history fails, just use the current message
             pass
 
-    return agent_input
+    # Inject context into current message (selected text, page context)
+    # Only inject for the current message, not history
+    modified_item = inject_context_into_message(item, context)
+    all_items.append(modified_item)
+
+    # Use ChatKit's converter for all items to ensure proper format
+    return await simple_to_agent_input(all_items)
 
 
 async def load_thread_history(
@@ -111,14 +173,30 @@ async def load_thread_history(
         history = []
         for item in history_page.data:
             if isinstance(item, UserMessageItem):
+                # Extract text from content list
+                content = item.content
+                if isinstance(content, list):
+                    text_parts = []
+                    for c in content:
+                        if hasattr(c, "text"):
+                            text_parts.append(c.text)
+                        elif isinstance(c, str):
+                            text_parts.append(c)
+                    content = " ".join(text_parts) if text_parts else ""
                 history.append({
                     "role": "user",
-                    "content": item.content,
+                    "content": content,
                 })
             elif isinstance(item, AssistantMessageItem):
                 content = item.content
                 if isinstance(content, list):
-                    content = "\n".join(str(c) for c in content)
+                    text_parts = []
+                    for c in content:
+                        if hasattr(c, "text"):
+                            text_parts.append(c.text)
+                        elif isinstance(c, str):
+                            text_parts.append(c)
+                    content = "\n".join(text_parts) if text_parts else ""
                 history.append({
                     "role": "assistant",
                     "content": content,
