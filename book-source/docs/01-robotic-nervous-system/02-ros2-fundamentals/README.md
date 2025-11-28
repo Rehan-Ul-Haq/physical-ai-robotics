@@ -179,7 +179,7 @@ You've successfully completed this chapter when you can:
 - ✅ **Create a minimal ROS 2 node** that runs without errors (first or second attempt after debugging)
 - ✅ **Build a pub-sub system** where two nodes successfully exchange messages
 - ✅ **Explain topics vs services** with 90%+ accuracy on concept quiz
-- ✅ **Complete chapter in <6 hours** (average A2 learner, includes installation)
+- ✅ **Complete chapter in less than 6 hours** (average A2 learner, includes installation)
 - ✅ **Feel confident** creating basic ROS nodes (80%+ self-reported confidence)
 
 ---
