@@ -107,6 +107,7 @@
   border: 3px solid var(--border-medium);
   overflow: hidden;
   animation: slideIn 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 @keyframes slideIn {
@@ -127,6 +128,17 @@
     0 12px 60px rgba(0, 0, 0, 0.6),
     0 0 100px rgba(0, 229, 255, 0.15),
     inset 0 1px 0 rgba(0, 229, 255, 0.1);
+}
+
+.chatWindow.maximized {
+  top: 16px;
+  left: 16px;
+  right: 16px;
+  bottom: 16px;
+  width: calc(100vw - 32px);
+  height: calc(100vh - 32px);
+  max-height: none;
+  border-radius: 12px;
 }
 
 /* Mobile responsive */
