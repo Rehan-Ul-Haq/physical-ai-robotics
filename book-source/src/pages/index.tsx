@@ -25,58 +25,59 @@ function HomepageHeader() {
 
           {/* Right side - Content */}
           <div className={styles.heroTextContent}>
-            <div className={styles.heroLabel}>
-              Panaversity Physical AI Series • Q4 Capstone
-            </div>
             <Heading as="h1" className={styles.heroTitle}>
-              Physical AI & Humanoid Robotics
-              <br />
-              <span className={styles.heroTitleAccent}>
-                From Digital Intelligence to{" "}
-                <strong>Embodied AI in the Physical World</strong>
-              </span>
+              Physical AI &<br />Humanoid Robotics
             </Heading>
+            <p className={styles.heroSubtitle}>
+              From digital intelligence to <strong>embodied AI in the physical world</strong>.
+              Build humanoid robots that understand physics, navigate autonomously,
+              and respond to natural language commands.
+            </p>
 
             <div className={styles.heroBadges}>
               <span className={styles.badge}>
-                <span className={styles.badgeIcon}>🤖</span>
-                ROS 2 + Isaac Sim
+                <span className={styles.badgeIcon}>⚡</span>
+                ROS 2 Humble
               </span>
               <span className={styles.badge}>
-                <span className={styles.badgeIcon}>🧠</span>
-                AI-Driven Development
+                <span className={styles.badgeIcon}>🎮</span>
+                NVIDIA Isaac
               </span>
               <span className={styles.badge}>
                 <span className={styles.badgeIcon}>🦾</span>
-                Humanoid Systems
+                Gazebo Sim
+              </span>
+              <span className={styles.badge}>
+                <span className={styles.badgeIcon}>🧠</span>
+                AI-Driven
               </span>
             </div>
 
             <div className={styles.heroButtons}>
               <Link
                 className={clsx(
-                  "button button--primary button--md",
+                  "button button--primary button--lg",
                   styles.ctaButton
                 )}
-                to="/docs/01-robotic-nervous-system/01-physical-ai-intro"
+                to="/docs/preface"
               >
                 <span className={styles.buttonContent}>
                   <span className={styles.buttonText}>Start Learning</span>
-                  <span className={styles.buttonIcon}>🚀</span>
+                  <span className={styles.buttonIcon}>→</span>
                 </span>
               </Link>
               <Link
                 className={clsx(
-                  "button button--outline button--md",
+                  "button button--outline button--lg",
                   styles.secondaryButton
                 )}
-                href="https://panaversity.org"
+                href="https://github.com/panaversity"
                 target="_blank"
                 rel="noopener noreferrer"
               >
                 <span className={styles.buttonContent}>
-                  <span className={styles.buttonText}>About Panaversity</span>
-                  <span className={styles.buttonIcon}>🎓</span>
+                  <span className={styles.buttonIcon}>⭐</span>
+                  <span className={styles.buttonText}>Star on GitHub</span>
                 </span>
               </Link>
             </div>
@@ -87,203 +88,108 @@ function HomepageHeader() {
   );
 }
 
-function Feature({
-  title,
-  description,
-  icon,
-  featured,
-}: {
-  title: string;
-  description: string;
-  icon: string;
-  featured?: boolean;
-}) {
+// Course Modules Section
+function ModulesSection() {
   return (
-    <div className={clsx(styles.feature, featured && styles.featureFeatured)}>
-      {featured && <div className={styles.featureBadge}>Most Popular</div>}
-      <div className={styles.featureIconWrapper}>
-        <div className={styles.featureIcon}>{icon}</div>
-      </div>
-      <h3 className={styles.featureTitle}>{title}</h3>
-      <p className={styles.featureDescription}>{description}</p>
-      <div className={styles.featureAccent} />
-    </div>
-  );
-}
-
-function AISpectrumSection() {
-  return (
-    <section className={styles.spectrumSection}>
+    <section className={styles.modulesSection}>
       <div className="container">
-        <div className={styles.spectrumHeader}>
-          <div className={styles.spectrumLabel}>
-            Why Physical AI Matters
-          </div>
-          <Heading as="h2" className={styles.spectrumTitle}>
-            From Digital Brains to Physical Bodies
+        <div className={styles.sectionHeader}>
+          <div className={styles.sectionLabel}>📚 Course Structure</div>
+          <Heading as="h2" className={styles.sectionTitle}>
+            Four Modules, One Goal:<br />
+            <span className={styles.titleAccent}>Autonomous Humanoid Systems</span>
           </Heading>
-          <p className={styles.spectrumSubtitle}>
-            Humanoid robots excel in our world because they share our form. This course bridges
-            AI intelligence with embodied systems that understand physical laws and interact naturally.
+          <p className={styles.sectionSubtitle}>
+            Progressive learning from robot communication to conversational AI.
+            Each module builds on the previous, culminating in a voice-controlled autonomous humanoid.
           </p>
         </div>
 
-        <div className={styles.spectrumCards}>
+        <div className={styles.modulesGrid}>
           {/* Module 1 */}
-          <div className={styles.spectrumCard}>
-            <div className={styles.spectrumCardHeader}>
-              <div className={styles.spectrumIcon}>🔌</div>
-              <h3 className={styles.spectrumCardTitle}>Module 1</h3>
-              <div className={styles.spectrumCardSubtitle}>The Robotic Nervous System</div>
-            </div>
-            <p className={styles.spectrumCardDescription}>
-              Master ROS 2 middleware for robot control. Build nodes, topics, and services
-              to create the communication backbone for humanoid systems.
+          <div className={styles.moduleCard}>
+            <div className={styles.moduleNumber}>01</div>
+            <div className={styles.moduleIcon}>🔌</div>
+            <h3 className={styles.moduleTitle}>The Robotic Nervous System</h3>
+            <p className={styles.moduleDescription}>
+              Master ROS 2 - the middleware powering modern robots. Build nodes, topics,
+              and services to create distributed robotic systems.
             </p>
-            <ul className={styles.spectrumCardList}>
-              <li>ROS 2 architecture & core concepts</li>
-              <li>Python agents with rclpy</li>
-              <li>URDF for humanoid robots</li>
-            </ul>
-            <div className={styles.spectrumCardExample}>
-              <strong>Weeks 1-5:</strong> ROS 2 fundamentals & package development
+            <div className={styles.moduleMeta}>
+              <span className={styles.moduleWeeks}>⏱️ Weeks 1-5</span>
+              <span className={styles.moduleTech}>Python • rclpy • URDF</span>
             </div>
+            <ul className={styles.moduleTopics}>
+              <li>ROS 2 Architecture & Core Concepts</li>
+              <li>Nodes, Topics, Services & Actions</li>
+              <li>Building ROS 2 Packages with Python</li>
+              <li>URDF Robot Description Format</li>
+            </ul>
           </div>
 
           {/* Module 2 */}
-          <div className={styles.spectrumCard}>
-            <div className={styles.spectrumCardHeader}>
-              <div className={styles.spectrumIcon}>🌐</div>
-              <h3 className={styles.spectrumCardTitle}>Module 2</h3>
-              <div className={styles.spectrumCardSubtitle}>
-                The Digital Twin
-              </div>
-            </div>
-            <p className={styles.spectrumCardDescription}>
-              Simulate physics, gravity, and collisions in Gazebo. Build high-fidelity
-              environments and sensor simulations before deploying to real hardware.
+          <div className={styles.moduleCard}>
+            <div className={styles.moduleNumber}>02</div>
+            <div className={styles.moduleIcon}>🌐</div>
+            <h3 className={styles.moduleTitle}>The Digital Twin</h3>
+            <p className={styles.moduleDescription}>
+              Simulate physics-accurate environments in Gazebo. Test robots in virtual worlds
+              before deploying to expensive hardware.
             </p>
-            <ul className={styles.spectrumCardList}>
-              <li>Gazebo & Unity simulation</li>
-              <li>LiDAR, depth cameras & IMUs</li>
-              <li>Physics-based testing</li>
-            </ul>
-            <div className={styles.spectrumCardExample}>
-              <strong>Weeks 6-7:</strong> Digital twin development & sensor fusion
+            <div className={styles.moduleMeta}>
+              <span className={styles.moduleWeeks}>⏱️ Weeks 6-7</span>
+              <span className={styles.moduleTech}>Gazebo • Unity • SDF</span>
             </div>
+            <ul className={styles.moduleTopics}>
+              <li>Gazebo Simulation Environment Setup</li>
+              <li>Physics Simulation: Gravity & Collisions</li>
+              <li>Sensor Simulation: LiDAR, Cameras, IMUs</li>
+              <li>Unity for High-Fidelity Visualization</li>
+            </ul>
           </div>
 
           {/* Module 3 */}
-          <div
-            className={clsx(styles.spectrumCard, styles.spectrumCardHighlight)}
-          >
-            <div className={styles.spectrumBadge}>NVIDIA Isaac Platform</div>
-            <div className={styles.spectrumCardHeader}>
-              <div className={styles.spectrumIcon}>🧠</div>
-              <h3 className={styles.spectrumCardTitle}>Module 3</h3>
-              <div className={styles.spectrumCardSubtitle}>
-                The AI-Robot Brain
-              </div>
-            </div>
-            <p className={styles.spectrumCardDescription}>
-              Advanced perception with NVIDIA Isaac Sim. Photorealistic simulation,
-              synthetic data generation, and hardware-accelerated SLAM for navigation.
+          <div className={clsx(styles.moduleCard, styles.moduleCardFeatured)}>
+            <div className={styles.moduleBadge}>⚡ Hardware Intensive</div>
+            <div className={styles.moduleNumber}>03</div>
+            <div className={styles.moduleIcon}>🧠</div>
+            <h3 className={styles.moduleTitle}>The AI-Robot Brain</h3>
+            <p className={styles.moduleDescription}>
+              Advanced perception with NVIDIA Isaac. Photorealistic simulation,
+              synthetic data generation, and hardware-accelerated SLAM.
             </p>
-            <ul className={styles.spectrumCardList}>
-              <li>Isaac Sim photorealistic environments</li>
-              <li>Isaac ROS for VSLAM</li>
-              <li>Nav2 path planning for bipeds</li>
-            </ul>
-            <div className={styles.spectrumCardExample}>
-              <strong>Weeks 8-12:</strong> AI perception & humanoid locomotion
+            <div className={styles.moduleMeta}>
+              <span className={styles.moduleWeeks}>⏱️ Weeks 8-12</span>
+              <span className={styles.moduleTech}>Isaac Sim • Isaac ROS • Nav2</span>
             </div>
+            <ul className={styles.moduleTopics}>
+              <li>NVIDIA Isaac Sim & Omniverse</li>
+              <li>AI-Powered Perception & Manipulation</li>
+              <li>Visual SLAM for Navigation</li>
+              <li>Bipedal Locomotion & Balance Control</li>
+            </ul>
           </div>
 
           {/* Module 4 */}
-          <div
-            className={clsx(styles.spectrumCard, styles.spectrumCardHighlight)}
-          >
-            <div className={styles.spectrumBadge}>AI-Driven Capstone</div>
-            <div className={styles.spectrumCardHeader}>
-              <div className={styles.spectrumIcon}>🗣️</div>
-              <h3 className={styles.spectrumCardTitle}>Module 4</h3>
-              <div className={styles.spectrumCardSubtitle}>
-                Vision-Language-Action
-              </div>
-            </div>
-            <p className={styles.spectrumCardDescription}>
-              Convergence of LLMs and robotics. Voice commands become action sequences.
-              Build autonomous humanoids that understand natural language.
+          <div className={clsx(styles.moduleCard, styles.moduleCardFeatured)}>
+            <div className={styles.moduleBadge}>🎯 Capstone Project</div>
+            <div className={styles.moduleNumber}>04</div>
+            <div className={styles.moduleIcon}>🗣️</div>
+            <h3 className={styles.moduleTitle}>Vision-Language-Action</h3>
+            <p className={styles.moduleDescription}>
+              Convergence of LLMs and robotics. Transform voice commands into robot actions.
+              Build truly conversational humanoid systems.
             </p>
-            <ul className={styles.spectrumCardList}>
+            <div className={styles.moduleMeta}>
+              <span className={styles.moduleWeeks}>⏱️ Week 13</span>
+              <span className={styles.moduleTech}>OpenAI • Whisper • GPT-4</span>
+            </div>
+            <ul className={styles.moduleTopics}>
               <li>Voice-to-Action with OpenAI Whisper</li>
-              <li>LLM cognitive planning</li>
-              <li>Autonomous manipulation & navigation</li>
+              <li>LLM Cognitive Planning</li>
+              <li>Multi-Modal Interaction (Voice, Vision, Gesture)</li>
+              <li>Autonomous Task Execution</li>
             </ul>
-            <div className={styles.spectrumCardExample}>
-              <strong>Week 13:</strong> Final capstone - conversational humanoid robot
-            </div>
-          </div>
-        </div>
-
-        {/* Learning Journey Visualization */}
-        <div className={styles.spectrumFlow}>
-          <div className={styles.spectrumFlowTrack}>
-            <div className={styles.spectrumFlowStep}>
-              <div className={styles.flowStepCircle}>
-                <span className={styles.flowStepNumber}>1</span>
-              </div>
-              <div className={styles.flowStepContent}>
-                <div className={styles.flowStepTitle}>Nervous System</div>
-                <div className={styles.flowStepSubtitle}>ROS 2 Middleware</div>
-              </div>
-            </div>
-
-            <div className={styles.spectrumFlowLine}>
-              <div className={styles.flowLineProgress}></div>
-            </div>
-
-            <div className={styles.spectrumFlowStep}>
-              <div className={styles.flowStepCircle}>
-                <span className={styles.flowStepNumber}>2</span>
-              </div>
-              <div className={styles.flowStepContent}>
-                <div className={styles.flowStepTitle}>Digital Twin</div>
-                <div className={styles.flowStepSubtitle}>Gazebo Simulation</div>
-              </div>
-            </div>
-
-            <div className={styles.spectrumFlowLine}>
-              <div className={styles.flowLineProgress}></div>
-            </div>
-
-            <div
-              className={clsx(styles.spectrumFlowStep, styles.flowStepActive)}
-            >
-              <div className={styles.flowStepCircle}>
-                <span className={styles.flowStepNumber}>3</span>
-              </div>
-              <div className={styles.flowStepContent}>
-                <div className={styles.flowStepTitle}>AI Brain</div>
-                <div className={styles.flowStepSubtitle}>Isaac Platform</div>
-              </div>
-            </div>
-
-            <div className={styles.spectrumFlowLine}>
-              <div className={styles.flowLineProgress}></div>
-            </div>
-
-            <div
-              className={clsx(styles.spectrumFlowStep, styles.flowStepActive)}
-            >
-              <div className={styles.flowStepCircle}>
-                <span className={styles.flowStepNumber}>4</span>
-              </div>
-              <div className={styles.flowStepContent}>
-                <div className={styles.flowStepTitle}>VLA</div>
-                <div className={styles.flowStepSubtitle}>Voice→Action</div>
-              </div>
-            </div>
           </div>
         </div>
       </div>
@@ -291,363 +197,235 @@ function AISpectrumSection() {
   );
 }
 
-function FeaturesSection() {
+// Hardware Stack Section
+function HardwareSection() {
   return (
-    <section className={styles.features}>
+    <section className={styles.hardwareSection}>
       <div className="container">
-        {/* Section Header */}
-        <div className={styles.featuresHeader}>
-          <div className={styles.featuresLabel}>Core Pillars</div>
-          <Heading as="h2" className={styles.featuresHeading}>
-            What Makes This Book Different
+        <div className={styles.sectionHeader}>
+          <div className={styles.sectionLabel}>⚙️ Technical Requirements</div>
+          <Heading as="h2" className={styles.sectionTitle}>
+            The Physical AI Lab Stack
           </Heading>
-          <p className={styles.featuresSubheading}>
-            A comprehensive, production-focused approach to co-learning with AI
-            in the spec-driven way
+          <p className={styles.sectionSubtitle}>
+            This course sits at the intersection of three computationally demanding domains:
+            <strong> Physics Simulation</strong>, <strong>Visual Perception</strong>, and <strong>Generative AI</strong>.
           </p>
         </div>
 
-        {/* Features Grid */}
-        <div className={styles.featuresGrid}>
-          <Feature
-            icon="�"
-            title="Co-Learning Philosophy"
-            description="Learn alongside AI agents. Not just using AI as a tool, but co-creating where both human and AI learn together."
-            featured={true}
-          />
-          <Feature
-            icon="🐍"
-            title="Dual Language Mastery"
-            description="Python for reasoning & intelligence, TypeScript for interaction & UI. Master the bilingual AI-native stack."
-          />
-          <Feature
-            icon="📋"
-            title="Spec-Driven Development"
-            description="Write specifications that both humans and AI understand. Specs become executable blueprints for intelligent systems."
-          />
-          <Feature
-            icon="🤖"
-            title="Agentic AI Systems"
-            description="Build with OpenAI Agents SDK and Google ADK. Create agents that reason, act, and collaborate autonomously."
-          />
-          <Feature
-            icon="🏗️"
-            title="Production-Ready Architecture"
-            description="Cloud-native deployment with Docker, Kubernetes, Dapr, and Ray. Scalable, secure, fault-tolerant systems."
-          />
-          <Feature
-            icon="🚀"
-            title="Complete Learning Journey"
-            description="46 comprehensive chapters from programming basics to deploying enterprise agentic AI systems in production."
-            featured={true}
-          />
+        <div className={styles.hardwareGrid}>
+          {/* Workstation */}
+          <div className={clsx(styles.hardwareCard, styles.hardwareCardPrimary)}>
+            <div className={styles.hardwareIcon}>🖥️</div>
+            <h3 className={styles.hardwareTitle}>Digital Twin Workstation</h3>
+            <div className={styles.hardwareBadge}>Required</div>
+            <p className={styles.hardwareDescription}>
+              High-performance PC for Isaac Sim, Gazebo, and AI model training.
+              RTX GPU required for ray-traced simulation.
+            </p>
+            <ul className={styles.hardwareSpecs}>
+              <li><strong>GPU:</strong> NVIDIA RTX 4070 Ti+ (12GB VRAM min)</li>
+              <li><strong>CPU:</strong> Intel i7 13th Gen / AMD Ryzen 9</li>
+              <li><strong>RAM:</strong> 64GB DDR5 (32GB minimum)</li>
+              <li><strong>OS:</strong> Ubuntu 22.04 LTS</li>
+            </ul>
+            <div className={styles.hardwareNote}>
+              💡 ROS 2 Humble/Iron native to Linux. Windows requires WSL2.
+            </div>
+          </div>
+
+          {/* Edge Kit */}
+          <div className={styles.hardwareCard}>
+            <div className={styles.hardwareIcon}>🔬</div>
+            <h3 className={styles.hardwareTitle}>Physical AI Edge Kit</h3>
+            <div className={styles.hardwareBadge}>Recommended</div>
+            <p className={styles.hardwareDescription}>
+              Deploy trained models to edge devices. Learn resource constraints
+              and real-time inference optimization.
+            </p>
+            <ul className={styles.hardwareSpecs}>
+              <li><strong>Brain:</strong> NVIDIA Jetson Orin Nano (8GB)</li>
+              <li><strong>Eyes:</strong> Intel RealSense D435i (RGB-D + IMU)</li>
+              <li><strong>Ears:</strong> ReSpeaker USB Mic Array</li>
+              <li><strong>Total:</strong> ~$700 per kit</li>
+            </ul>
+            <div className={styles.hardwareNote}>
+              🎯 Ideal for sim-to-real transfer and edge deployment
+            </div>
+          </div>
+
+          {/* Robot */}
+          <div className={styles.hardwareCard}>
+            <div className={styles.hardwareIcon}>🤖</div>
+            <h3 className={styles.hardwareTitle}>Robot Platform</h3>
+            <div className={styles.hardwareBadge}>Optional</div>
+            <p className={styles.hardwareDescription}>
+              Physical robot for final deployment. Shared lab resource or
+              simulation-only approach works too.
+            </p>
+            <ul className={styles.hardwareSpecs}>
+              <li><strong>Budget:</strong> Unitree Go2 Edu (~$2,000)</li>
+              <li><strong>Humanoid:</strong> Unitree G1 (~$16,000)</li>
+              <li><strong>DIY:</strong> Hiwonder TonyPi (~$600)</li>
+              <li><strong>Sim-Only:</strong> Isaac Sim virtual robots</li>
+            </ul>
+            <div className={styles.hardwareNote}>
+              ☁️ Cloud option: AWS g5.2xlarge (~$200/quarter)
+            </div>
+          </div>
         </div>
       </div>
     </section>
   );
 }
 
-function MaturityLevelsSection() {
+// Tech Stack Section
+function TechStackSection() {
   return (
-    <section className={styles.maturitySection}>
+    <section className={styles.techSection}>
       <div className="container">
-        <div className={styles.maturityHeader}>
-          <div className={styles.maturityLabel}>Your AI Journey</div>
-          <Heading as="h2" className={styles.maturityTitle}>
-            Organizational AI Maturity Levels
+        <div className={styles.sectionHeader}>
+          <div className={styles.sectionLabel}>🛠️ Technologies</div>
+          <Heading as="h2" className={styles.sectionTitle}>
+            Industry-Standard Robotics Stack
           </Heading>
-          <p className={styles.maturitySubtitle}>
-            Where does your organization stand? Understanding these levels helps
-            you chart your path forward.
-          </p>
         </div>
 
-        <div className={styles.maturityLevels}>
-          {/* Level 1 */}
-          <div className={styles.maturityLevel}>
-            <div className={styles.maturityLevelNumber}>1</div>
-            <div className={styles.maturityLevelHeader}>
-              <div>
-                <h3 className={styles.maturityLevelTitle}>AI Awareness</h3>
-                <div className={styles.maturityLevelSubtitle}>
-                  Experimenting
-                </div>
-              </div>
-              <div className={styles.maturityLevelImpact}>
-                10-20% productivity gains
-              </div>
-            </div>
-            <p className={styles.maturityLevelDescription}>
-              Individual developers experimenting with AI coding tools. Early AI
-              Assisted Development.
-            </p>
-            <div className={styles.maturityLevelApproach}>
-              <strong>Approach:</strong> AI Assisted (Individual)
+        <div className={styles.techCategories}>
+          {/* Middleware */}
+          <div className={styles.techCategory}>
+            <h3 className={styles.techCategoryTitle}>🔌 Middleware & Control</h3>
+            <div className={styles.techTags}>
+              <span className={styles.techTag}>ROS 2 Humble/Iron</span>
+              <span className={styles.techTag}>rclpy (Python)</span>
+              <span className={styles.techTag}>Nav2</span>
+              <span className={styles.techTag}>MoveIt 2</span>
             </div>
           </div>
 
-          {/* Level 2 */}
-          <div className={styles.maturityLevel}>
-            <div className={styles.maturityLevelNumber}>2</div>
-            <div className={styles.maturityLevelHeader}>
-              <div>
-                <h3 className={styles.maturityLevelTitle}>AI Adoption</h3>
-                <div className={styles.maturityLevelSubtitle}>
-                  Standardizing
-                </div>
-              </div>
-              <div className={styles.maturityLevelImpact}>
-                30-40% productivity boost
-              </div>
-            </div>
-            <p className={styles.maturityLevelDescription}>
-              Organization-wide adoption with governance. Established guidelines
-              and security policies.
-            </p>
-            <div className={styles.maturityLevelApproach}>
-              <strong>Approach:</strong> AI Assisted (Team)
+          {/* Simulation */}
+          <div className={styles.techCategory}>
+            <h3 className={styles.techCategoryTitle}>🌐 Simulation & Physics</h3>
+            <div className={styles.techTags}>
+              <span className={styles.techTag}>NVIDIA Isaac Sim</span>
+              <span className={styles.techTag}>Gazebo Harmonic</span>
+              <span className={styles.techTag}>Unity Robotics</span>
+              <span className={styles.techTag}>URDF/SDF</span>
             </div>
           </div>
 
-          {/* Level 3 */}
-          <div
-            className={clsx(
-              styles.maturityLevel,
-              styles.maturityLevelHighlight
-            )}
-          >
-            <div className={styles.maturityBadge}>BOOK FOCUS</div>
-            <div className={styles.maturityLevelNumber}>3</div>
-            <div className={styles.maturityLevelHeader}>
-              <div>
-                <h3 className={styles.maturityLevelTitle}>AI Integration</h3>
-                <div className={styles.maturityLevelSubtitle}>
-                  Transforming Workflows
-                </div>
-              </div>
-              <div className={styles.maturityLevelImpact}>
-                2-3x faster development
-              </div>
-            </div>
-            <p className={styles.maturityLevelDescription}>
-              AI-Driven Development practices. Specs become living
-              documentation. Workflows redesigned around AI collaboration.
-            </p>
-            <div className={styles.maturityLevelApproach}>
-              <strong>Approach:</strong> AI Driven (Workflow)
+          {/* AI/ML */}
+          <div className={styles.techCategory}>
+            <h3 className={styles.techCategoryTitle}>🧠 AI & Perception</h3>
+            <div className={styles.techTags}>
+              <span className={styles.techTag}>Isaac ROS (VSLAM)</span>
+              <span className={styles.techTag}>OpenCV</span>
+              <span className={styles.techTag}>PyTorch</span>
+              <span className={styles.techTag}>OpenAI GPT-4</span>
+              <span className={styles.techTag}>Whisper</span>
             </div>
           </div>
 
-          {/* Level 4 */}
-          <div
-            className={clsx(
-              styles.maturityLevel,
-              styles.maturityLevelHighlight
-            )}
-          >
-            <div className={styles.maturityBadge}>BOOK FOCUS</div>
-            <div className={styles.maturityLevelNumber}>4</div>
-            <div className={styles.maturityLevelHeader}>
-              <div>
-                <h3 className={styles.maturityLevelTitle}>
-                  AI-Native Products
-                </h3>
-                <div className={styles.maturityLevelSubtitle}>
-                  Building Intelligence
-                </div>
-              </div>
-              <div className={styles.maturityLevelImpact}>
-                New capabilities unlocked
-              </div>
-            </div>
-            <p className={styles.maturityLevelDescription}>
-              Products where AI/LLMs are core components. Agent orchestration,
-              natural language interfaces, intelligent systems.
-            </p>
-            <div className={styles.maturityLevelApproach}>
-              <strong>Approach:</strong> AI Native (Product)
+          {/* Hardware */}
+          <div className={styles.techCategory}>
+            <h3 className={styles.techCategoryTitle}>⚡ Hardware & Sensors</h3>
+            <div className={styles.techTags}>
+              <span className={styles.techTag}>NVIDIA Jetson Orin</span>
+              <span className={styles.techTag}>Intel RealSense</span>
+              <span className={styles.techTag}>LiDAR</span>
+              <span className={styles.techTag}>IMU (BNO055)</span>
             </div>
           </div>
-
-          {/* Level 5 */}
-          <div className={styles.maturityLevel}>
-            <div className={styles.maturityLevelNumber}>5</div>
-            <div className={styles.maturityLevelHeader}>
-              <div>
-                <h3 className={styles.maturityLevelTitle}>
-                  AI-First Enterprise
-                </h3>
-                <div className={styles.maturityLevelSubtitle}>
-                  Living in the Future
-                </div>
-              </div>
-              <div className={styles.maturityLevelImpact}>10x productivity</div>
-            </div>
-            <p className={styles.maturityLevelDescription}>
-              Entire organization AI-native. Custom models, self-improving
-              systems, AI embedded in every aspect.
-            </p>
-            <div className={styles.maturityLevelApproach}>
-              <strong>Approach:</strong> AI Native (Enterprise)
-            </div>
-          </div>
-        </div>
-
-        <div className={styles.maturityCTA}>
-          <p className={styles.maturityCTAText}>
-            <strong>This book prepares you for Levels 3-4:</strong> Master
-            AI-Driven workflows and build AI-Native products
-          </p>
         </div>
       </div>
     </section>
   );
 }
 
-function ParadigmShift() {
+// Why Physical AI Section
+function WhyPhysicalAISection() {
   return (
-    <section className={styles.paradigmSection}>
+    <section className={styles.whySection}>
       <div className="container">
-        <div className={styles.paradigmContent}>
-          {/* Section Header */}
-          <div className={styles.paradigmHeader}>
-            <div className={styles.paradigmLabel}>The Great Shift</div>
-            <Heading as="h2" className={styles.paradigmTitle}>
-              From Automation to Intelligence
-              <br />
-              <span className={styles.paradigmTitleAccent}>
-                From Coding to Co-Creating
-              </span>
+        <div className={styles.whyContent}>
+          <div className={styles.whyLeft}>
+            <div className={styles.sectionLabel}>💡 The Future is Embodied</div>
+            <Heading as="h2" className={styles.sectionTitle}>
+              Why Humanoid Robots?
             </Heading>
-            <p className={styles.paradigmSubtitle}>
-              AI-native development is not about replacing developers—it's about
-              amplifying intelligence. Learn to collaborate with reasoning
-              entities that learn with you.
+            <p className={styles.whyText}>
+              Humanoid robots are poised to excel in our human-centered world because
+              <strong> they share our physical form</strong>. They can navigate stairs,
+              open doors, manipulate tools, and interact in spaces designed for us.
             </p>
+            <p className={styles.whyText}>
+              This represents a <strong>fundamental transition</strong> from AI models
+              confined to digital environments to <strong>embodied intelligence</strong> that
+              operates in physical space—understanding gravity, friction, momentum, and social interaction.
+            </p>
+            <ul className={styles.whyList}>
+              <li>✅ Train on abundant human demonstration data</li>
+              <li>✅ Navigate human-built environments naturally</li>
+              <li>✅ Use existing tools without modification</li>
+              <li>✅ Understand physics through embodied experience</li>
+            </ul>
           </div>
-
-          {/* Comparison Grid */}
-          <div className={styles.comparisonGrid}>
-            {/* Traditional Card */}
-            <div className={styles.comparisonCard}>
-              <div className={styles.comparisonIconWrapper}>
-                <div className={styles.comparisonIcon}>📚</div>
+          <div className={styles.whyRight}>
+            <div className={styles.whyCard}>
+              <h3 className={styles.whyCardTitle}>🎯 Capstone Project</h3>
+              <p className={styles.whyCardDescription}>
+                Build an <strong>Autonomous Conversational Humanoid</strong> that:
+              </p>
+              <ol className={styles.whyCardSteps}>
+                <li>Receives voice command: <em>"Clean the table"</em></li>
+                <li>Uses LLM to plan action sequence</li>
+                <li>Navigates obstacles using VSLAM</li>
+                <li>Identifies objects with computer vision</li>
+                <li>Manipulates objects with humanoid hands</li>
+                <li>Reports completion status via speech</li>
+              </ol>
+              <div className={styles.whyCardCTA}>
+                <Link to="/docs/00-preface" className={styles.inlineLink}>
+                  Start Building →
+                </Link>
               </div>
-              <div className={styles.comparisonLabel}>
-                Traditional Development
-              </div>
-              <div className={styles.comparisonDescription}>
-                The automation era
-              </div>
-              <ul className={styles.comparisonList}>
-                <li>
-                  <span className={styles.comparisonItemTitle}>
-                    Instruction-Based
-                  </span>
-                  Tell computers exactly what to do with precise syntax
-                </li>
-                <li>
-                  <span className={styles.comparisonItemTitle}>
-                    Solo Coding
-                  </span>
-                  Developer writes every line manually
-                </li>
-                <li>
-                  <span className={styles.comparisonItemTitle}>
-                    Documentation as Afterthought
-                  </span>
-                  Specs are static contracts written post-facto
-                </li>
-                <li>
-                  <span className={styles.comparisonItemTitle}>
-                    Linear Learning
-                  </span>
-                  Learn syntax → Build simple projects → Slowly scale
-                </li>
-                <li>
-                  <span className={styles.comparisonItemTitle}>Code-First</span>
-                  Focus on implementation details from day one
-                </li>
-              </ul>
-            </div>
-
-            {/* VS Divider */}
-            <div className={styles.comparisonDivider}>
-              <div className={styles.comparisonVS}>VS</div>
-              <div className={styles.comparisonArrow}>→</div>
-            </div>
-
-            {/* AI-Native Card */}
-            <div
-              className={clsx(
-                styles.comparisonCard,
-                styles.comparisonCardHighlight
-              )}
-            >
-              <div className={styles.comparisonIconWrapper}>
-                <div className={styles.comparisonIcon}>🤖</div>
-              </div>
-              <div className={styles.comparisonLabel}>AI-Native Way</div>
-              <div className={styles.comparisonDescription}>
-                The intelligence era
-              </div>
-              <ul className={styles.comparisonList}>
-                <li>
-                  <span className={styles.comparisonItemTitle}>
-                    Intent-Based
-                  </span>
-                  Describe what you want; AI reasons how to build it
-                </li>
-                <li>
-                  <span className={styles.comparisonItemTitle}>
-                    Co-Learning Partnership
-                  </span>
-                  You and AI teach each other through iteration
-                </li>
-                <li>
-                  <span className={styles.comparisonItemTitle}>
-                    Specs as Living Blueprints
-                  </span>
-                  Specifications drive code, tests, and documentation
-                </li>
-                <li>
-                  <span className={styles.comparisonItemTitle}>
-                    Production-First Learning
-                  </span>
-                  Build real agentic systems from day one
-                </li>
-                <li>
-                  <span className={styles.comparisonItemTitle}>
-                    Architecture-First
-                  </span>
-                  Design intelligent collaborations, not just code
-                </li>
-              </ul>
             </div>
           </div>
+        </div>
+      </div>
+    </section>
+  );
+}
 
-          {/* Bottom CTA */}
-          <div className={styles.paradigmCTA}>
-            <div className={styles.paradigmCTAContent}>
-              <div className={styles.paradigmCTAIcon}>🌱</div>
-              <div className={styles.paradigmCTAText}>
-                <h3 className={styles.paradigmCTATitle}>
-                  Ready to Co-Learn with AI?
-                </h3>
-                <p className={styles.paradigmCTADescription}>
-                  Join the revolution where coding becomes conversation and
-                  software becomes alive
-                </p>
+// AI-Driven Development CTA
+function AIApproachSection() {
+  return (
+    <section className={styles.approachSection}>
+      <div className="container">
+        <div className={styles.approachBox}>
+          <div className={styles.approachIcon}>🚀</div>
+          <div className={styles.approachContent}>
+            <h2 className={styles.approachTitle}>
+              Built the AI-Driven Way
+            </h2>
+            <p className={styles.approachDescription}>
+              This course teaches robotics development using <strong>AI as your co-creator</strong>.
+              Generate ROS 2 packages, URDF robot models, and navigation controllers through
+              intelligent collaboration. Focus on architecture and intent—let AI handle boilerplate.
+            </p>
+            <div className={styles.approachBenefits}>
+              <div className={styles.benefit}>
+                <span className={styles.benefitIcon}>⚡</span>
+                <span className={styles.benefitText}>10x faster prototyping</span>
               </div>
-              <Link
-                className={clsx(
-                  "button button--primary button--lg",
-                  styles.paradigmCTAButton
-                )}
-                to="/docs/preface-agent-native"
-              >
-                Begin Your Journey
-              </Link>
+              <div className={styles.benefit}>
+                <span className={styles.benefitIcon}>🧠</span>
+                <span className={styles.benefitText}>Focus on system design</span>
+              </div>
+              <div className={styles.benefit}>
+                <span className={styles.benefitIcon}>🎯</span>
+                <span className={styles.benefitText}>Production-ready code</span>
+              </div>
             </div>
           </div>
         </div>
@@ -664,10 +442,11 @@ export default function Home(): ReactNode {
       description="Master ROS 2, NVIDIA Isaac Sim, and embodied intelligence. Build humanoid robots using AI-driven development from digital brains to physical bodies."
     >
       <HomepageHeader />
-      <AISpectrumSection />
-      <FeaturesSection />
-      <MaturityLevelsSection />
-      <ParadigmShift />
+      <ModulesSection />
+      <HardwareSection />
+      <TechStackSection />
+      <WhyPhysicalAISection />
+      <AIApproachSection />
     </Layout>
   );
 }

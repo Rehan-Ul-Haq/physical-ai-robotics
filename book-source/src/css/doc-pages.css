@@ -71,7 +71,7 @@ article {
 .markdown {
   line-height: 1.8;
   font-size: 1.0625rem;
-  color: #2c3e50;
+  color: #2D1810;
 }
 
 [data-theme='dark'] .markdown {
@@ -116,7 +116,7 @@ article {
 }
 
 [data-theme='dark'] .markdown h1 {
-  background: linear-gradient(135deg, #00E5FF 0%, #00BFA5 50%, #69F0AE 100%);
+  background: linear-gradient(135deg, #00E5FF 0%, #00BCD4 50%, #4FF3FF 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -135,7 +135,7 @@ article {
 }
 
 [data-theme='dark'] .markdown h1::after {
-  background: linear-gradient(90deg, #00E5FF 0%, #69F0AE 100%);
+  background: linear-gradient(90deg, #00E5FF 0%, #4FF3FF 100%);
   box-shadow: 0 2px 8px rgba(0, 229, 255, 0.4);
 }
 
@@ -172,7 +172,7 @@ article {
 }
 
 [data-theme='dark'] .markdown h2::before {
-  background: linear-gradient(90deg, #00E5FF 0%, #00BFA5 100%);
+  background: linear-gradient(90deg, #00E5FF 0%, #00BCD4 100%);
   box-shadow: 0 1px 6px rgba(0, 229, 255, 0.4);
 }
 
@@ -189,7 +189,7 @@ article {
 }
 
 [data-theme='dark'] .markdown h3 {
-  color: #00BFA5;
+  color: #00BCD4;
 }
 
 /* H3 left border accent */
@@ -205,7 +205,7 @@ article {
 }
 
 [data-theme='dark'] .markdown h3::before {
-  background: linear-gradient(180deg, #00E5FF 0%, #00BFA5 100%);
+  background: linear-gradient(180deg, #00E5FF 0%, #00BCD4 100%);
 }
 
 /* H4, H5, H6 - Consistent styling */
@@ -218,7 +218,7 @@ article {
 }
 
 [data-theme='dark'] .markdown h4 {
-  color: #69F0AE;
+  color: #4FF3FF;
 }
 
 .markdown h5 {
@@ -230,7 +230,7 @@ article {
 }
 
 [data-theme='dark'] .markdown h5 {
-  color: #00BFA5;
+  color: #00BCD4;
 }
 
 .markdown h6 {
@@ -301,7 +301,7 @@ article {
 }
 
 [data-theme='dark'] .markdown a:hover {
-  color: #69F0AE;
+  color: #4FF3FF;
   border-bottom-color: #00E5FF;
   background: rgba(0, 229, 255, 0.1);
 }
@@ -391,7 +391,7 @@ article {
   position: relative;
   font-size: 1.0625rem;
   line-height: 1.8;
-  color: #2c3e50;
+  color: #2D1810;
 }
 
 [data-theme='dark'] .markdown blockquote {
@@ -453,6 +453,8 @@ article {
   border-radius: 8px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
   overflow: hidden;
+  background: #FFFFFF;
+  border: 1px solid rgba(184, 115, 51, 0.2);
 }
 
 [data-theme='dark'] .markdown pre {
@@ -496,7 +498,7 @@ article {
 }
 
 [data-theme='dark'] .markdown thead {
-  background: linear-gradient(135deg, #00E5FF 0%, #00BFA5 100%);
+  background: linear-gradient(135deg, #00E5FF 0%, #00BCD4 100%);
   color: #0D1117;
 }
 
@@ -679,7 +681,7 @@ article {
 }
 
 [data-theme='dark'] .markdown em {
-  color: #00BFA5;
+  color: #00BCD4;
 }
 
 /* ============================================================================
@@ -747,7 +749,7 @@ article {
 }
 
 [data-theme='dark'] .table-of-contents__link {
-  color: #00BFA5;
+  color: #00BCD4;
 }
 
 .table-of-contents__link:hover,
