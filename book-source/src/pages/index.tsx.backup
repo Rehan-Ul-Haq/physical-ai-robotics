@@ -660,8 +660,8 @@ export default function Home(): ReactNode {
   const { siteConfig } = useDocusaurusContext();
   return (
     <Layout
-      title="Physical AI & Humanoid Robotics"
-      description="Master ROS 2, NVIDIA Isaac Sim, and embodied intelligence. Build humanoid robots using AI-driven development from digital brains to physical bodies."
+      title="AI Native Software Development"
+      description="Colearning Agentic AI with Python and TypeScript – Spec Driven Reusable Intelligence. Build production-ready intelligent systems."
     >
       <HomepageHeader />
       <AISpectrumSection />

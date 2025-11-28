@@ -158,13 +158,14 @@ export const AnalyticsTracker: React.FC<AnalyticsTrackerProps> = ({
     };
   }, [chapterTitle]);
 
-  // Render scroll depth indicator in development mode
-  const isDevelopment = process.env.NODE_ENV === "development";
+  // Render scroll depth indicator in development mode (disabled)
+  // const isDevelopment = process.env.NODE_ENV === "development";
 
   return (
     <>
       {children}
-      {isDevelopment && (
+      {/* Scroll debug indicator disabled - uncomment to enable */}
+      {/* {isDevelopment && (
         <div
           style={{
             position: "fixed",
@@ -182,7 +183,7 @@ export const AnalyticsTracker: React.FC<AnalyticsTrackerProps> = ({
         >
           📊 Scroll: {Math.round(lastScrollDepth)}%
         </div>
-      )}
+      )} */}
     </>
   );
 };
