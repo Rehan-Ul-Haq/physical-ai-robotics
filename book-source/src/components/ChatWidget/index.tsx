@@ -19,11 +19,16 @@ interface Message {
   role: 'user' | 'assistant';
   content: string;
   isStreaming?: boolean;
+  contextText?: string;  // Store the selected text context with the message
 }
 
 interface PageContext {
   current_chapter: number | null;
   current_lesson: string | null;
+  part_slug?: string;
+  chapter_slug?: string;
+  lesson_slug?: string;
+  current_path?: string;
 }
 
 interface ChatKitContext {
@@ -75,42 +80,76 @@ function getSessionId(): string {
 }
 
 /**
- * Extract current chapter number from Docusaurus URL
+ * Extract page context from Docusaurus URL structure.
+ *
+ * URL pattern: /physical-ai-robotics/docs/{part-slug}/{chapter-slug}/{lesson-slug}
+ * Example: /physical-ai-robotics/docs/robotic-nervous-system/introduction-to-physical-ai/reality-gap
  */
-function getCurrentChapter(): number | null {
-  if (typeof window === 'undefined') return null;
-  const pathname = window.location.pathname;
-  const match = pathname.match(/\/docs\/(\d{2})-/);
-  if (match) {
-    const chapterNum = parseInt(match[1], 10);
-    return chapterNum >= 1 && chapterNum <= 14 ? chapterNum : null;
-  }
-  return null;
-}
 
-/**
- * Extract current lesson slug from Docusaurus URL
- */
-function getCurrentLesson(): string | null {
-  if (typeof window === 'undefined') return null;
+// Map part slugs to part numbers
+const PART_SLUG_MAP: Record<string, number> = {
+  'robotic-nervous-system': 1,
+  'digital-twin': 2,
+  'ai-robot-brain': 3,
+  'vision-language-action': 4,
+};
+
+// Map known chapter slugs to chapter numbers
+const CHAPTER_SLUG_MAP: Record<string, number> = {
+  'introduction-to-physical-ai': 1,
+  'ros2-fundamentals': 2,
+  'ros2-communication-patterns': 3,
+  'ros2-advanced-concepts': 4,
+  'building-your-first-robot-application': 5,
+};
+
+function getPageContext(): PageContext {
+  if (typeof window === 'undefined') {
+    return { current_chapter: null, current_lesson: null };
+  }
+
   const pathname = window.location.pathname;
-  const parts = pathname.split('/').filter(Boolean);
-  if (parts.length >= 3 && parts[0] === 'docs') {
-    const lessonSlug = parts[2];
-    if (/^\d{2}-/.test(lessonSlug)) {
-      return lessonSlug;
+
+  // Remove baseUrl prefix if present
+  const baseUrl = '/physical-ai-robotics';
+  const path = pathname.startsWith(baseUrl)
+    ? pathname.slice(baseUrl.length)
+    : pathname;
+
+  // Split: ['docs', 'part-slug', 'chapter-slug', 'lesson-slug']
+  const parts = path.split('/').filter(Boolean);
+
+  // Must start with 'docs'
+  if (parts.length < 2 || parts[0] !== 'docs') {
+    return { current_chapter: null, current_lesson: null };
+  }
+
+  const partSlug = parts[1] || null;      // e.g., 'robotic-nervous-system'
+  const chapterSlug = parts[2] || null;   // e.g., 'introduction-to-physical-ai'
+  const lessonSlug = parts[3] || null;    // e.g., 'reality-gap'
+
+  // Determine chapter number from slug
+  let chapterNum: number | null = null;
+  if (chapterSlug) {
+    // Try direct mapping first
+    chapterNum = CHAPTER_SLUG_MAP[chapterSlug] || null;
+
+    // Fallback: try to extract from XX- prefix if present in slug
+    if (!chapterNum) {
+      const match = chapterSlug.match(/^(\d{2})-/);
+      if (match) {
+        chapterNum = parseInt(match[1], 10);
+      }
     }
   }
-  return null;
-}
 
-/**
- * Get current page context from URL
- */
-function getPageContext(): PageContext {
   return {
-    current_chapter: getCurrentChapter(),
-    current_lesson: getCurrentLesson(),
+    current_chapter: chapterNum,
+    current_lesson: lessonSlug,
+    part_slug: partSlug || undefined,
+    chapter_slug: chapterSlug || undefined,
+    lesson_slug: lessonSlug || undefined,
+    current_path: path,
   };
 }
 
@@ -183,7 +222,9 @@ export default function ChatWidget() {
   const [threadId, setThreadId] = useState<string | null>(null);
   const [selectedText, setSelectedText] = useState<string | null>(null);
   const [sessionId, setSessionId] = useState('');
+  const [showFullContext, setShowFullContext] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const chatWindowRef = useRef<HTMLDivElement>(null);
 
   // Initialize session ID
   useEffect(() => {
@@ -195,9 +236,14 @@ export default function ChatWidget() {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
 
-  // Listen for text selection
+  // Listen for text selection (exclude selections inside the chat window)
   useEffect(() => {
-    const handleMouseUp = () => {
+    const handleMouseUp = (event: MouseEvent) => {
+      // Ignore if selection is inside the chat window
+      if (chatWindowRef.current && chatWindowRef.current.contains(event.target as Node)) {
+        return;
+      }
+
       const selection = window.getSelection();
       if (selection && selection.toString().trim().length > 10) {
         const text = selection.toString().trim();
@@ -217,10 +263,14 @@ export default function ChatWidget() {
     e.preventDefault();
     if (!input.trim() || isLoading) return;
 
+    // Store the selected text with this message
+    const currentSelectedText = selectedText;
+
     const userMessage: Message = {
       id: `user-${Date.now()}`,
       role: 'user',
       content: input.trim(),
+      contextText: currentSelectedText || undefined,
     };
 
     setMessages((prev) => [...prev, userMessage]);
@@ -234,12 +284,12 @@ export default function ChatWidget() {
     // Build context
     const context: ChatKitContext = {
       session_id: sessionId,
-      context_mode: selectedText ? 'selected_text' : 'full_book',
+      context_mode: currentSelectedText ? 'selected_text' : 'full_book',
       page_context: pageContext,
     };
 
-    if (selectedText) {
-      context.selected_text = selectedText;
+    if (currentSelectedText) {
+      context.selected_text = currentSelectedText;
     }
 
     // Add assistant message placeholder
@@ -336,7 +386,7 @@ export default function ChatWidget() {
 
   // Open state - chat window
   return (
-    <div className={styles.chatWindow}>
+    <div ref={chatWindowRef} className={styles.chatWindow}>
       {/* Header */}
       <div className={styles.header}>
         <div className={styles.headerInfo}>
@@ -369,15 +419,52 @@ export default function ChatWidget() {
         </div>
       </div>
 
-      {/* Selected text indicator */}
-      {selectedText && (
-        <div className={styles.selectedTextBanner}>
-          <span className={styles.selectedTextLabel}>
-            Context: "{selectedText.slice(0, 50)}..."
-          </span>
-          <button onClick={clearSelection} className={styles.clearButton}>
-            Clear
-          </button>
+      {/* Selected text chip - only show when there's actual content */}
+      {selectedText && selectedText.trim() && (
+        <div className={styles.contextArea}>
+          <div className={styles.selectedTextChip}>
+            <span className={styles.chipIcon}>
+              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                <polyline points="14 2 14 8 20 8" />
+                <line x1="16" y1="13" x2="8" y2="13" />
+                <line x1="16" y1="17" x2="8" y2="17" />
+              </svg>
+            </span>
+            <span
+              className={styles.chipText}
+              onClick={() => setShowFullContext(true)}
+              title="Click to expand"
+            >
+              "{selectedText.length > 60 ? selectedText.slice(0, 60) + '...' : selectedText}"
+            </span>
+            <button
+              onClick={clearSelection}
+              className={styles.chipClearBtn}
+              title="Remove context"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <line x1="18" y1="6" x2="6" y2="18" />
+                <line x1="6" y1="6" x2="18" y2="18" />
+              </svg>
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* Context modal */}
+      {showFullContext && selectedText && (
+        <div className={styles.contextModal} onClick={() => setShowFullContext(false)}>
+          <div className={styles.contextModalContent} onClick={(e) => e.stopPropagation()}>
+            <h4 className={styles.contextModalTitle}>Selected Text</h4>
+            <p className={styles.contextModalText}>{selectedText}</p>
+            <button
+              onClick={() => setShowFullContext(false)}
+              className={styles.contextModalClose}
+            >
+              Close
+            </button>
+          </div>
         </div>
       )}
 
@@ -401,6 +488,12 @@ export default function ChatWidget() {
               message.role === 'user' ? styles.userMessage : styles.assistantMessage
             }`}
           >
+            {/* Show context indicator for user messages that had selected text */}
+            {message.role === 'user' && message.contextText && (
+              <div className={styles.messageContext}>
+                <small>Asked about: "{message.contextText.slice(0, 40)}..."</small>
+              </div>
+            )}
             <div className={styles.messageContent}>
               {message.content}
               {message.isStreaming && <span className={styles.cursor} />}
@@ -423,7 +516,7 @@ export default function ChatWidget() {
           type="text"
           value={input}
           onChange={(e) => setInput(e.target.value)}
-          placeholder="Ask a question..."
+          placeholder={selectedText ? "Ask about selected text..." : "Ask a question..."}
           disabled={isLoading}
           className={styles.input}
         />

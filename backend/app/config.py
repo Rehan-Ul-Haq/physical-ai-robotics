@@ -35,6 +35,9 @@ class Settings(BaseSettings):
     qdrant_collection: str = "book_content"
     embedding_dimensions: int = 1536
 
+    # Book URL configuration (override with BOOK_BASE_URL env var)
+    book_base_url: str = "/physical-ai-robotics"
+
     class Config:
         env_file = ".env"
         env_file_encoding = "utf-8"

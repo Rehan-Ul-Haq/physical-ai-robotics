@@ -325,3 +325,143 @@
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
 }
+/* Context area with selected text chip */
+.contextArea {
+  padding: 8px 12px;
+  background: var(--ifm-background-surface-color);
+  border-bottom: 1px solid var(--ifm-color-emphasis-200);
+}
+
+.selectedTextChip {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 10px;
+  background: var(--ifm-color-primary-lightest);
+  border: 1px solid var(--ifm-color-primary-light);
+  border-radius: 16px;
+  font-size: 12px;
+}
+
+[data-theme='dark'] .selectedTextChip {
+  background: rgba(var(--ifm-color-primary-rgb), 0.15);
+  border-color: rgba(var(--ifm-color-primary-rgb), 0.3);
+}
+
+.chipIcon {
+  display: flex;
+  align-items: center;
+  color: var(--ifm-color-primary);
+  flex-shrink: 0;
+}
+
+.chipText {
+  flex: 1;
+  color: var(--ifm-color-primary-darker);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+[data-theme='dark'] .chipText {
+  color: var(--ifm-color-primary-lighter);
+}
+
+.chipText:hover {
+  text-decoration: underline;
+}
+
+.chipClearBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  padding: 0;
+  background: transparent;
+  border: none;
+  border-radius: 50%;
+  color: var(--ifm-color-primary);
+  cursor: pointer;
+  transition: background 0.2s;
+  flex-shrink: 0;
+}
+
+.chipClearBtn:hover {
+  background: var(--ifm-color-primary-light);
+}
+
+[data-theme='dark'] .chipClearBtn:hover {
+  background: rgba(var(--ifm-color-primary-rgb), 0.3);
+}
+
+/* Context modal */
+.contextModal {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  z-index: 10;
+}
+
+.contextModalContent {
+  background: var(--ifm-background-color);
+  border-radius: 12px;
+  padding: 20px;
+  max-width: 100%;
+  max-height: 80%;
+  overflow-y: auto;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+}
+
+.contextModalTitle {
+  margin: 0 0 12px 0;
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--ifm-font-color-base);
+}
+
+.contextModalText {
+  margin: 0 0 16px 0;
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--ifm-font-color-secondary);
+  white-space: pre-wrap;
+}
+
+.contextModalClose {
+  padding: 8px 16px;
+  background: var(--ifm-color-primary);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.contextModalClose:hover {
+  background: var(--ifm-color-primary-dark);
+}
+
+/* Message context indicator */
+.messageContext {
+  margin-bottom: 4px;
+  padding: 4px 8px;
+  background: var(--ifm-color-emphasis-100);
+  border-radius: 6px;
+  font-size: 11px;
+  color: var(--ifm-color-emphasis-600);
+}
+
+.userMessage .messageContext {
+  background: rgba(255, 255, 255, 0.2);
+  color: rgba(255, 255, 255, 0.9);
+}

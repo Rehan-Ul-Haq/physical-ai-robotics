@@ -59,8 +59,9 @@ class QdrantService:
         """Build Qdrant filter based on search scope and context."""
         conditions = []
         if search_scope == SearchScope.CURRENT_PAGE and current_lesson:
+            # Filter by lesson_slug field (e.g., "reality-gap")
             conditions.append(
-                FieldCondition(key="section_id", match=MatchValue(value=current_lesson))
+                FieldCondition(key="lesson_slug", match=MatchValue(value=current_lesson))
             )
         elif search_scope == SearchScope.CURRENT_CHAPTER and current_chapter:
             conditions.append(
@@ -275,10 +276,12 @@ class QdrantService:
                 )
 
                 score = point.score
+                # Get lesson_slug from payload for boosting
+                lesson_slug = payload.get("lesson_slug")
                 if search_scope == SearchScope.FULL_BOOK:
                     if current_chapter and chunk.chapter_number == current_chapter:
                         score *= chapter_boost
-                        if current_lesson and chunk.section_id == current_lesson:
+                        if current_lesson and lesson_slug == current_lesson:
                             score *= lesson_boost
 
                 merged.append((chunk, score))

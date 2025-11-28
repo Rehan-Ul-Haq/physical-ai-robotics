@@ -1,6 +1,6 @@
 """RAG search tool for Book Assistant Agent."""
 
-from typing import Annotated
+from typing import Annotated, Any
 
 from agents import function_tool
 from agents.run_context import RunContextWrapper
@@ -30,7 +30,7 @@ Examples:
 """
 )
 async def search_book_content(
-    ctx: RunContextWrapper,
+    ctx: RunContextWrapper[Any],
     queries: Annotated[list[str], "1-3 semantically diverse search queries for better recall"],
     search_scope: Annotated[str, "Search scope: current_page, current_chapter, or full_book"] = "full_book",
     current_chapter: Annotated[int | None, "Chapter number user is viewing (1-14)"] = None,
@@ -40,7 +40,7 @@ async def search_book_content(
     Search the book content using multi-query RAG with context awareness.
 
     Args:
-        ctx: Run context wrapper
+        ctx: Run context wrapper with BookAssistantAgentContext
         queries: List of 1-3 search queries (use different phrasings for better recall)
         search_scope: How to filter results based on context
         current_chapter: Chapter number from frontend context
@@ -62,10 +62,11 @@ async def search_book_content(
     queries = queries[:3]
     
     # Get context from agent context if available (frontend passes this)
-    if hasattr(ctx, "context") and ctx.context:
+    # The context is accessed via ctx.context which holds BookAssistantAgentContext
+    if ctx.context is not None:
         agent_ctx = ctx.context
         # Use page context from frontend if not provided in tool call
-        if hasattr(agent_ctx, "page_context") and agent_ctx.page_context:
+        if hasattr(agent_ctx, "page_context") and agent_ctx.page_context is not None:
             if current_chapter is None:
                 current_chapter = agent_ctx.page_context.current_chapter
             if current_lesson is None:
