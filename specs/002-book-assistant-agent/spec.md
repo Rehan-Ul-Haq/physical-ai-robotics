@@ -2,8 +2,27 @@
 
 **Feature Branch**: `002-book-assistant-agent`
 **Created**: 2025-11-28
-**Status**: Draft
+**Updated**: 2025-11-28
+**Status**: MVP Complete (Phase 1-3 Implemented)
 **Input**: User description: "Add feature of book assistant AI Agent using OpenAI's Agents SDK for RAG-based Q&A on Physical AI & Humanoid Robotics book content"
+
+## Implementation Summary
+
+**Completed Features**:
+- RAG-powered Q&A using OpenAI Agents SDK with ChatKit Server pattern
+- Context-aware search with page/chapter/book scope (search_scope parameter)
+- Text selection from book content with context injection
+- SSE streaming responses via ChatKit protocol
+- Thread persistence in Neon Postgres
+- Multi-query RAG with context boosting (chapter/lesson awareness)
+- ChatWidget integrated in Docusaurus with dark/light mode support
+
+**Key Implementation Decisions**:
+- Used `openai-agents` SDK (not `openai-chatkit` as originally planned) for agent orchestration
+- Implemented custom `BookAssistantAgentContext` extending `AgentContext` for page context
+- Used `RunContextWrapper[Any]` pattern to avoid type annotation runtime errors
+- Multi-query search (1-3 queries) with batch embeddings for better recall
+- Context boosting: 1.2x for same chapter, 1.1x for same lesson
 
 ## Success Evals (Defined First) *(mandatory)*
 
@@ -150,16 +169,30 @@ When the chatbot provides an answer, the reader wants to see which sections of t
 
 ## Constraints
 
-- Must extend `ChatKitServer[TContext]` base class from `openai-chatkit >=1.1.2,<2` package
-- Must implement `ThreadStore` protocol for Neon Postgres conversation persistence
-- Must use OpenAI Agents SDK (via `openai >=1.40` package) for agent orchestration
-- Must integrate ChatWidget as React component in existing Docusaurus site (`book-source/src/components/`)
-- Must use existing Docusaurus deployment (GitHub Pages) - no separate frontend deployment
-- Must use FastAPI `>=0.114.1,<0.116` for backend API
-- Must use Qdrant Cloud free tier for vector storage
-- ChatWidget must respect Docusaurus dark/light mode via CSS variables
-- Chat interface must not obstruct book content reading experience
-- Must work on both desktop and mobile viewports
+- Must extend `ChatKitServer[TContext]` base class from `openai-chatkit` package ✅ IMPLEMENTED
+- Must implement `Store` protocol for Neon Postgres conversation persistence ✅ IMPLEMENTED
+- Must use OpenAI Agents SDK (`agents` package) for agent orchestration ✅ IMPLEMENTED
+- Must integrate ChatWidget as React component in existing Docusaurus site (`book-source/src/components/`) ✅ IMPLEMENTED
+- Must use existing Docusaurus deployment (GitHub Pages) - no separate frontend deployment ✅ IMPLEMENTED
+- Must use FastAPI for backend API ✅ IMPLEMENTED
+- Must use Qdrant Cloud for vector storage ✅ IMPLEMENTED
+- ChatWidget must respect Docusaurus dark/light mode via CSS variables ✅ IMPLEMENTED
+- Chat interface must not obstruct book content reading experience ✅ IMPLEMENTED
+- Must work on both desktop and mobile viewports ✅ IMPLEMENTED
+
+## Actual Dependencies (Installed)
+
+```toml
+# Backend (pyproject.toml)
+agents = ">=0.0.10"           # OpenAI Agents SDK
+openai-chatkit = ">=0.0.3"    # ChatKit Server pattern
+openai = ">=1.82.0"           # OpenAI API
+fastapi = ">=0.115.12"        # Web framework
+qdrant-client = ">=1.14.2"    # Vector database (AsyncQdrantClient)
+asyncpg = ">=0.30.0"          # Postgres async driver
+pydantic-settings = ">=2.9.1" # Environment config
+uvicorn = {extras = ["standard"]}
+```
 
 ## Out of Scope (Non-Goals)
 

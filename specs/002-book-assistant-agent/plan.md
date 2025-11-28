@@ -1,31 +1,37 @@
 # Implementation Plan: Book Assistant AI Agent
 
 **Branch**: `002-book-assistant-agent` | **Date**: 2025-11-28 | **Spec**: [spec.md](./spec.md)
+**Status**: ✅ MVP COMPLETE (Phase 1-3 Implemented)
 **Input**: Feature specification from `/specs/002-book-assistant-agent/spec.md`
 
 ## Summary
 
-Build a RAG-powered AI chatbot for the Physical AI & Humanoid Robotics book using OpenAI ChatKit Server pattern. The chatbot will:
-- Answer questions about book content with source citations
-- Support context-specific queries via text selection
-- Maintain conversation history via ChatKit ThreadStore (backed by Neon Postgres)
-- Use Qdrant Cloud for semantic search over book embeddings
-- Integrate directly into existing Docusaurus site (`book-source/`) via custom React component
+Build a RAG-powered AI chatbot for the Physical AI & Humanoid Robotics book using OpenAI ChatKit Server pattern. The chatbot:
+- ✅ Answers questions about book content with source citations
+- ✅ Supports context-specific queries via text selection
+- ✅ Maintains conversation history via ChatKit Store (backed by Neon Postgres)
+- ✅ Uses Qdrant Cloud for semantic search with multi-query and context boosting
+- ✅ Integrates directly into existing Docusaurus site (`book-source/`) via custom React component
+- ✅ Streams responses via SSE using ChatKit protocol
 
-**Architecture Pattern**: Following [openai-chatkit-advanced-samples/customer-support](https://github.com/openai/openai-chatkit-advanced-samples/tree/main/examples/customer-support) example with `ChatKitServer` base class.
+**Architecture Pattern**: OpenAI Agents SDK + ChatKit Server pattern
+- `ChatKitServer[dict[str, Any]]` for request handling
+- `BookAssistantAgentContext(AgentContext)` for custom context passing
+- `Runner.run_streamed()` + `stream_agent_response()` for SSE streaming
+- `@function_tool` with `RunContextWrapper[Any]` for context-aware RAG
 
 **Architecture Decision**: ChatWidget integrated into existing Docusaurus site instead of separate frontend.
 - Single deployment (GitHub Pages already configured)
 - Book content IS the frontend - no duplication
-- Text selection works naturally on actual book pages
+- Text selection works naturally on actual book pages (excludes chat window)
 - Better UX - readers stay in context while chatting
 
 ## Technical Context
 
 **Language/Version**: Python 3.11+ (backend), TypeScript/React (Docusaurus integration)
-**Primary Dependencies**:
-- Backend: FastAPI >=0.114.1,<0.116, openai >=1.40, openai-chatkit >=1.1.2,<2, httpx >=0.28,<0.29, uvicorn[standard] >=0.36,<0.37, qdrant-client, asyncpg, pydantic
-- Frontend: Existing Docusaurus site with React 18+, CSS Modules
+**Actual Dependencies** (Installed):
+- Backend: `agents>=0.0.10`, `openai-chatkit>=0.0.3`, `openai>=1.82.0`, `fastapi>=0.115.12`, `qdrant-client>=1.14.2`, `asyncpg>=0.30.0`, `pydantic-settings>=2.9.1`, `uvicorn[standard]`
+- Frontend: Existing Docusaurus 3.9.2 site with React 18+, CSS Modules
 
 **Storage**:
 - Qdrant Cloud (vector embeddings for RAG)
@@ -170,52 +176,72 @@ See [research.md](./research.md) for:
 
 ### Phase 1: Core Infrastructure (P1 MVP) ✅ COMPLETE
 
-**Goal**: Basic Q&A functionality without text selection
+**Goal**: Basic Q&A functionality
 
-1. Backend setup (FastAPI, environment, dependencies)
-2. Neon Postgres schema migration
-3. Qdrant collection setup and indexing script
-4. OpenAI Agent with RAG tool
-5. ChatKit endpoint implementation
-6. ChatWidget integrated in Docusaurus
-7. Health check and error handling
-
-**Deliverables**:
-- Working `/chatkit` endpoint
-- Chapter 1 indexed in Qdrant
-- Conversation history in Postgres
-- ChatWidget in Docusaurus (every page)
-
-### Phase 2: Enhanced Features (P2-P3)
-
-**Goal**: Text selection and conversation context
-
-1. Text selection event handler (ChatWidget)
-2. Context mode switching (selected_text vs full_book)
-3. Conversation history loading
-4. Source citations in responses
-5. "New conversation" functionality
+**Implemented**:
+1. ✅ Backend setup (FastAPI, environment, dependencies with `uv`)
+2. ✅ Neon Postgres schema migration (`threads`, `thread_items` tables)
+3. ✅ Qdrant collection setup and indexing script (Chapter 1)
+4. ✅ OpenAI Agent with RAG tool (`search_book_content`)
+5. ✅ ChatKit endpoint implementation (`POST /assistant/chatkit`)
+6. ✅ ChatWidget integrated in Docusaurus (via swizzled Root.tsx)
+7. ✅ Health check (`GET /assistant/health`)
 
 **Deliverables**:
-- Text selection triggers context-specific queries
-- Context-aware responses
-- Clickable source citations
+- ✅ Working `/assistant/chatkit` endpoint with SSE streaming
+- ✅ Chapter 1 indexed in Qdrant (correct Docusaurus URLs)
+- ✅ Conversation history in Postgres via `PostgresThreadStore`
+- ✅ ChatWidget in Docusaurus (every page, respects dark/light mode)
 
-### Phase 3: Quality & Feedback (P4)
+### Phase 2: Enhanced Features (P2-P3) ✅ COMPLETE
+
+**Goal**: Text selection and context-aware search
+
+**Implemented**:
+1. ✅ Text selection event handler (excludes chat window via ref)
+2. ✅ Context mode with `search_scope` parameter:
+   - `current_page`: Filter to current lesson only
+   - `current_chapter`: Filter to current chapter
+   - `full_book`: Search all with context boosting
+3. ✅ Page context from URL (`current_chapter`, `current_lesson`)
+4. ✅ Source citations with correct Docusaurus URLs
+5. ✅ Multi-query RAG (1-3 queries for better recall)
+6. ✅ Context boosting (1.2x chapter, 1.1x lesson)
+
+**Deliverables**:
+- ✅ Text selection triggers context-aware queries
+- ✅ `BookAssistantAgentContext` passes page context to tools
+- ✅ `RunContextWrapper[Any]` pattern for context access in tools
+- ✅ Source URLs link to correct book sections
+
+### Phase 3: Quality & Polish ✅ PARTIAL
 
 **Goal**: Production readiness
 
-1. Feedback collection (thumbs up/down)
-2. Rate limiting middleware
-3. Input sanitization
-4. Comprehensive error handling
-5. Logging and monitoring
+**Implemented**:
+1. ✅ `BOOK_BASE_URL` configurable via environment variable
+2. ✅ Proper SSE headers for streaming (including `X-Accel-Buffering: no`)
+3. ✅ CORS configuration for frontend origins
+4. ✅ AsyncQdrantClient for non-blocking I/O
+5. ✅ Batch embeddings for multi-query search
 
-**Deliverables**:
-- Feedback tracking for eval metrics
-- Rate limiting (20 req/min)
-- Security hardening
-- Production deployment ready
+**Remaining** (Future):
+- [ ] Feedback collection (thumbs up/down)
+- [ ] Rate limiting middleware (20 req/min)
+- [ ] Input sanitization
+- [ ] Comprehensive logging
+
+### Phase 4: Reusable Intelligence ✅ COMPLETE
+
+**Goal**: Capture implementation patterns for reuse
+
+**Created**:
+1. ✅ ChatKit Server Implementation Skill (`.claude/skills/chatkit-server-implementation/`)
+   - SKILL.md with core patterns
+   - references/rag-search-patterns.md
+   - references/frontend-integration.md
+   - references/troubleshooting.md
+2. ✅ ChatKit Server Builder Agent (`.claude/agents/chatkit-server-builder.md`)
 
 ## Complexity Tracking
 
