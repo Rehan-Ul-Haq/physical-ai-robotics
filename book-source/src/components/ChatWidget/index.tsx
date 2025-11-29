@@ -7,6 +7,7 @@
  */
 
 import React, { useState, useRef, useEffect, FormEvent } from 'react';
+import ReactMarkdown from 'react-markdown';
 import styles from './styles.module.css';
 
 // Get API URL from environment or use default
@@ -223,6 +224,7 @@ export default function ChatWidget() {
   const [selectedText, setSelectedText] = useState<string | null>(null);
   const [sessionId, setSessionId] = useState('');
   const [showFullContext, setShowFullContext] = useState(false);
+  const [isMaximized, setIsMaximized] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const chatWindowRef = useRef<HTMLDivElement>(null);
 
@@ -386,7 +388,7 @@ export default function ChatWidget() {
 
   // Open state - chat window
   return (
-    <div ref={chatWindowRef} className={styles.chatWindow}>
+    <div ref={chatWindowRef} className={`${styles.chatWindow} ${isMaximized ? styles.maximized : ''}`}>
       {/* Header */}
       <div className={styles.header}>
         <div className={styles.headerInfo}>
@@ -405,6 +407,21 @@ export default function ChatWidget() {
               <path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16" />
               <path d="M8 16H3v5" />
             </svg>
+          </button>
+          <button
+            onClick={() => setIsMaximized(!isMaximized)}
+            className={styles.iconButton}
+            title={isMaximized ? "Restore" : "Maximize"}
+          >
+            {isMaximized ? (
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <path d="M8 3v3a2 2 0 0 1-2 2H3m18 0h-3a2 2 0 0 1-2-2V3m0 18v-3a2 2 0 0 1 2-2h3M3 16h3a2 2 0 0 1 2 2v3" />
+              </svg>
+            ) : (
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3" />
+              </svg>
+            )}
           </button>
           <button
             onClick={() => setIsOpen(false)}
@@ -488,15 +505,34 @@ export default function ChatWidget() {
               message.role === 'user' ? styles.userMessage : styles.assistantMessage
             }`}
           >
-            {/* Show context indicator for user messages that had selected text */}
-            {message.role === 'user' && message.contextText && (
-              <div className={styles.messageContext}>
-                <small>Asked about: "{message.contextText.slice(0, 40)}..."</small>
-              </div>
-            )}
             <div className={styles.messageContent}>
-              {message.content}
-              {message.isStreaming && <span className={styles.cursor} />}
+              {/* Show combined view for user messages with selected text */}
+              {message.role === 'user' && message.contextText ? (
+                <div className={styles.messageWithContext}>
+                  <div className={styles.selectedTextSection}>
+                    <div className={styles.selectedTextLabel}>Selected from book:</div>
+                    <div className={styles.selectedTextContent}>
+                      {message.contextText}
+                    </div>
+                  </div>
+                  <div className={styles.questionSection}>
+                    <div className={styles.questionLabel}>Question:</div>
+                    <div className={styles.questionContent}>
+                      {message.content}
+                    </div>
+                  </div>
+                </div>
+              ) : message.role === 'assistant' ? (
+                <div className={styles.markdownContent}>
+                  <ReactMarkdown>{message.content}</ReactMarkdown>
+                  {message.isStreaming && <span className={styles.cursor} />}
+                </div>
+              ) : (
+                <>
+                  {message.content}
+                  {message.isStreaming && <span className={styles.cursor} />}
+                </>
+              )}
             </div>
           </div>
         ))}
