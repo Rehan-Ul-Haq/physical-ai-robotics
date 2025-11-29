@@ -5,86 +5,190 @@
  * Matches the Circuit Copper & Deep Space Terminal themes.
  */
 
-/* Floating button (closed state) - Holographic orb */
+/* Floating button (closed state) - Robot Eye / AI Core Button */
 .floatingButton {
   position: fixed !important;
   bottom: 24px !important;
   right: 24px !important;
-  width: 64px !important;
-  height: 64px !important;
-  border-radius: 50% !important;
-  background: linear-gradient(135deg, var(--ifm-color-primary, #B87333), var(--ifm-color-primary-light, #D4973B)) !important;
+  height: 56px !important;
+  padding: 0 26px 0 64px !important;
+  border-radius: 28px !important;
+  background: linear-gradient(135deg, var(--copper-oxide, #B87333) 0%, var(--copper-bright, #D4973B) 50%, var(--copper-oxide, #B87333) 100%) !important;
   color: white !important;
-  border: 3px solid var(--ifm-color-primary-lighter, #E6A84E) !important;
+  border: 2px solid rgba(255, 255, 255, 0.2) !important;
   cursor: pointer !important;
   display: flex !important;
   align-items: center !important;
-  justify-content: center !important;
+  justify-content: flex-end !important;
+  gap: 0 !important;
   box-shadow:
-    0 8px 25px rgba(184, 115, 51, 0.4),
-    0 0 40px rgba(184, 115, 51, 0.2),
-    inset 0 2px 0 rgba(255, 255, 255, 0.2) !important;
+    0 8px 32px rgba(184, 115, 51, 0.5),
+    0 0 0 1px rgba(0, 0, 0, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.3) !important;
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
   z-index: 9999 !important;
-  overflow: hidden !important;
-  animation: pulse 3s ease-in-out infinite !important;
+  overflow: visible !important;
 }
 
-@keyframes pulse {
-  0%, 100% {
-    box-shadow:
-      0 8px 25px rgba(184, 115, 51, 0.4),
-      0 0 40px rgba(184, 115, 51, 0.2),
-      inset 0 2px 0 rgba(255, 255, 255, 0.2);
-  }
-  50% {
-    box-shadow:
-      0 8px 30px rgba(184, 115, 51, 0.6),
-      0 0 60px rgba(184, 115, 51, 0.4),
-      inset 0 2px 0 rgba(255, 255, 255, 0.3);
-  }
-}
-
+/* Robot Eye - The main attraction! */
 .floatingButton::before {
-  content: '';
-  position: absolute;
-  top: -50%;
-  left: -50%;
-  width: 200%;
-  height: 200%;
-  background: radial-gradient(circle, rgba(255, 255, 255, 0.3), transparent 60%);
-  animation: rotate 4s linear infinite;
+  content: '' !important;
+  position: absolute !important;
+  left: 8px !important;
+  top: 50% !important;
+  transform: translateY(-50%) !important;
+  width: 40px !important;
+  height: 40px !important;
+  border-radius: 50% !important;
+  background: 
+    radial-gradient(circle at 35% 35%, rgba(255,255,255,0.8) 0%, transparent 25%),
+    radial-gradient(circle at 50% 50%, var(--circuit-green, #00C853) 0%, var(--circuit-green, #00C853) 35%, #004D25 36%, #002211 50%, #1a1a1a 51%, #0d0d0d 100%) !important;
+  border: 3px solid #2a2a2a !important;
+  box-shadow:
+    0 0 15px var(--circuit-green, #00C853),
+    0 0 30px rgba(0, 200, 83, 0.4),
+    inset 0 0 10px rgba(0, 200, 83, 0.5),
+    inset 0 2px 4px rgba(255, 255, 255, 0.1) !important;
+  animation: eyePulse 2s ease-in-out infinite, eyeScan 4s ease-in-out infinite !important;
 }
 
-@keyframes rotate {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+/* Scanning ring around the eye */
+.floatingButton::after {
+  content: '' !important;
+  position: absolute !important;
+  left: 4px !important;
+  top: 50% !important;
+  transform: translateY(-50%) !important;
+  width: 48px !important;
+  height: 48px !important;
+  border-radius: 50% !important;
+  border: 2px dashed rgba(0, 200, 83, 0.5) !important;
+  animation: scanRotate 8s linear infinite !important;
+  pointer-events: none !important;
+}
+
+@keyframes eyePulse {
+  0%, 100% { 
+    box-shadow:
+      0 0 15px var(--circuit-green, #00C853),
+      0 0 30px rgba(0, 200, 83, 0.4),
+      inset 0 0 10px rgba(0, 200, 83, 0.5),
+      inset 0 2px 4px rgba(255, 255, 255, 0.1);
+  }
+  50% { 
+    box-shadow:
+      0 0 20px var(--circuit-green, #00C853),
+      0 0 45px rgba(0, 200, 83, 0.6),
+      inset 0 0 15px rgba(0, 200, 83, 0.7),
+      inset 0 2px 4px rgba(255, 255, 255, 0.15);
+  }
+}
+
+@keyframes eyeScan {
+  0%, 100% { 
+    background: 
+      radial-gradient(circle at 35% 35%, rgba(255,255,255,0.8) 0%, transparent 25%),
+      radial-gradient(circle at 50% 50%, var(--circuit-green, #00C853) 0%, var(--circuit-green, #00C853) 35%, #004D25 36%, #002211 50%, #1a1a1a 51%, #0d0d0d 100%);
+  }
+  25% { 
+    background: 
+      radial-gradient(circle at 40% 40%, rgba(255,255,255,0.8) 0%, transparent 25%),
+      radial-gradient(circle at 55% 45%, var(--circuit-green, #00C853) 0%, var(--circuit-green, #00C853) 35%, #004D25 36%, #002211 50%, #1a1a1a 51%, #0d0d0d 100%);
+  }
+  75% { 
+    background: 
+      radial-gradient(circle at 30% 30%, rgba(255,255,255,0.8) 0%, transparent 25%),
+      radial-gradient(circle at 45% 55%, var(--circuit-green, #00C853) 0%, var(--circuit-green, #00C853) 35%, #004D25 36%, #002211 50%, #1a1a1a 51%, #0d0d0d 100%);
+  }
+}
+
+@keyframes scanRotate {
+  from { transform: translateY(-50%) rotate(0deg); }
+  to { transform: translateY(-50%) rotate(360deg); }
 }
 
 .floatingButton:hover {
-  transform: scale(1.1) rotate(5deg);
+  transform: scale(1.05) !important;
   box-shadow:
-    0 12px 35px rgba(184, 115, 51, 0.6),
-    0 0 70px rgba(184, 115, 51, 0.4),
-    inset 0 2px 0 rgba(255, 255, 255, 0.3);
-  border-color: var(--circuit-green);
+    0 12px 40px rgba(184, 115, 51, 0.6),
+    0 0 0 1px rgba(0, 0, 0, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.4) !important;
 }
 
-[data-theme="dark"] .floatingButton {
-  background: linear-gradient(135deg, #00E5FF, #00BFA5) !important;
-  border-color: #69F0AE !important;
+.floatingButton:hover::before {
+  animation: eyePulse 1s ease-in-out infinite, eyeAlert 0.5s ease-in-out infinite !important;
   box-shadow:
-    0 8px 30px rgba(0, 229, 255, 0.5),
-    0 0 50px rgba(0, 229, 255, 0.3),
-    inset 0 2px 0 rgba(255, 255, 255, 0.2) !important;
+    0 0 25px var(--circuit-green, #00C853),
+    0 0 50px rgba(0, 200, 83, 0.7),
+    inset 0 0 20px rgba(0, 200, 83, 0.8),
+    inset 0 2px 4px rgba(255, 255, 255, 0.2) !important;
+}
+
+@keyframes eyeAlert {
+  0%, 100% { transform: translateY(-50%) scale(1); }
+  50% { transform: translateY(-50%) scale(1.05); }
+}
+
+.floatingButton:hover::after {
+  border-color: rgba(0, 200, 83, 0.8) !important;
+  animation: scanRotate 3s linear infinite !important;
+}
+
+/* Dark mode - Cyan cyber eye */
+[data-theme="dark"] .floatingButton {
+  background: linear-gradient(135deg, #0a1929 0%, #0d2137 50%, #0a1929 100%) !important;
+  border-color: rgba(0, 229, 255, 0.3) !important;
+  box-shadow:
+    0 8px 32px rgba(0, 229, 255, 0.3),
+    0 0 0 1px rgba(0, 229, 255, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1) !important;
+}
+
+[data-theme="dark"] .floatingButton::before {
+  background: 
+    radial-gradient(circle at 35% 35%, rgba(255,255,255,0.9) 0%, transparent 20%),
+    radial-gradient(circle at 50% 50%, var(--space-cyan, #00E5FF) 0%, var(--space-cyan, #00E5FF) 35%, #006080 36%, #003344 50%, #0a1929 51%, #050d15 100%) !important;
+  border-color: #1a3a4a !important;
+  box-shadow:
+    0 0 20px var(--space-cyan, #00E5FF),
+    0 0 40px rgba(0, 229, 255, 0.5),
+    inset 0 0 15px rgba(0, 229, 255, 0.6),
+    inset 0 2px 4px rgba(255, 255, 255, 0.1) !important;
+}
+
+[data-theme="dark"] .floatingButton::after {
+  border-color: rgba(0, 229, 255, 0.4) !important;
 }
 
 [data-theme="dark"] .floatingButton:hover {
   box-shadow:
-    0 12px 40px rgba(0, 229, 255, 0.7),
-    0 0 80px rgba(0, 229, 255, 0.5),
-    inset 0 2px 0 rgba(255, 255, 255, 0.3);
-  border-color: var(--space-purple);
+    0 12px 45px rgba(0, 229, 255, 0.5),
+    0 0 0 1px rgba(0, 229, 255, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15) !important;
+}
+
+[data-theme="dark"] .floatingButton:hover::before {
+  box-shadow:
+    0 0 30px var(--space-cyan, #00E5FF),
+    0 0 60px rgba(0, 229, 255, 0.8),
+    inset 0 0 25px rgba(0, 229, 255, 0.9),
+    inset 0 2px 4px rgba(255, 255, 255, 0.2) !important;
+}
+
+[data-theme="dark"] .floatingButton:hover::after {
+  border-color: rgba(0, 229, 255, 0.9) !important;
+}
+
+.floatingButtonLabel {
+  font-size: 14px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.1em !important;
+  text-transform: uppercase !important;
+  white-space: nowrap !important;
+  position: relative !important;
+  z-index: 1 !important;
+  font-family: 'Space Grotesk', 'Orbitron', system-ui, sans-serif !important;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3) !important;
 }
 
 /* Chat window (open state) - Terminal panel */
