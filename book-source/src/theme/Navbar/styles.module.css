@@ -1,0 +1,351 @@
+/* ============================================
+   THEMATIC NAVBAR - Physical AI & Robotics
+   Immersive Command Center Design
+   ============================================ */
+
+/* Main Container */
+.navbarContainer {
+  position: relative;
+  width: 100%;
+}
+
+/* CSS Variables for theming */
+.navbarContainer {
+  --trace-color: #B87333;
+  --trace-glow: #00C853;
+  --accent-primary: #D4973B;
+  --accent-secondary: #00C853;
+}
+
+:global([data-theme="dark"]) .navbarContainer {
+  --trace-color: #00BCD4;
+  --trace-glow: #00E5FF;
+  --accent-primary: #00E5FF;
+  --accent-secondary: #B388FF;
+}
+
+/* ============================================
+   CIRCUIT GRID BACKGROUND
+   ============================================ */
+
+.circuitGrid {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.gridLine {
+  position: absolute;
+  top: 50%;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    var(--accent-primary) 50%,
+    transparent 100%
+  );
+  opacity: 0.15;
+  animation: gridPulse 4s ease-in-out infinite;
+}
+
+.gridLine:nth-child(1) { width: 30%; left: 5%; animation-delay: 0s; }
+.gridLine:nth-child(2) { width: 25%; left: 20%; top: 30%; animation-delay: 0.5s; }
+.gridLine:nth-child(3) { width: 35%; right: 10%; top: 70%; animation-delay: 1s; }
+.gridLine:nth-child(4) { width: 20%; right: 25%; top: 40%; animation-delay: 1.5s; }
+.gridLine:nth-child(5) { width: 40%; left: 30%; top: 60%; animation-delay: 2s; }
+
+@keyframes gridPulse {
+  0%, 100% { opacity: 0.1; transform: scaleX(1); }
+  50% { opacity: 0.3; transform: scaleX(1.1); }
+}
+
+/* ============================================
+   ENERGY BAR - TOP ACCENT
+   ============================================ */
+
+.energyBar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    var(--accent-primary) 20%,
+    var(--accent-secondary) 50%,
+    var(--accent-primary) 80%,
+    transparent 100%
+  );
+  z-index: 102;
+  overflow: hidden;
+}
+
+.energyPulse {
+  position: absolute;
+  top: 0;
+  left: -20%;
+  width: 20%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.8),
+    transparent
+  );
+  animation: energyFlow 3s linear infinite;
+}
+
+@keyframes energyFlow {
+  0% { left: -20%; }
+  100% { left: 120%; }
+}
+
+/* ============================================
+   LEFT DECORATION - AI BRAIN ICON
+   ============================================ */
+
+.leftDecoration {
+  position: absolute;
+  left: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  z-index: 102;
+  pointer-events: none;
+}
+
+.brainIcon {
+  width: 36px;
+  height: 36px;
+  animation: brainFloat 3s ease-in-out infinite;
+}
+
+@keyframes brainFloat {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-3px); }
+}
+
+.brainSvg {
+  width: 100%;
+  height: 100%;
+}
+
+.brainPath {
+  fill: none;
+  stroke: var(--accent-primary);
+  stroke-width: 1.5;
+  filter: drop-shadow(0 0 6px var(--accent-primary));
+}
+
+.neuron {
+  fill: var(--accent-secondary);
+  filter: drop-shadow(0 0 4px var(--accent-secondary));
+  animation: neuronPulse 2s ease-in-out infinite;
+}
+
+.neuron:nth-child(2) { animation-delay: 0.3s; }
+.neuron:nth-child(3) { animation-delay: 0.6s; }
+.neuron:nth-child(4) { animation-delay: 0.9s; }
+.neuron:nth-child(5) { animation-delay: 1.2s; }
+
+@keyframes neuronPulse {
+  0%, 100% { opacity: 0.6; }
+  50% { opacity: 1; }
+}
+
+.synapse {
+  stroke: var(--accent-secondary);
+  stroke-width: 0.8;
+  opacity: 0.5;
+  stroke-dasharray: 2 2;
+  animation: synapseFlow 1.5s linear infinite;
+}
+
+@keyframes synapseFlow {
+  0% { stroke-dashoffset: 0; }
+  100% { stroke-dashoffset: -8; }
+}
+
+.aiLabel {
+  font-family: 'Space Grotesk', monospace;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  color: var(--accent-primary);
+  text-shadow: 0 0 10px var(--accent-primary);
+  animation: labelGlow 2s ease-in-out infinite;
+}
+
+@keyframes labelGlow {
+  0%, 100% { opacity: 0.7; }
+  50% { opacity: 1; }
+}
+
+/* ============================================
+   RIGHT DECORATION - STATUS BADGE
+   ============================================ */
+
+.rightDecoration {
+  position: absolute;
+  right: 180px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 102;
+  pointer-events: none;
+}
+
+.statusBadge {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 14px;
+  background: rgba(0, 200, 83, 0.1);
+  border: 1px solid rgba(0, 200, 83, 0.3);
+  border-radius: 20px;
+  backdrop-filter: blur(8px);
+}
+
+:global([data-theme="dark"]) .statusBadge {
+  background: rgba(0, 229, 255, 0.1);
+  border-color: rgba(0, 229, 255, 0.3);
+}
+
+.statusPulse {
+  width: 8px;
+  height: 8px;
+  background: var(--accent-secondary);
+  border-radius: 50%;
+  animation: statusBlink 1.5s ease-in-out infinite;
+  box-shadow: 0 0 10px var(--accent-secondary);
+}
+
+@keyframes statusBlink {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.5; transform: scale(0.8); }
+}
+
+.statusLabel {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.65rem;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  color: var(--accent-secondary);
+  text-transform: uppercase;
+}
+
+/* ============================================
+   FLOATING PARTICLES
+   ============================================ */
+
+.particles {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.particle {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  background: var(--accent-primary);
+  border-radius: 50%;
+  opacity: 0.4;
+  animation: particleFloat 8s ease-in-out infinite;
+}
+
+.particle:nth-child(1) { left: 10%; top: 20%; animation-delay: 0s; }
+.particle:nth-child(2) { left: 25%; top: 70%; animation-delay: 1.5s; }
+.particle:nth-child(3) { left: 50%; top: 30%; animation-delay: 3s; }
+.particle:nth-child(4) { left: 75%; top: 60%; animation-delay: 4.5s; }
+.particle:nth-child(5) { left: 90%; top: 40%; animation-delay: 6s; }
+
+@keyframes particleFloat {
+  0%, 100% {
+    transform: translateY(0) scale(1);
+    opacity: 0.3;
+  }
+  50% {
+    transform: translateY(-10px) scale(1.2);
+    opacity: 0.6;
+  }
+}
+
+/* ============================================
+   BOTTOM TRACE
+   ============================================ */
+
+.bottomTrace {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 8px;
+  z-index: 102;
+  overflow: hidden;
+}
+
+.traceSvg {
+  width: 100%;
+  height: 100%;
+}
+
+.traceHighlight {
+  fill: var(--accent-secondary);
+  opacity: 0.6;
+  filter: blur(2px);
+  animation: traceMove 4s linear infinite;
+}
+
+@keyframes traceMove {
+  0% { transform: translateX(-120px); }
+  100% { transform: translateX(1200px); }
+}
+
+/* ============================================
+   RESPONSIVE DESIGN
+   ============================================ */
+
+@media (max-width: 996px) {
+  .leftDecoration {
+    display: none;
+  }
+
+  .rightDecoration {
+    right: 80px;
+  }
+
+  .statusLabel {
+    display: none;
+  }
+
+  .statusBadge {
+    padding: 6px 10px;
+  }
+}
+
+@media (max-width: 768px) {
+  .rightDecoration {
+    display: none;
+  }
+
+  .particles {
+    display: none;
+  }
+
+  .circuitGrid {
+    display: none;
+  }
+}
