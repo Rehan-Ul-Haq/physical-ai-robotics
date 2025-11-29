@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import React, { useState, useEffect } from "react";
 import clsx from "clsx";
 import Link from "@docusaurus/Link";
 import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
@@ -7,82 +8,178 @@ import Heading from "@theme/Heading";
 
 import styles from "./index.module.css";
 
+// Typewriter effect hook
+function useTypewriter(texts: string[], typingSpeed: number = 80, pauseDuration: number = 2000) {
+  const [displayText, setDisplayText] = useState('');
+  const [textIndex, setTextIndex] = useState(0);
+  const [charIndex, setCharIndex] = useState(0);
+  const [isDeleting, setIsDeleting] = useState(false);
+  
+  useEffect(() => {
+    const currentText = texts[textIndex];
+    
+    const timeout = setTimeout(() => {
+      if (!isDeleting) {
+        if (charIndex < currentText.length) {
+          setDisplayText(currentText.slice(0, charIndex + 1));
+          setCharIndex(charIndex + 1);
+        } else {
+          setTimeout(() => setIsDeleting(true), pauseDuration);
+        }
+      } else {
+        if (charIndex > 0) {
+          setDisplayText(currentText.slice(0, charIndex - 1));
+          setCharIndex(charIndex - 1);
+        } else {
+          setIsDeleting(false);
+          setTextIndex((textIndex + 1) % texts.length);
+        }
+      }
+    }, isDeleting ? typingSpeed / 2 : typingSpeed);
+    
+    return () => clearTimeout(timeout);
+  }, [charIndex, isDeleting, textIndex, texts, typingSpeed, pauseDuration]);
+  
+  return displayText;
+}
+
 function HomepageHeader() {
   const { siteConfig } = useDocusaurusContext();
+  
+  // Typewriter phrases
+  const typewriterText = useTypewriter([
+    'Build humanoid robots with AI',
+    'Master ROS 2 & NVIDIA Isaac',
+    'From simulation to reality',
+    'Voice-controlled autonomy',
+  ], 60, 2500);
+  
   return (
     <header className={styles.heroBanner}>
-      <div className={styles.heroGradient} />
+      {/* Animated Background Elements */}
+      <div className={styles.heroBackground}>
+        <div className={styles.circuitGrid} />
+        <div className={styles.glowOrb1} />
+        <div className={styles.glowOrb2} />
+        <div className={styles.scanLine} />
+        
+        {/* Floating Particles */}
+        <div className={styles.particles}>
+          {[...Array(20)].map((_, i) => (
+            <div key={i} className={styles.particle} style={{
+              left: `${Math.random() * 100}%`,
+              animationDelay: `${Math.random() * 5}s`,
+              animationDuration: `${8 + Math.random() * 7}s`,
+            }} />
+          ))}
+        </div>
+      </div>
+
       <div className="container">
         <div className={styles.heroContent}>
-          {/* Left side - Book Cover */}
-          <div className={styles.heroImageContainer}>
-            <img
-              src={require('@site/static/img/book-cover-page.png').default}
-              alt="Physical AI & Humanoid Robotics Book Cover"
-              className={styles.heroBookCover}
-            />
+          {/* Left side - Robot Eye Hero Element */}
+          <div className={styles.heroVisualSection}>
+            {/* Large Robot Eye */}
+            <div className={styles.robotEyeHero}>
+              <div className={styles.robotEyeSocket}>
+                <div className={styles.robotEyeBall} />
+                <div className={styles.eyeReflection} />
+              </div>
+              <div className={styles.eyeRings}>
+                <div className={styles.eyeRing1} />
+                <div className={styles.eyeRing2} />
+                <div className={styles.eyeRing3} />
+              </div>
+            </div>
+            <div className={styles.eyeLabel}>ROBO AI</div>
+            
+            {/* Floating tech badges */}
+            <div className={`${styles.floatingBadge} ${styles.floatingBadge1}`}>
+              <span>ROS 2</span>
+            </div>
+            <div className={`${styles.floatingBadge} ${styles.floatingBadge2}`}>
+              <span>Isaac</span>
+            </div>
+            <div className={`${styles.floatingBadge} ${styles.floatingBadge3}`}>
+              <span>AI</span>
+            </div>
           </div>
 
           {/* Right side - Content */}
           <div className={styles.heroTextContent}>
+            {/* Status indicator */}
+            <div className={styles.statusBar}>
+              <span className={styles.statusDot} />
+              <span className={styles.statusText}>SYSTEM ONLINE</span>
+            </div>
+            
             <Heading as="h1" className={styles.heroTitle}>
-              Physical AI &<br />Humanoid Robotics
+              <span className={styles.titleLine1}>Physical AI &</span>
+              <span className={styles.titleLine2}>Humanoid Robotics</span>
             </Heading>
+            
+            {/* Typewriter tagline */}
+            <div className={styles.typewriterContainer}>
+              <span className={styles.typewriterPrefix}>{'>'} </span>
+              <span className={styles.typewriterText}>{typewriterText}</span>
+              <span className={styles.typewriterCursor}>|</span>
+            </div>
+            
             <p className={styles.heroSubtitle}>
-              From digital intelligence to <strong>embodied AI in the physical world</strong>.
-              Build humanoid robots that understand physics, navigate autonomously,
-              and respond to natural language commands.
+              The complete guide to building <strong>embodied AI systems</strong> that 
+              perceive, reason, and act in the physical world. From digital twins 
+              to voice-controlled humanoids.
             </p>
 
-            <div className={styles.heroBadges}>
-              <span className={styles.badge}>
-                <span className={styles.badgeIcon}>⚡</span>
-                ROS 2 Humble
+            {/* Tech Stack Pills */}
+            <div className={styles.techPills}>
+              <span className={styles.techPill}>
+                <span className={styles.pillDot} />ROS 2 Humble
               </span>
-              <span className={styles.badge}>
-                <span className={styles.badgeIcon}>🎮</span>
-                NVIDIA Isaac
+              <span className={styles.techPill}>
+                <span className={styles.pillDot} />NVIDIA Isaac
               </span>
-              <span className={styles.badge}>
-                <span className={styles.badgeIcon}>🦾</span>
-                Gazebo Sim
-              </span>
-              <span className={styles.badge}>
-                <span className={styles.badgeIcon}>🧠</span>
-                AI-Driven
+              <span className={styles.techPill}>
+                <span className={styles.pillDot} />Gazebo Sim
               </span>
             </div>
 
+            {/* CTA Buttons */}
             <div className={styles.heroButtons}>
               <Link
-                className={clsx(
-                  "button button--primary button--lg",
-                  styles.ctaButton
-                )}
+                className={styles.ctaButton}
                 to="/docs/preface"
               >
-                <span className={styles.buttonContent}>
-                  <span className={styles.buttonText}>Start Learning</span>
-                  <span className={styles.buttonIcon}>→</span>
+                <span className={styles.ctaIcon}>
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <polygon points="5 3 19 12 5 21 5 3" />
+                  </svg>
                 </span>
+                <span className={styles.ctaText}>Start Learning</span>
+                <span className={styles.ctaArrow}>→</span>
               </Link>
               <Link
-                className={clsx(
-                  "button button--outline button--lg",
-                  styles.secondaryButton
-                )}
+                className={styles.secondaryButton}
                 href="https://github.com/panaversity"
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                <span className={styles.buttonContent}>
-                  <span className={styles.buttonIcon}>⭐</span>
-                  <span className={styles.buttonText}>Star on GitHub</span>
-                </span>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                </svg>
+                <span>View on GitHub</span>
               </Link>
             </div>
           </div>
         </div>
+      </div>
+      
+      {/* Scroll indicator */}
+      <div className={styles.scrollIndicator}>
+        <div className={styles.scrollMouse}>
+          <div className={styles.scrollWheel} />
+        </div>
+        <span>Explore Modules</span>
       </div>
     </header>
   );
