@@ -369,19 +369,14 @@ export default function ChatWidget() {
         aria-label="Open chat assistant"
         title="Ask about the book"
       >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="24"
-          height="24"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        >
-          <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
-        </svg>
+        {/* Robot Eye */}
+        <div className={styles.eyeContainer}>
+          <div className={styles.eyeBall} />
+          <div className={styles.eyelidTop} />
+          <div className={styles.eyelidBottom} />
+          <div className={styles.sleepIndicator} />
+        </div>
+        <span className={styles.floatingButtonLabel}>Robo AI</span>
       </button>
     );
   }
@@ -391,9 +386,15 @@ export default function ChatWidget() {
     <div ref={chatWindowRef} className={`${styles.chatWindow} ${isMaximized ? styles.maximized : ''}`}>
       {/* Header */}
       <div className={styles.header}>
-        <div className={styles.headerInfo}>
-          <h3 className={styles.headerTitle}>Book Assistant</h3>
-          <p className={styles.headerSubtitle}>Ask questions about the book</p>
+        <div className={styles.headerBrand}>
+          {/* Robot Eye Icon */}
+          <div className={styles.headerIcon}>
+            <div className={styles.headerEye} />
+          </div>
+          <div className={styles.headerInfo}>
+            <h3 className={styles.headerTitle}>Robo AI</h3>
+            <p className={styles.headerSubtitle}>Your Physical AI & Robotics Guide</p>
+          </div>
         </div>
         <div className={styles.headerActions}>
           <button
@@ -489,11 +490,14 @@ export default function ChatWidget() {
       <div className={styles.messages}>
         {messages.length === 0 && (
           <div className={styles.emptyState}>
-            <p className={styles.emptyTitle}>Welcome to the Book Assistant!</p>
+            <div className={styles.emptyIcon}>
+              <div className={styles.emptyRobotEye} />
+            </div>
+            <p className={styles.emptyTitle}>Welcome to Robo AI!</p>
             <p className={styles.emptySubtitle}>
-              Ask any question about Physical AI & Humanoid Robotics.
+              I'm your intelligent guide to Physical AI & Humanoid Robotics.
               <br />
-              <small>Tip: Select text on the page to ask about specific content.</small>
+              <small>💡 Tip: Select text on the page to ask about specific content.</small>
             </p>
           </div>
         )}
