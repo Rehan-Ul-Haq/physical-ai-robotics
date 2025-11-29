@@ -25,14 +25,13 @@
     0 8px 32px rgba(184, 115, 51, 0.5),
     0 0 0 1px rgba(0, 0, 0, 0.1),
     inset 0 1px 0 rgba(255, 255, 255, 0.3) !important;
-  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
   z-index: 9999 !important;
   overflow: visible !important;
 }
 
-/* Robot Eye - The main attraction! */
-.floatingButton::before {
-  content: '' !important;
+/* Eye Container - circular socket */
+.eyeContainer {
   position: absolute !important;
   left: 8px !important;
   top: 50% !important;
@@ -40,71 +39,154 @@
   width: 40px !important;
   height: 40px !important;
   border-radius: 50% !important;
-  background: 
-    radial-gradient(circle at 35% 35%, rgba(255,255,255,0.8) 0%, transparent 25%),
-    radial-gradient(circle at 50% 50%, var(--circuit-green, #00C853) 0%, var(--circuit-green, #00C853) 35%, #004D25 36%, #002211 50%, #1a1a1a 51%, #0d0d0d 100%) !important;
-  border: 3px solid #2a2a2a !important;
+  background: #0d0d0d !important;
+  border: 3px solid #3a3a3a !important;
+  overflow: hidden !important;
   box-shadow:
-    0 0 15px var(--circuit-green, #00C853),
-    0 0 30px rgba(0, 200, 83, 0.4),
-    inset 0 0 10px rgba(0, 200, 83, 0.5),
-    inset 0 2px 4px rgba(255, 255, 255, 0.1) !important;
-  animation: eyePulse 2s ease-in-out infinite, eyeScan 4s ease-in-out infinite !important;
+    inset 0 3px 8px rgba(0, 0, 0, 0.9),
+    0 2px 6px rgba(0, 0, 0, 0.4) !important;
+  transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
 }
 
-/* Scanning ring around the eye */
-.floatingButton::after {
-  content: '' !important;
+/* The eyeball/iris - inside the socket */
+.eyeBall {
   position: absolute !important;
-  left: 4px !important;
   top: 50% !important;
-  transform: translateY(-50%) !important;
-  width: 48px !important;
-  height: 48px !important;
+  left: 50% !important;
+  transform: translate(-50%, -50%) !important;
+  width: 28px !important;
+  height: 28px !important;
   border-radius: 50% !important;
-  border: 2px dashed rgba(0, 200, 83, 0.5) !important;
-  animation: scanRotate 8s linear infinite !important;
-  pointer-events: none !important;
+  background: 
+    radial-gradient(circle at 30% 30%, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.4) 8%, transparent 20%),
+    radial-gradient(circle at 50% 50%, #000 0%, #000 24%, var(--circuit-green, #00C853) 25%, var(--circuit-green, #00C853) 48%, #004D25 49%, #002815 65%, #001a0d 100%) !important;
+  box-shadow:
+    0 0 6px rgba(0, 200, 83, 0.4),
+    inset 0 0 4px rgba(0, 200, 83, 0.3) !important;
+  transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
+  z-index: 1 !important;
 }
 
-@keyframes eyePulse {
+/* Upper Eyelid - covers top half when closed */
+.eyelidTop {
+  position: absolute !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  height: 50% !important;
+  background: linear-gradient(180deg, 
+    #555 0%, 
+    #444 50%,
+    #333 100%) !important;
+  transform-origin: top center !important;
+  transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
+  z-index: 2 !important;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.5) !important;
+}
+
+/* Lower Eyelid - covers bottom half when closed */
+.eyelidBottom {
+  position: absolute !important;
+  bottom: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  height: 50% !important;
+  background: linear-gradient(0deg, 
+    #555 0%, 
+    #444 50%,
+    #333 100%) !important;
+  transform-origin: bottom center !important;
+  transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
+  z-index: 2 !important;
+  box-shadow: 0 -2px 4px rgba(0,0,0,0.5) !important;
+}
+
+/* Sleep indicator - glowing line where eyelids meet */
+.sleepIndicator {
+  position: absolute !important;
+  top: 50% !important;
+  left: 20% !important;
+  right: 20% !important;
+  height: 2px !important;
+  background: var(--circuit-green, #00C853) !important;
+  transform: translateY(-50%) !important;
+  border-radius: 1px !important;
+  opacity: 0.8 !important;
+  box-shadow: 
+    0 0 6px var(--circuit-green, #00C853),
+    0 0 12px rgba(0, 200, 83, 0.6) !important;
+  animation: sleepBreath 2.5s ease-in-out infinite !important;
+  z-index: 3 !important;
+  transition: all 0.4s ease !important;
+}
+
+@keyframes sleepBreath {
   0%, 100% { 
-    box-shadow:
-      0 0 15px var(--circuit-green, #00C853),
-      0 0 30px rgba(0, 200, 83, 0.4),
-      inset 0 0 10px rgba(0, 200, 83, 0.5),
-      inset 0 2px 4px rgba(255, 255, 255, 0.1);
+    opacity: 0.5; 
+    box-shadow: 0 0 4px var(--circuit-green, #00C853), 0 0 8px rgba(0, 200, 83, 0.4);
   }
   50% { 
-    box-shadow:
-      0 0 20px var(--circuit-green, #00C853),
-      0 0 45px rgba(0, 200, 83, 0.6),
-      inset 0 0 15px rgba(0, 200, 83, 0.7),
-      inset 0 2px 4px rgba(255, 255, 255, 0.15);
+    opacity: 1; 
+    box-shadow: 0 0 8px var(--circuit-green, #00C853), 0 0 16px rgba(0, 200, 83, 0.7);
   }
 }
 
-@keyframes eyeScan {
-  0%, 100% { 
-    background: 
-      radial-gradient(circle at 35% 35%, rgba(255,255,255,0.8) 0%, transparent 25%),
-      radial-gradient(circle at 50% 50%, var(--circuit-green, #00C853) 0%, var(--circuit-green, #00C853) 35%, #004D25 36%, #002211 50%, #1a1a1a 51%, #0d0d0d 100%);
-  }
-  25% { 
-    background: 
-      radial-gradient(circle at 40% 40%, rgba(255,255,255,0.8) 0%, transparent 25%),
-      radial-gradient(circle at 55% 45%, var(--circuit-green, #00C853) 0%, var(--circuit-green, #00C853) 35%, #004D25 36%, #002211 50%, #1a1a1a 51%, #0d0d0d 100%);
-  }
-  75% { 
-    background: 
-      radial-gradient(circle at 30% 30%, rgba(255,255,255,0.8) 0%, transparent 25%),
-      radial-gradient(circle at 45% 55%, var(--circuit-green, #00C853) 0%, var(--circuit-green, #00C853) 35%, #004D25 36%, #002211 50%, #1a1a1a 51%, #0d0d0d 100%);
-  }
+/* === HOVER STATE - Eye Opens! === */
+.floatingButton:hover .eyeContainer {
+  box-shadow:
+    inset 0 3px 8px rgba(0, 0, 0, 0.7),
+    0 0 15px rgba(0, 200, 83, 0.5),
+    0 2px 6px rgba(0, 0, 0, 0.4) !important;
 }
 
-@keyframes scanRotate {
-  from { transform: translateY(-50%) rotate(0deg); }
-  to { transform: translateY(-50%) rotate(360deg); }
+.floatingButton:hover .eyeBall {
+  box-shadow:
+    0 0 12px rgba(0, 200, 83, 0.8),
+    0 0 25px rgba(0, 200, 83, 0.5),
+    inset 0 0 8px rgba(0, 200, 83, 0.4) !important;
+  animation: eyeLook 3s ease-in-out infinite !important;
+}
+
+.floatingButton:hover .eyelidTop {
+  height: 5% !important;
+}
+
+.floatingButton:hover .eyelidBottom {
+  height: 5% !important;
+}
+
+.floatingButton:hover .sleepIndicator {
+  opacity: 0 !important;
+  transform: translateY(-50%) scaleX(0) !important;
+}
+
+@keyframes eyeLook {
+  0%, 100% { transform: translate(-50%, -50%); }
+  15% { transform: translate(-42%, -55%); }
+  35% { transform: translate(-58%, -48%); }
+  55% { transform: translate(-45%, -52%); }
+  75% { transform: translate(-55%, -50%); }
+}
+
+/* Occasional blink while hovering */
+@keyframes blinkTop {
+  0%, 90%, 100% { height: 5%; }
+  94%, 96% { height: 48%; }
+}
+
+@keyframes blinkBottom {
+  0%, 90%, 100% { height: 5%; }
+  94%, 96% { height: 48%; }
+}
+
+.floatingButton:hover .eyelidTop {
+  animation: blinkTop 4s ease-in-out infinite !important;
+  animation-delay: 1.5s !important;
+}
+
+.floatingButton:hover .eyelidBottom {
+  animation: blinkBottom 4s ease-in-out infinite !important;
+  animation-delay: 1.5s !important;
 }
 
 .floatingButton:hover {
@@ -115,26 +197,7 @@
     inset 0 1px 0 rgba(255, 255, 255, 0.4) !important;
 }
 
-.floatingButton:hover::before {
-  animation: eyePulse 1s ease-in-out infinite, eyeAlert 0.5s ease-in-out infinite !important;
-  box-shadow:
-    0 0 25px var(--circuit-green, #00C853),
-    0 0 50px rgba(0, 200, 83, 0.7),
-    inset 0 0 20px rgba(0, 200, 83, 0.8),
-    inset 0 2px 4px rgba(255, 255, 255, 0.2) !important;
-}
-
-@keyframes eyeAlert {
-  0%, 100% { transform: translateY(-50%) scale(1); }
-  50% { transform: translateY(-50%) scale(1.05); }
-}
-
-.floatingButton:hover::after {
-  border-color: rgba(0, 200, 83, 0.8) !important;
-  animation: scanRotate 3s linear infinite !important;
-}
-
-/* Dark mode - Cyan cyber eye */
+/* === DARK MODE === */
 [data-theme="dark"] .floatingButton {
   background: linear-gradient(135deg, #0a1929 0%, #0d2137 50%, #0a1929 100%) !important;
   border-color: rgba(0, 229, 255, 0.3) !important;
@@ -144,20 +207,65 @@
     inset 0 1px 0 rgba(255, 255, 255, 0.1) !important;
 }
 
-[data-theme="dark"] .floatingButton::before {
-  background: 
-    radial-gradient(circle at 35% 35%, rgba(255,255,255,0.9) 0%, transparent 20%),
-    radial-gradient(circle at 50% 50%, var(--space-cyan, #00E5FF) 0%, var(--space-cyan, #00E5FF) 35%, #006080 36%, #003344 50%, #0a1929 51%, #050d15 100%) !important;
+[data-theme="dark"] .eyeContainer {
+  background: #050a10 !important;
   border-color: #1a3a4a !important;
-  box-shadow:
-    0 0 20px var(--space-cyan, #00E5FF),
-    0 0 40px rgba(0, 229, 255, 0.5),
-    inset 0 0 15px rgba(0, 229, 255, 0.6),
-    inset 0 2px 4px rgba(255, 255, 255, 0.1) !important;
 }
 
-[data-theme="dark"] .floatingButton::after {
-  border-color: rgba(0, 229, 255, 0.4) !important;
+[data-theme="dark"] .eyeBall {
+  background: 
+    radial-gradient(circle at 30% 30%, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.5) 8%, transparent 18%),
+    radial-gradient(circle at 50% 50%, #000 0%, #000 24%, var(--space-cyan, #00E5FF) 25%, var(--space-cyan, #00E5FF) 48%, #006080 49%, #003344 65%, #001a22 100%) !important;
+  box-shadow:
+    0 0 6px rgba(0, 229, 255, 0.4),
+    inset 0 0 4px rgba(0, 229, 255, 0.3) !important;
+}
+
+[data-theme="dark"] .eyelidTop {
+  background: linear-gradient(180deg, 
+    #1a3a4a 0%, 
+    #0d2535 50%,
+    #061520 100%) !important;
+}
+
+[data-theme="dark"] .eyelidBottom {
+  background: linear-gradient(0deg, 
+    #1a3a4a 0%, 
+    #0d2535 50%,
+    #061520 100%) !important;
+}
+
+[data-theme="dark"] .sleepIndicator {
+  background: var(--space-cyan, #00E5FF) !important;
+  box-shadow: 
+    0 0 6px var(--space-cyan, #00E5FF),
+    0 0 12px rgba(0, 229, 255, 0.6) !important;
+  animation: sleepBreathDark 2.5s ease-in-out infinite !important;
+}
+
+@keyframes sleepBreathDark {
+  0%, 100% { 
+    opacity: 0.5; 
+    box-shadow: 0 0 4px var(--space-cyan, #00E5FF), 0 0 8px rgba(0, 229, 255, 0.4);
+  }
+  50% { 
+    opacity: 1; 
+    box-shadow: 0 0 8px var(--space-cyan, #00E5FF), 0 0 16px rgba(0, 229, 255, 0.7);
+  }
+}
+
+[data-theme="dark"] .floatingButton:hover .eyeContainer {
+  box-shadow:
+    inset 0 3px 8px rgba(0, 0, 0, 0.8),
+    0 0 20px rgba(0, 229, 255, 0.5),
+    0 2px 6px rgba(0, 0, 0, 0.4) !important;
+}
+
+[data-theme="dark"] .floatingButton:hover .eyeBall {
+  box-shadow:
+    0 0 15px rgba(0, 229, 255, 0.9),
+    0 0 30px rgba(0, 229, 255, 0.6),
+    inset 0 0 10px rgba(0, 229, 255, 0.5) !important;
 }
 
 [data-theme="dark"] .floatingButton:hover {
@@ -165,18 +273,6 @@
     0 12px 45px rgba(0, 229, 255, 0.5),
     0 0 0 1px rgba(0, 229, 255, 0.2),
     inset 0 1px 0 rgba(255, 255, 255, 0.15) !important;
-}
-
-[data-theme="dark"] .floatingButton:hover::before {
-  box-shadow:
-    0 0 30px var(--space-cyan, #00E5FF),
-    0 0 60px rgba(0, 229, 255, 0.8),
-    inset 0 0 25px rgba(0, 229, 255, 0.9),
-    inset 0 2px 4px rgba(255, 255, 255, 0.2) !important;
-}
-
-[data-theme="dark"] .floatingButton:hover::after {
-  border-color: rgba(0, 229, 255, 0.9) !important;
 }
 
 .floatingButtonLabel {

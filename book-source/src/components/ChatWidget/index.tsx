@@ -369,6 +369,13 @@ export default function ChatWidget() {
         aria-label="Open chat assistant"
         title="Ask about the book"
       >
+        {/* Robot Eye */}
+        <div className={styles.eyeContainer}>
+          <div className={styles.eyeBall} />
+          <div className={styles.eyelidTop} />
+          <div className={styles.eyelidBottom} />
+          <div className={styles.sleepIndicator} />
+        </div>
         <span className={styles.floatingButtonLabel}>Robo AI</span>
       </button>
     );
