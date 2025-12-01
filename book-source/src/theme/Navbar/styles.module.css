@@ -36,7 +36,7 @@
   bottom: 0;
   overflow: hidden;
   pointer-events: none;
-  z-index: 0;
+  z-index: -1;
 }
 
 .gridLine {
@@ -82,8 +82,9 @@
     var(--accent-primary) 80%,
     transparent 100%
   );
-  z-index: 102;
+  z-index: 1;
   overflow: hidden;
+  pointer-events: none;
 }
 
 .energyPulse {
@@ -118,7 +119,7 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  z-index: 102;
+  z-index: -1;
   pointer-events: none;
 }
 
@@ -198,7 +199,7 @@
   right: 180px;
   top: 50%;
   transform: translateY(-50%);
-  z-index: 102;
+  z-index: -1;
   pointer-events: none;
 }
 
@@ -253,7 +254,7 @@
   bottom: 0;
   overflow: hidden;
   pointer-events: none;
-  z-index: 0;
+  z-index: -1;
 }
 
 .particle {
@@ -293,8 +294,9 @@
   left: 0;
   right: 0;
   height: 8px;
-  z-index: 102;
+  z-index: 1;
   overflow: hidden;
+  pointer-events: none;
 }
 
 .traceSvg {
