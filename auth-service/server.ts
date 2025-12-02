@@ -25,7 +25,8 @@ const ALLOWED_ORIGINS = [
   "http://localhost:3000",  // Docusaurus dev server
   "http://localhost:3001",  // Alternative dev port
   "http://127.0.0.1:3000",
-  process.env.FRONTEND_URL, // Production frontend URL
+  "https://rehan-ul-haq.github.io", // GitHub Pages production
+  process.env.FRONTEND_URL, // Production frontend URL from env
 ].filter(Boolean) as string[];
 
 // CORS configuration (T016)
