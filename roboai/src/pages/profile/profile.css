@@ -1,0 +1,118 @@
+/**
+ * Profile Page Styles
+ */
+
+.profile-page {
+  @apply flex justify-center items-start py-8;
+  @apply container mx-auto px-4;
+  min-height: calc(100vh - 200px);
+}
+
+.profile-card {
+  @apply w-full max-w-lg p-8 rounded-xl;
+  @apply bg-white dark:bg-gray-800;
+  @apply shadow-lg border border-gray-200 dark:border-gray-700;
+}
+
+.profile-title {
+  @apply text-2xl font-bold text-center mb-6;
+  @apply text-gray-900 dark:text-white;
+}
+
+/* Avatar Section */
+.profile-avatar-section {
+  @apply flex justify-center mb-6;
+}
+
+.profile-avatar {
+  @apply w-24 h-24 rounded-full object-cover;
+  @apply border-4 border-gray-200 dark:border-gray-600;
+}
+
+.profile-avatar--initials {
+  @apply flex items-center justify-center;
+  @apply bg-blue-100 dark:bg-blue-900;
+  @apply text-blue-600 dark:text-blue-300;
+  @apply text-2xl font-bold;
+}
+
+/* Form Styles */
+.profile-form {
+  @apply flex flex-col gap-4;
+}
+
+.profile-field {
+  @apply flex flex-col gap-1;
+}
+
+.profile-label {
+  @apply text-sm font-medium;
+  @apply text-gray-700 dark:text-gray-200;
+}
+
+.profile-input {
+  @apply w-full px-3 py-2 rounded-lg;
+  @apply border border-gray-300 dark:border-gray-600;
+  @apply bg-white dark:bg-gray-700;
+  @apply text-gray-900 dark:text-white;
+  @apply focus:outline-none focus:ring-2 focus:ring-blue-500;
+  @apply disabled:opacity-50 disabled:cursor-not-allowed;
+}
+
+.profile-input--readonly {
+  @apply bg-gray-100 dark:bg-gray-800;
+}
+
+.profile-text {
+  @apply text-gray-600 dark:text-gray-300;
+}
+
+.profile-hint {
+  @apply text-xs text-gray-500 dark:text-gray-400;
+  @apply flex items-center gap-2;
+}
+
+.profile-badge {
+  @apply inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium;
+}
+
+.profile-badge--verified {
+  @apply bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-300;
+}
+
+/* Messages */
+.profile-message {
+  @apply p-3 rounded-lg text-sm;
+}
+
+.profile-message--success {
+  @apply bg-green-50 text-green-700 border border-green-200;
+  @apply dark:bg-green-900/20 dark:text-green-300 dark:border-green-800;
+}
+
+.profile-message--error {
+  @apply bg-red-50 text-red-700 border border-red-200;
+  @apply dark:bg-red-900/20 dark:text-red-300 dark:border-red-800;
+}
+
+/* Buttons */
+.profile-btn {
+  @apply px-4 py-2.5 rounded-lg font-medium;
+  @apply transition-all duration-200;
+  @apply disabled:opacity-50 disabled:cursor-not-allowed;
+}
+
+.profile-btn--primary {
+  @apply bg-blue-600 hover:bg-blue-700 text-white;
+}
+
+/* Links */
+.profile-links {
+  @apply mt-6 pt-6 border-t border-gray-200 dark:border-gray-700;
+  @apply text-center;
+}
+
+.profile-link {
+  @apply text-blue-600 hover:text-blue-700 dark:text-blue-400;
+  @apply font-medium;
+}
