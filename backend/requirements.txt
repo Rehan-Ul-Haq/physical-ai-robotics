@@ -1,0 +1,10 @@
+# Backend dependencies for Render deployment
+asyncpg>=0.31.0
+fastapi>=0.114.1,<0.116
+httpx>=0.28,<0.29
+openai>=1.40
+openai-chatkit>=1.1.2,<2
+pydantic>=2.12.5
+python-dotenv>=1.2.1
+qdrant-client>=1.16.1
+uvicorn[standard]>=0.36,<0.37
