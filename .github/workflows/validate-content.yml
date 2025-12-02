@@ -15,7 +15,7 @@ name: Validate Content
 on:
   pull_request:
     paths:
-      - "book-source/docs/**"
+      - "roboai/docs/**"
 
 jobs:
   validate:
@@ -32,10 +32,10 @@ jobs:
         id: changed
         run: |
           # Get list of changed markdown files in docs/
-          CHANGED_FILES=$(git diff --name-only origin/${{ github.base_ref }}...HEAD -- 'book-source/docs/**/*.md' 2>/dev/null || echo "")
+          CHANGED_FILES=$(git diff --name-only origin/${{ github.base_ref }}...HEAD -- 'roboai/docs/**/*.md' 2>/dev/null || echo "")
 
           if [ -z "$CHANGED_FILES" ]; then
-            echo "No markdown files changed in book-source/docs/"
+            echo "No markdown files changed in roboai/docs/"
             echo "files=" >> $GITHUB_OUTPUT
           else
             echo "Changed files:"
@@ -103,4 +103,4 @@ jobs:
       - name: Skip check (no changed files)
         if: steps.changed.outputs.files == ''
         run: |
-          echo "✓ No markdown files changed in book-source/docs/ - skipping validation"
+          echo "✓ No markdown files changed in roboai/docs/ - skipping validation"

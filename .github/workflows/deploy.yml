@@ -1,23 +1,12 @@
 name: Deploy to GitHub Pages
 
 on:
-  # Trigger after sync-content completes (when PanaversityFS is enabled)
-  workflow_run:
-    workflows: ["Sync Content to R2"]
-    types:
-      - completed
-    branches:
-      - main
-  # Direct trigger for changes that don't affect docs content
-  # (e.g., config changes, component updates)
   push:
     branches:
       - main
     paths:
-      - "book-source/**"
+      - "roboai/**"
       - ".github/workflows/deploy.yml"
-      # Exclude docs/ since those trigger via sync-content workflow
-      - "!book-source/docs/**"
   workflow_dispatch:
 
 permissions:
@@ -33,14 +22,6 @@ jobs:
   build:
     name: Build Docusaurus
     runs-on: ubuntu-latest
-    # Run if:
-    # - NOT triggered by workflow_run (direct push or workflow_dispatch), OR
-    # - Triggered by workflow_run AND sync completed successfully, OR
-    # - Triggered by workflow_run AND sync was skipped (PanaversityFS disabled)
-    if: |
-      github.event_name != 'workflow_run' ||
-      github.event.workflow_run.conclusion == 'success' ||
-      github.event.workflow_run.conclusion == 'skipped'
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -50,7 +31,7 @@ jobs:
         with:
           node-version: "20"
           cache: npm
-          cache-dependency-path: book-source/package-lock.json
+          cache-dependency-path: roboai/package-lock.json
 
       - name: Install system dependencies for Sharp and OG image generation
         run: |
@@ -61,33 +42,28 @@ jobs:
             libvips-dev
 
       - name: Install dependencies
-        working-directory: book-source
+        working-directory: roboai
         run: npm ci
 
       - name: Run type checking
-        working-directory: book-source
+        working-directory: roboai
         run: npm run typecheck
 
       - name: Build site
-        working-directory: book-source
+        working-directory: roboai
         env:
           GA4_MEASUREMENT_ID: ${{ secrets.GA4_MEASUREMENT_ID }}
-          # PanaversityFS: Fetch content from MCP server at build time
-          PANAVERSITY_PLUGIN_ENABLED: ${{ vars.PANAVERSITY_PLUGIN_ENABLED || 'false' }}
-          PANAVERSITY_SERVER_URL: ${{ secrets.PANAVERSITY_SERVER_URL }}
-          # Book Assistant API URL (backend on Render)
           BOOK_ASSISTANT_API_URL: ${{ secrets.BOOK_ASSISTANT_API_URL }}
         run: npm run build
 
       - name: Upload build artifacts
         uses: actions/upload-pages-artifact@v3
         with:
-          path: book-source/build
+          path: roboai/build
 
   deploy:
     name: Deploy to GitHub Pages
     needs: build
-    # Only deploy if build job succeeded (not skipped)
     if: needs.build.result == 'success'
     runs-on: ubuntu-latest
     environment:
