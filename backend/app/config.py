@@ -35,7 +35,10 @@ class Settings(BaseSettings):
     qdrant_collection: str = "book_content"
     embedding_dimensions: int = 1536
 
-    # Book URL configuration (override with BOOK_BASE_URL env var)
+    # Book URL configuration
+    # SITE_BASE_URL: Full URL to the deployed site (e.g., https://rehan-ul-haq.github.io)
+    # BOOK_BASE_URL: Path prefix for the book (e.g., /physical-ai-robotics)
+    site_base_url: str = "https://rehan-ul-haq.github.io"
     book_base_url: str = "/physical-ai-robotics"
 
     class Config:

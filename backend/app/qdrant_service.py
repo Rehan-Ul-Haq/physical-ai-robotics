@@ -170,8 +170,8 @@ class QdrantService:
             context_parts.append(
                 f"[Chapter {chunk.chapter_number}: {chunk.section_title}]\n{chunk.text}"
             )
-            # Prepend book_base_url to source_url for full path
-            full_url = f"{settings.book_base_url}{chunk.source_url}"
+            # Build full URL: site_base_url + book_base_url + source_url
+            full_url = f"{settings.site_base_url}{settings.book_base_url}{chunk.source_url}"
             sources.append(
                 Source(
                     chapter=chunk.chapter_number,
@@ -305,8 +305,8 @@ class QdrantService:
             context_parts.append(
                 f"[Chapter {chunk.chapter_number}: {chunk.section_title}]\n{chunk.text}"
             )
-            # Prepend book_base_url to source_url for full path
-            full_url = f"{settings.book_base_url}{chunk.source_url}"
+            # Build full URL: site_base_url + book_base_url + source_url
+            full_url = f"{settings.site_base_url}{settings.book_base_url}{chunk.source_url}"
             sources.append(
                 Source(
                     chapter=chunk.chapter_number,
