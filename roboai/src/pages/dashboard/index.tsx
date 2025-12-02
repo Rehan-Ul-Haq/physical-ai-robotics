@@ -14,6 +14,7 @@ import React from "react";
 import Layout from "@theme/Layout";
 import { RequireAuth } from "@/components/Auth";
 import { useSession } from "@/lib/auth";
+import "./dashboard.css";
 
 /**
  * Dashboard content component

@@ -47,22 +47,15 @@ export function NavbarAuth(): React.ReactElement {
     );
   }
 
-  // Anonymous state - show auth buttons
+  // Anonymous state - show Sign In button only
   return (
     <div className="navbar-auth">
       <button
         type="button"
-        className="navbar-auth__btn navbar-auth__btn--secondary"
+        className="navbar-auth__btn navbar-auth__btn--primary"
         onClick={openSignIn}
       >
         Sign In
-      </button>
-      <button
-        type="button"
-        className="navbar-auth__btn navbar-auth__btn--primary"
-        onClick={openSignUp}
-      >
-        Sign Up
       </button>
 
       {/* Auth Modals */}

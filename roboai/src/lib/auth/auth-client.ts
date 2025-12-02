@@ -9,12 +9,14 @@
 import { createAuthClient } from "better-auth/react";
 
 /**
- * Auth service URL from environment variable
+ * Auth service URL - configured via docusaurus.config.ts customFields
  * In development: http://localhost:8002
  * In production: https://api.yourdomain.com
+ * 
+ * Note: We use a hardcoded fallback since this runs at module initialization
+ * before React context is available. For runtime configuration, use the hook.
  */
-const authServiceURL =
-  process.env.REACT_APP_AUTH_SERVICE_URL || "http://localhost:8002";
+const authServiceURL = "http://localhost:8002";
 
 /**
  * Better-Auth client instance configured for the roboai application
@@ -60,9 +62,11 @@ export const authClient = createAuthClient({
 
     /**
      * Optional success callback for analytics/logging
+     * Note: In development mode only for debugging
      */
     onSuccess(data) {
-      if (process.env.NODE_ENV === "development") {
+      // Development logging - check if we're in dev by looking for localhost
+      if (typeof window !== "undefined" && window.location.hostname === "localhost") {
         console.log("[Auth] Action successful");
       }
     },

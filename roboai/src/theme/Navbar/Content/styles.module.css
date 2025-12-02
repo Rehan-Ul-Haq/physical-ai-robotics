@@ -1,0 +1,38 @@
+/**
+ * Navbar Content Styles
+ * Positions the auth buttons and theme toggle in the navbar
+ */
+
+.navbarContentWrapper {
+  display: flex;
+  align-items: center;
+  flex: 1;
+  width: 100%;
+}
+
+/* Target the right side items container from Docusaurus */
+.navbarContentWrapper > :global(.navbar__items--right) {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* Auth container sits between nav items and theme toggle */
+.navbarAuthContainer {
+  display: flex;
+  align-items: center;
+  order: 1; /* Place after main nav items but before toggle */
+}
+
+/* Move theme toggle to the very end */
+.navbarContentWrapper :global(.navbar__items--right) > :global(div):last-child {
+  order: 2;
+  margin-left: 0.5rem;
+}
+
+/* Mobile responsive */
+@media (max-width: 996px) {
+  .navbarAuthContainer {
+    margin-right: 0.5rem;
+  }
+}
