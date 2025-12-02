@@ -60,7 +60,7 @@ export function UserMenu({ className = "" }: UserMenuProps) {
     try {
       await signOut();
       // Redirect to homepage after sign out (T098)
-      window.location.href = "/";
+      window.location.href = "/physical-ai-robotics/";
     } catch (err) {
       console.error("[UserMenu] Sign out failed:", err);
       setIsSigningOut(false);

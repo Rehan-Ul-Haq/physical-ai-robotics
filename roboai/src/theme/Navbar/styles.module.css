@@ -3,10 +3,12 @@
    Immersive Command Center Design
    ============================================ */
 
-/* Main Container */
+/* Main Container - Sticky positioning */
 .navbarContainer {
-  position: relative;
+  position: sticky !important;
+  top: 0 !important;
   width: 100%;
+  z-index: 1000;
 }
 
 /* CSS Variables for theming */

@@ -59,6 +59,14 @@ export const auth = betterAuth({
   // Base URL for callbacks
   baseURL: process.env.BETTER_AUTH_URL || "http://localhost:8002",
 
+  // Trusted origins for CORS and CSRF protection
+  trustedOrigins: [
+    "http://localhost:3000",
+    "http://localhost:3001",
+    "http://127.0.0.1:3000",
+    process.env.FRONTEND_URL || "",
+  ].filter(Boolean),
+
   // Secret for signing tokens and cookies
   secret: process.env.BETTER_AUTH_SECRET,
 
@@ -75,8 +83,8 @@ export const auth = betterAuth({
     verificationTokenExpiresIn: 60 * 60 * 24, // 24 hours in seconds
     // Password reset token expiration (1 hour) (T103)
     resetPasswordTokenExpiresIn: 60 * 60, // 1 hour in seconds
-    // Revoke all sessions when password is reset (T111)
-    autoSignIn: false, // Don't auto sign-in after password reset
+    // Don't auto sign-in until email is verified
+    autoSignIn: false,
   },
 
   // OAuth Social Providers (T012, T013)
@@ -150,11 +158,17 @@ export const auth = betterAuth({
   emailVerification: {
     sendVerificationEmail: async ({ user, url, token }) => {
       console.log(`[Email] Sending verification email to ${user.email}`);
+      console.log(`[Email] Original verification URL: ${url}`);
       
       if (!process.env.GMAIL_USER || !process.env.GMAIL_APP_PASSWORD) {
         console.log(`[Email] Gmail not configured. Verification URL: ${url}`);
         return;
       }
+
+      // The URL from Better-Auth points to the auth server
+      // We'll keep it as-is since Better-Auth handles the verification
+      // After verification, user will be redirected to the frontend
+      const verificationUrl = url;
 
       try {
         await transporter.sendMail({
@@ -166,11 +180,11 @@ export const auth = betterAuth({
               <h2>Welcome to ${appName}!</h2>
               <p>Hi ${user.name || "there"},</p>
               <p>Please verify your email address by clicking the button below:</p>
-              <a href="${url}" style="display: inline-block; background-color: #4F46E5; color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px; margin: 16px 0;">
+              <a href="${verificationUrl}" style="display: inline-block; background-color: #4F46E5; color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px; margin: 16px 0;">
                 Verify Email
               </a>
               <p>Or copy and paste this link in your browser:</p>
-              <p style="color: #666; word-break: break-all;">${url}</p>
+              <p style="color: #666; word-break: break-all;">${verificationUrl}</p>
               <p>This link will expire in 24 hours.</p>
               <hr style="border: none; border-top: 1px solid #eee; margin: 24px 0;">
               <p style="color: #999; font-size: 12px;">If you didn't create an account, you can ignore this email.</p>

@@ -249,14 +249,14 @@ div[role="region"][aria-label="Skip to main content"] {
 .navbar {
     background: linear-gradient(
         180deg,
-        rgba(250, 247, 242, 0.95) 0%,
-        rgba(255, 255, 255, 0.92) 100%
+        rgba(250, 247, 242, 0.75) 0%,
+        rgba(255, 255, 255, 0.70) 100%
     ) !important;
     backdrop-filter: blur(20px) saturate(180%);
     -webkit-backdrop-filter: blur(20px) saturate(180%);
     border-bottom: 1px solid rgba(184, 115, 51, 0.15);
     box-shadow: 0 4px 20px rgba(184, 115, 51, 0.1);
-    position: sticky;
+    position: relative;
     z-index: 100;
     transition: all 0.3s ease;
 }
@@ -290,8 +290,8 @@ div[role="region"][aria-label="Skip to main content"] {
 [data-theme="dark"] .navbar {
     background: linear-gradient(
         180deg,
-        rgba(13, 17, 23, 0.96) 0%,
-        rgba(22, 27, 34, 0.94) 100%
+        rgba(13, 17, 23, 0.85) 0%,
+        rgba(22, 27, 34, 0.80) 100%
     ) !important;
     border-bottom: 1px solid rgba(0, 229, 255, 0.15);
     box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);

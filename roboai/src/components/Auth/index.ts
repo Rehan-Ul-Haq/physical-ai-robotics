@@ -29,3 +29,6 @@ export { NavbarAuth } from "./NavbarAuth";
 
 // Route Protection
 export { RequireAuth, useRequireAuth, getAuthRedirectUrl } from "./RequireAuth";
+
+// Content Protection Guard
+export { AuthGuard } from "./AuthGuard";

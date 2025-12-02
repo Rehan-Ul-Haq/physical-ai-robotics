@@ -13,7 +13,7 @@
  * - Link to password reset
  */
 import React, { useState, useCallback, useEffect } from "react";
-import { signIn, useSession } from "@/lib/auth";
+import { signIn, useSession, authServiceURL } from "@/lib/auth";
 import { SSOButtons } from "./SSOButtons";
 
 interface SignInModalProps {
@@ -41,7 +41,7 @@ export function SignInModal({
   onClose,
   onSwitchToSignUp,
   onForgotPassword,
-  redirectTo = "/dashboard",
+  redirectTo,
 }: SignInModalProps) {
   const [formData, setFormData] = useState<FormState>({
     email: "",
@@ -50,6 +50,7 @@ export function SignInModal({
   });
   const [errors, setErrors] = useState<FormErrors>({});
   const [isLoading, setIsLoading] = useState(false);
+  const [isResending, setIsResending] = useState(false);
   const [showResendVerification, setShowResendVerification] = useState(false);
 
   // Check for active session and auto-redirect (T047)
@@ -57,10 +58,15 @@ export function SignInModal({
 
   useEffect(() => {
     if (!isPending && session && isOpen) {
-      // User is already authenticated, redirect
-      window.location.href = redirectTo;
+      // User is already authenticated, close modal and stay on page
+      if (redirectTo) {
+        window.location.href = redirectTo;
+      } else {
+        // Just close modal and let the page re-render with auth state
+        onClose();
+      }
     }
-  }, [session, isPending, isOpen, redirectTo]);
+  }, [session, isPending, isOpen, redirectTo, onClose]);
 
   /**
    * Validate form fields
@@ -132,8 +138,13 @@ export function SignInModal({
           },
           onSuccess: () => {
             console.log("[SignIn] Authentication successful");
-            // Redirect to dashboard or intended destination
-            window.location.href = redirectTo;
+            // Close modal and stay on page, or redirect if specified
+            if (redirectTo) {
+              window.location.href = redirectTo;
+            } else {
+              // Reload to refresh auth state across the page
+              window.location.reload();
+            }
           },
           onError: (ctx) => {
             console.error("[SignIn] Authentication failed:", ctx.error);
@@ -180,21 +191,38 @@ export function SignInModal({
    * Handle resend verification email
    */
   const handleResendVerification = async () => {
+    if (!formData.email) {
+      alert("Please enter your email address first.");
+      return;
+    }
+    
+    setIsResending(true);
     try {
-      const authClient = (await import("@/lib/auth")).default;
-      // Access sendVerificationEmail from authClient if available
-      if ("sendVerificationEmail" in authClient) {
-        await (authClient as any).sendVerificationEmail({
+      // Use direct fetch to Better-Auth send-verification-email endpoint
+      const response = await fetch(`${authServiceURL}/api/auth/send-verification-email`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+        body: JSON.stringify({
           email: formData.email,
-          callbackURL: redirectTo,
-        });
+          callbackURL: `${window.location.origin}/physical-ai-robotics/`,
+        }),
+      });
+      
+      if (response.ok) {
         alert("Verification email sent! Check your inbox.");
       } else {
-        alert("Email verification is not configured. Please contact support.");
+        const data = await response.json().catch(() => ({}));
+        console.error("[SignIn] Resend verification error:", data);
+        alert(data.message || "Failed to send verification email.");
       }
     } catch (err) {
       console.error("[SignIn] Failed to resend verification:", err);
       alert("Failed to send verification email. Please try again.");
+    } finally {
+      setIsResending(false);
     }
   };
 
@@ -205,6 +233,7 @@ export function SignInModal({
     setFormData({ email: "", password: "", rememberMe: false });
     setErrors({});
     setIsLoading(false);
+    setIsResending(false);
     setShowResendVerification(false);
     onClose();
   };
@@ -259,8 +288,9 @@ export function SignInModal({
                   type="button"
                   className="auth-link auth-link--inline"
                   onClick={handleResendVerification}
+                  disabled={isResending}
                 >
-                  Resend verification email
+                  {isResending ? "Sending..." : "Resend verification email"}
                 </button>
               )}
             </div>

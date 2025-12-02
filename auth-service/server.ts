@@ -62,9 +62,29 @@ app.get("/health", (req, res) => {
   });
 });
 
-// Better-Auth API handler (all routes under /api/auth/*)
-// This handles: sign-up, sign-in, sign-out, OAuth callbacks, password reset, etc.
-app.all("/api/auth/*", toNodeHandler(auth));
+// Redirect root to frontend (for post-verification redirects)
+app.get("/", (req, res) => {
+  const frontendUrl = process.env.FRONTEND_URL || "http://localhost:3000";
+  res.redirect(`${frontendUrl}/physical-ai-robotics/?verified=true`);
+});
+
+// Better-Auth API handler
+// Using all() with a regex pattern to match all /api/auth routes
+const authHandler = toNodeHandler(auth);
+
+// Handle all auth routes - both with and without trailing paths
+app.all("/api/auth", authHandler);
+app.all("/api/auth/*", (req, res) => {
+  console.log(`[Auth] ${req.method} ${req.originalUrl}`);
+  return authHandler(req, res);
+});
+
+// Verification success redirect - after Better-Auth verifies the email,
+// redirect user to the frontend
+app.get("/auth/verified", (req, res) => {
+  const frontendUrl = process.env.FRONTEND_URL || "http://localhost:3000";
+  res.redirect(`${frontendUrl}/physical-ai-robotics/?verified=true`);
+});
 
 // 404 handler
 app.use((req, res) => {

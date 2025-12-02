@@ -9,14 +9,22 @@
 import { createAuthClient } from "better-auth/react";
 
 /**
- * Auth service URL - configured via docusaurus.config.ts customFields
+ * Auth service URL - configured via docusaurus.config.ts headTags
  * In development: http://localhost:8002
- * In production: https://api.yourdomain.com
+ * In production: https://your-auth-service.onrender.com
  * 
- * Note: We use a hardcoded fallback since this runs at module initialization
- * before React context is available. For runtime configuration, use the hook.
+ * The URL is injected as window.__AUTH_SERVICE_URL__ at build time.
  */
-const authServiceURL = "http://localhost:8002";
+const getAuthServiceURL = (): string => {
+  // Check if we're in browser and have the injected URL
+  if (typeof window !== "undefined" && (window as any).__AUTH_SERVICE_URL__) {
+    return (window as any).__AUTH_SERVICE_URL__;
+  }
+  // Fallback for SSR/build time
+  return "http://localhost:8002";
+};
+
+const authServiceURL = getAuthServiceURL();
 
 /**
  * Better-Auth client instance configured for the roboai application
@@ -94,6 +102,9 @@ export const authClient = createAuthClient({
  * They are accessed via authClient directly when available.
  */
 export const { signIn, signUp, signOut, useSession } = authClient;
+
+// Export the auth service URL for components that need direct fetch
+export { authServiceURL };
 
 // Re-export the full client for advanced use cases and methods
 // that may be available depending on backend configuration
