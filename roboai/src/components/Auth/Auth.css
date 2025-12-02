@@ -1,0 +1,396 @@
+/**
+ * Auth Components Styles
+ *
+ * Tailwind CSS styles for all authentication components.
+ * Implements T123 from the task list.
+ *
+ * Components styled:
+ * - Modal overlay and container
+ * - Form fields and validation
+ * - Buttons (primary, secondary, SSO)
+ * - User menu dropdown
+ * - Loading states and spinners
+ */
+
+/* ============================================================================
+   Modal Overlay & Container
+   ============================================================================ */
+
+.auth-modal-overlay {
+  @apply fixed inset-0 z-50 flex items-center justify-center;
+  @apply bg-black/50 backdrop-blur-sm;
+  animation: fadeIn 0.2s ease-out;
+}
+
+.auth-modal {
+  @apply relative w-full max-w-md mx-4 p-6 rounded-xl;
+  @apply bg-white dark:bg-gray-800;
+  @apply shadow-2xl;
+  animation: slideUp 0.3s ease-out;
+}
+
+.auth-modal__close {
+  @apply absolute top-4 right-4 w-8 h-8;
+  @apply flex items-center justify-center;
+  @apply text-2xl text-gray-400 hover:text-gray-600 dark:hover:text-gray-200;
+  @apply rounded-full hover:bg-gray-100 dark:hover:bg-gray-700;
+  @apply transition-colors;
+}
+
+.auth-modal__title {
+  @apply text-xl font-semibold text-center mb-2;
+  @apply text-gray-900 dark:text-white;
+}
+
+.auth-modal__text {
+  @apply text-center text-gray-600 dark:text-gray-300 mb-4;
+}
+
+.auth-modal__text--muted {
+  @apply text-sm text-gray-500 dark:text-gray-400;
+}
+
+.auth-modal__icon {
+  @apply flex justify-center mb-4 text-gray-400 dark:text-gray-500;
+}
+
+.auth-modal__actions {
+  @apply flex flex-col gap-3 mt-4;
+}
+
+.auth-modal__footer {
+  @apply text-center text-sm text-gray-600 dark:text-gray-400 mt-4;
+}
+
+.auth-modal__footer--centered {
+  @apply text-center;
+}
+
+.auth-modal__divider {
+  @apply relative my-6 text-center;
+  @apply text-sm text-gray-500 dark:text-gray-400;
+}
+
+.auth-modal__divider::before,
+.auth-modal__divider::after {
+  content: "";
+  @apply absolute top-1/2 w-[calc(50%-3rem)] h-px;
+  @apply bg-gray-200 dark:bg-gray-600;
+}
+
+.auth-modal__divider::before {
+  @apply left-0;
+}
+
+.auth-modal__divider::after {
+  @apply right-0;
+}
+
+.auth-modal__success {
+  @apply text-center;
+}
+
+.auth-modal__success-icon {
+  @apply text-5xl mb-4;
+}
+
+.auth-modal__loading {
+  @apply flex items-center justify-center p-8;
+  @apply text-gray-500 dark:text-gray-400;
+}
+
+/* ============================================================================
+   Form Styles
+   ============================================================================ */
+
+.auth-form {
+  @apply flex flex-col gap-4;
+}
+
+.auth-form__field {
+  @apply flex flex-col gap-1;
+}
+
+.auth-form__label {
+  @apply text-sm font-medium text-gray-700 dark:text-gray-200;
+}
+
+.auth-form__input {
+  @apply w-full px-3 py-2 rounded-lg;
+  @apply border border-gray-300 dark:border-gray-600;
+  @apply bg-white dark:bg-gray-700;
+  @apply text-gray-900 dark:text-white;
+  @apply placeholder-gray-400 dark:placeholder-gray-500;
+  @apply focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent;
+  @apply disabled:opacity-50 disabled:cursor-not-allowed;
+  @apply transition-colors;
+}
+
+.auth-form__input--error {
+  @apply border-red-500 focus:ring-red-500;
+}
+
+.auth-form__error {
+  @apply text-sm text-red-600 dark:text-red-400;
+}
+
+.auth-form__error--general {
+  @apply p-3 rounded-lg;
+  @apply bg-red-50 dark:bg-red-900/20;
+  @apply border border-red-200 dark:border-red-800;
+}
+
+.auth-form__row {
+  @apply flex items-center justify-between;
+}
+
+.auth-form__checkbox {
+  @apply flex items-center gap-2 cursor-pointer;
+  @apply text-sm text-gray-600 dark:text-gray-300;
+}
+
+.auth-form__checkbox input[type="checkbox"] {
+  @apply w-4 h-4 rounded;
+  @apply border-gray-300 dark:border-gray-600;
+  @apply text-blue-600;
+  @apply focus:ring-blue-500;
+}
+
+/* ============================================================================
+   Button Styles
+   ============================================================================ */
+
+.auth-btn {
+  @apply inline-flex items-center justify-center gap-2;
+  @apply px-4 py-2.5 rounded-lg;
+  @apply font-medium text-sm;
+  @apply transition-all duration-200;
+  @apply disabled:opacity-50 disabled:cursor-not-allowed;
+}
+
+.auth-btn--primary {
+  @apply bg-blue-600 hover:bg-blue-700;
+  @apply text-white;
+  @apply focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2;
+}
+
+.auth-btn--secondary {
+  @apply bg-gray-100 hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600;
+  @apply text-gray-700 dark:text-gray-200;
+  @apply border border-gray-300 dark:border-gray-600;
+}
+
+.auth-btn--full {
+  @apply w-full;
+}
+
+.auth-btn__loading {
+  @apply inline-flex items-center gap-2;
+}
+
+.auth-btn__spinner {
+  @apply w-4 h-4 border-2 border-current border-t-transparent rounded-full;
+  animation: spin 0.6s linear infinite;
+}
+
+.auth-link {
+  @apply text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300;
+  @apply font-medium underline-offset-2 hover:underline;
+  @apply cursor-pointer bg-transparent border-none p-0;
+}
+
+.auth-link--inline {
+  @apply ml-2;
+}
+
+/* ============================================================================
+   SSO Button Styles
+   ============================================================================ */
+
+.sso-buttons {
+  @apply flex flex-col gap-3;
+}
+
+.sso-buttons__error {
+  @apply p-3 rounded-lg text-sm text-center;
+  @apply bg-red-50 dark:bg-red-900/20;
+  @apply text-red-600 dark:text-red-400;
+  @apply border border-red-200 dark:border-red-800;
+}
+
+.sso-btn {
+  @apply inline-flex items-center justify-center gap-3;
+  @apply w-full px-4 py-2.5 rounded-lg;
+  @apply font-medium text-sm;
+  @apply border transition-all duration-200;
+  @apply disabled:opacity-50 disabled:cursor-not-allowed;
+}
+
+.sso-btn--github {
+  @apply bg-gray-900 hover:bg-gray-800;
+  @apply text-white border-gray-900;
+  @apply dark:bg-gray-700 dark:hover:bg-gray-600 dark:border-gray-600;
+}
+
+.sso-btn--google {
+  @apply bg-white hover:bg-gray-50;
+  @apply text-gray-700 border-gray-300;
+  @apply dark:bg-gray-700 dark:hover:bg-gray-600 dark:text-white dark:border-gray-600;
+}
+
+.sso-btn__icon {
+  @apply w-5 h-5;
+}
+
+.sso-btn__loading {
+  @apply inline-flex items-center gap-2;
+}
+
+.sso-btn__spinner {
+  @apply w-4 h-4 border-2 border-current border-t-transparent rounded-full;
+  animation: spin 0.6s linear infinite;
+}
+
+/* ============================================================================
+   User Menu Styles
+   ============================================================================ */
+
+.user-menu {
+  @apply relative;
+}
+
+.user-menu__trigger {
+  @apply inline-flex items-center gap-2 px-2 py-1.5 rounded-lg;
+  @apply text-sm font-medium;
+  @apply text-gray-700 dark:text-gray-200;
+  @apply hover:bg-gray-100 dark:hover:bg-gray-700;
+  @apply transition-colors cursor-pointer;
+  @apply border-none bg-transparent;
+}
+
+.user-menu__avatar {
+  @apply w-8 h-8 rounded-full object-cover;
+  @apply bg-gray-200 dark:bg-gray-600;
+}
+
+.user-menu__avatar--initials {
+  @apply inline-flex items-center justify-center;
+  @apply text-xs font-semibold text-gray-600 dark:text-gray-300;
+}
+
+.user-menu__name {
+  @apply hidden sm:inline;
+}
+
+.user-menu__chevron {
+  @apply text-gray-400;
+}
+
+.user-menu__dropdown {
+  @apply absolute right-0 top-full mt-2;
+  @apply w-56 rounded-lg;
+  @apply bg-white dark:bg-gray-800;
+  @apply border border-gray-200 dark:border-gray-700;
+  @apply shadow-lg;
+  @apply py-1;
+  animation: fadeIn 0.15s ease-out;
+}
+
+.user-menu__header {
+  @apply px-4 py-2;
+}
+
+.user-menu__header-name {
+  @apply block font-medium text-gray-900 dark:text-white;
+}
+
+.user-menu__header-email {
+  @apply block text-sm text-gray-500 dark:text-gray-400 truncate;
+}
+
+.user-menu__divider {
+  @apply my-1 h-px bg-gray-200 dark:bg-gray-700;
+}
+
+.user-menu__item {
+  @apply flex items-center gap-3 w-full px-4 py-2;
+  @apply text-sm text-gray-700 dark:text-gray-200;
+  @apply hover:bg-gray-100 dark:hover:bg-gray-700;
+  @apply transition-colors cursor-pointer;
+  @apply no-underline;
+}
+
+.user-menu__item--danger {
+  @apply text-red-600 dark:text-red-400;
+  @apply hover:bg-red-50 dark:hover:bg-red-900/20;
+}
+
+.user-menu__item-icon {
+  @apply w-4 h-4 text-gray-400;
+}
+
+.user-menu__item--danger .user-menu__item-icon {
+  @apply text-red-500;
+}
+
+/* ============================================================================
+   RequireAuth Loading Styles
+   ============================================================================ */
+
+.require-auth__loading {
+  @apply flex flex-col items-center justify-center gap-4 p-8;
+  @apply min-h-[200px];
+}
+
+.require-auth__spinner {
+  @apply w-8 h-8 border-3 border-gray-200 border-t-blue-600 rounded-full;
+  animation: spin 0.8s linear infinite;
+}
+
+/* ============================================================================
+   Animations
+   ============================================================================ */
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ============================================================================
+   Responsive Adjustments
+   ============================================================================ */
+
+@media (max-width: 640px) {
+  .auth-modal {
+    @apply mx-2 p-4;
+  }
+
+  .auth-modal__title {
+    @apply text-lg;
+  }
+
+  .user-menu__dropdown {
+    @apply right-0 w-48;
+  }
+}

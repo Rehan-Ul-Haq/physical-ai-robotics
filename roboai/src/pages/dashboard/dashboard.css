@@ -1,0 +1,148 @@
+/**
+ * Dashboard Page Styles
+ */
+
+.dashboard {
+  @apply max-w-4xl mx-auto;
+}
+
+.dashboard--loading {
+  @apply animate-pulse;
+}
+
+.dashboard__header {
+  @apply text-center mb-8;
+}
+
+.dashboard__title {
+  @apply text-3xl font-bold text-gray-900 dark:text-white mb-2;
+}
+
+.dashboard__subtitle {
+  @apply text-gray-600 dark:text-gray-400;
+}
+
+.dashboard__grid {
+  @apply grid gap-6 md:grid-cols-2 lg:grid-cols-3;
+}
+
+.dashboard__card {
+  @apply p-6 rounded-xl;
+  @apply bg-white dark:bg-gray-800;
+  @apply border border-gray-200 dark:border-gray-700;
+  @apply shadow-sm;
+}
+
+.dashboard__card-title {
+  @apply text-lg font-semibold text-gray-900 dark:text-white mb-4;
+}
+
+.dashboard__profile {
+  @apply flex items-start gap-4 mb-4;
+}
+
+.dashboard__avatar {
+  @apply w-16 h-16 rounded-full object-cover;
+  @apply bg-gray-200 dark:bg-gray-600;
+}
+
+.dashboard__avatar--placeholder {
+  @apply flex items-center justify-center;
+  @apply text-2xl font-bold text-gray-500 dark:text-gray-400;
+}
+
+.dashboard__profile-info {
+  @apply flex-1;
+}
+
+.dashboard__name {
+  @apply font-semibold text-gray-900 dark:text-white;
+}
+
+.dashboard__email {
+  @apply text-sm text-gray-600 dark:text-gray-400;
+}
+
+.dashboard__verified {
+  @apply mt-1;
+}
+
+.dashboard__badge {
+  @apply inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium;
+}
+
+.dashboard__badge--success {
+  @apply bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400;
+}
+
+.dashboard__badge--warning {
+  @apply bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-400;
+}
+
+.dashboard__link {
+  @apply text-sm text-blue-600 hover:text-blue-700 dark:text-blue-400;
+  @apply font-medium cursor-pointer;
+  @apply bg-transparent border-none p-0;
+}
+
+.dashboard__info-list {
+  @apply space-y-3 mb-4;
+}
+
+.dashboard__info-item {
+  @apply flex justify-between;
+}
+
+.dashboard__info-item dt {
+  @apply text-sm text-gray-500 dark:text-gray-400;
+}
+
+.dashboard__info-item dd {
+  @apply text-sm font-medium text-gray-900 dark:text-white;
+}
+
+.dashboard__mono {
+  @apply font-mono;
+}
+
+.dashboard__actions {
+  @apply space-y-2;
+}
+
+.dashboard__action {
+  @apply flex items-center gap-3 p-3 rounded-lg;
+  @apply text-gray-700 dark:text-gray-200;
+  @apply hover:bg-gray-100 dark:hover:bg-gray-700;
+  @apply transition-colors no-underline;
+}
+
+.dashboard__action-icon {
+  @apply text-xl;
+}
+
+/* Skeleton loading states */
+.skeleton {
+  @apply bg-gray-200 dark:bg-gray-700 rounded;
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+.skeleton--title {
+  @apply h-8 w-64 mx-auto mb-2;
+}
+
+.skeleton--subtitle {
+  @apply h-4 w-48 mx-auto;
+}
+
+.skeleton--card {
+  @apply h-32;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
