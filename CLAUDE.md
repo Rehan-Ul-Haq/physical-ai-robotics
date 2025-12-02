@@ -29,13 +29,13 @@
 ### Step 1: Read the Learning Context (MANDATORY)
 
 **For Chapter Work**: Read these files FIRST (no exceptions):
-1. **`book-source/docs/chapter-index.md`** - Locate the chapter number and extract:
+1. **`roboai/docs/chapter-index.md`** - Locate the chapter number and extract:
    - Part number (determines prerequisite knowledge)
    - Proficiency level (A1/A2/B1/B2/C1/C2)
    - Chapter theme and learning objectives
    - Prerequisites (what students know BEFORE this chapter)
 
-2. **Chapter README** (`book-source/docs/[part]/[chapter]/README.md`) - Extract:
+2. **Chapter README** (`roboai/docs/[part]/[chapter]/README.md`) - Extract:
    - Lesson structure (how many lessons, what each teaches)
    - Pedagogical approach currently used
    - Any existing constraints or design decisions

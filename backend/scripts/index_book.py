@@ -268,7 +268,7 @@ def index_chapter_1() -> None:
     clear_collection(qdrant_client)
 
     # Path to Chapter 1 from backend directory (actual book structure)
-    book_source = Path(__file__).parent.parent.parent / "book-source" / "docs"
+    book_source = Path(__file__).parent.parent.parent / "roboai" / "docs"
     part_folder = "01-robotic-nervous-system"
     chapter_folder = "01-introduction-to-physical-ai"
     chapter_dir = book_source / part_folder / chapter_folder
@@ -428,7 +428,7 @@ if __name__ == "__main__":
     parser.add_argument(
         "--path",
         type=str,
-        default="../book-source/docs",
+        default="../roboai/docs",
         help="Path to book source directory",
     )
 
