@@ -1,16 +1,16 @@
 # Project Overview
 
-This is a two-part hackathon project focused on creating an AI-powered book about Spec-Driven Development with Reusable Intelligence (SDD-RI) and an intelligent chatbot interface.
+This is a two-part hackathon project focused on creating an AI-powered book about Physical AI & Humanoid Robotics and an intelligent chatbot interface.
 
 ## Project Components
 
 ### Part 1: Book Creation and Publishing
-**Objective**: Create and publish a comprehensive book about SDD-RI methodology using AI-driven and spec-driven development approaches.
+**Objective**: Create and publish a comprehensive book about Physical AI & Humanoid Robotics — teaching ROS 2, simulation, and Sim-to-Real transfer.
 
 **Technology Stack**:
 - **Static Site Generator**: Docusaurus
 - **Hosting**: GitHub Pages
-- **Content Focus**: Spec-Driven Development with Reusable Intelligence (SDD-RI)
+- **Content Focus**: Physical AI & Humanoid Robotics (ROS 2, Gazebo, NVIDIA Isaac)
 
 **Key Requirements**:
 - Generate book content following AI-driven and spec-driven methodologies

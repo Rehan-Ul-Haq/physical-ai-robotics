@@ -179,7 +179,7 @@ const config: Config = {
       },
     },
     navbar: {
-      title: "Physical AI Robotics",
+      title: "ROBO AI",
       // logo: {
       //   alt: 'Panaversity Logo',
       //   src: 'img/book-cover.png',
