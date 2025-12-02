@@ -364,6 +364,39 @@ function AccountSettingsContent() {
           </form>
         </section>
 
+        {/* Security Section - Sign out from all devices (T097) */}
+        <section className="account-section">
+          <h2 className="account-section-title">Security</h2>
+          <p className="account-section-desc">
+            Manage your security settings and active sessions.
+          </p>
+
+          <div className="account-security-actions">
+            <button
+              type="button"
+              className="account-btn account-btn--danger"
+              onClick={async () => {
+                if (confirm("This will sign you out from all devices. Continue?")) {
+                  try {
+                    // Revoke all sessions if method available
+                    if ("revokeAllSessions" in authClient) {
+                      await (authClient as any).revokeAllSessions();
+                    }
+                    // Sign out current session
+                    await (await import("@/lib/auth")).signOut();
+                    window.location.href = "/";
+                  } catch (err) {
+                    console.error("Failed to sign out from all devices:", err);
+                    alert("Failed to sign out from all devices. Please try again.");
+                  }
+                }
+              }}
+            >
+              Sign Out from All Devices
+            </button>
+          </div>
+        </section>
+
         {/* Back to Profile */}
         <div className="account-links">
           <a href="/profile" className="account-link">

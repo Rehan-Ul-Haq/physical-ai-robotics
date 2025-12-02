@@ -15,6 +15,7 @@
 import React, { useState, useCallback } from "react";
 import { signUp } from "@/lib/auth";
 import authClient from "@/lib/auth";
+import { SSOButtons } from "./SSOButtons";
 
 interface SignUpModalProps {
   isOpen: boolean;
@@ -264,9 +265,9 @@ export function SignUpModal({
               Create your account
             </h2>
 
-            {/* SSO buttons will be added here in Phase 5 (US3) */}
-            {/* <SSOButtons /> */}
-            {/* <div className="auth-modal__divider">Or continue with email</div> */}
+            {/* SSO buttons (T065) */}
+            <SSOButtons />
+            <div className="auth-modal__divider">Or continue with email</div>
 
             <form onSubmit={handleSubmit} className="auth-form" noValidate>
               {/* General error message */}

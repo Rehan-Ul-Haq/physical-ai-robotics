@@ -14,6 +14,7 @@
  */
 import React, { useState, useCallback, useEffect } from "react";
 import { signIn, useSession } from "@/lib/auth";
+import { SSOButtons } from "./SSOButtons";
 
 interface SignInModalProps {
   isOpen: boolean;
@@ -244,9 +245,9 @@ export function SignInModal({
           Welcome back
         </h2>
 
-        {/* SSO buttons will be added here in Phase 5 (US3) */}
-        {/* <SSOButtons /> */}
-        {/* <div className="auth-modal__divider">Or continue with email</div> */}
+        {/* SSO buttons (T066) */}
+        <SSOButtons />
+        <div className="auth-modal__divider">Or continue with email</div>
 
         <form onSubmit={handleSubmit} className="auth-form" noValidate>
           {/* General error message */}

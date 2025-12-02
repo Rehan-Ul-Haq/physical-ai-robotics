@@ -132,6 +132,11 @@
   @apply text-red-700 dark:text-red-300;
 }
 
+/* Security Actions */
+.account-security-actions {
+  @apply flex flex-col gap-3;
+}
+
 /* Links */
 .account-links {
   @apply mt-6 text-center;
