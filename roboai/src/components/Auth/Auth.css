@@ -378,6 +378,47 @@
 }
 
 /* ============================================================================
+   Reset Password Page Styles
+   ============================================================================ */
+
+.reset-password-page {
+  @apply flex justify-center items-start py-8;
+  min-height: calc(100vh - 200px);
+}
+
+.reset-password-card {
+  @apply w-full max-w-md p-8 rounded-xl;
+  @apply bg-white dark:bg-gray-800;
+  @apply shadow-lg border border-gray-200 dark:border-gray-700;
+}
+
+.reset-password-card--success,
+.reset-password-card--error {
+  @apply text-center;
+}
+
+.reset-password-icon {
+  @apply text-5xl mb-4;
+}
+
+.reset-password-title {
+  @apply text-2xl font-bold mb-4;
+  @apply text-gray-900 dark:text-white;
+}
+
+.reset-password-text {
+  @apply text-gray-600 dark:text-gray-300 mb-4;
+}
+
+.reset-password-text--muted {
+  @apply text-sm text-gray-500 dark:text-gray-400;
+}
+
+.reset-password-actions {
+  @apply flex flex-col gap-3 mt-6;
+}
+
+/* ============================================================================
    Responsive Adjustments
    ============================================================================ */
 
@@ -392,5 +433,13 @@
 
   .user-menu__dropdown {
     @apply right-0 w-48;
+  }
+
+  .reset-password-card {
+    @apply mx-4 p-6;
+  }
+
+  .reset-password-title {
+    @apply text-xl;
   }
 }
