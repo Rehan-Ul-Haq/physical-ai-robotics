@@ -64,6 +64,7 @@ export const auth = betterAuth({
     "http://localhost:3000",
     "http://localhost:3001",
     "http://127.0.0.1:3000",
+    "https://rehan-ul-haq.github.io", // GitHub Pages
     process.env.FRONTEND_URL || "",
   ].filter(Boolean),
 
