@@ -4,10 +4,14 @@
  * A floating chat interface that allows readers to ask questions about
  * the Physical AI & Humanoid Robotics book content. Integrates with
  * the RAG-powered backend API.
+ * 
+ * Authentication: Shows sign-in prompt for unauthenticated users.
  */
 
 import React, { useState, useRef, useEffect, FormEvent } from 'react';
 import ReactMarkdown from 'react-markdown';
+import { useSession } from '@/lib/auth';
+import { SignInModal, SignUpModal, PasswordResetRequest } from '@/components/Auth';
 import styles from './styles.module.css';
 
 // Get API URL from environment or use default
@@ -215,6 +219,9 @@ async function* streamChat(request: ChatKitRequest): AsyncGenerator<StreamResult
 }
 
 export default function ChatWidget() {
+  // Check authentication - show sign-in prompt for unauthenticated users
+  const { data: session, isPending: isSessionPending } = useSession();
+  
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState('');
@@ -225,6 +232,7 @@ export default function ChatWidget() {
   const [sessionId, setSessionId] = useState('');
   const [showFullContext, setShowFullContext] = useState(false);
   const [isMaximized, setIsMaximized] = useState(false);
+  const [authModal, setAuthModal] = useState<'none' | 'signIn' | 'signUp' | 'forgotPassword'>('none');
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const chatWindowRef = useRef<HTMLDivElement>(null);
 
@@ -360,7 +368,13 @@ export default function ChatWidget() {
     window.getSelection()?.removeAllRanges();
   };
 
-  // Closed state - floating button
+  // Auth modal handlers
+  const openSignIn = () => setAuthModal('signIn');
+  const openSignUp = () => setAuthModal('signUp');
+  const openForgotPassword = () => setAuthModal('forgotPassword');
+  const closeAuthModal = () => setAuthModal('none');
+
+  // Closed state - floating button (always visible)
   if (!isOpen) {
     return (
       <button
@@ -381,7 +395,140 @@ export default function ChatWidget() {
     );
   }
 
-  // Open state - chat window
+  // Open state - show sign-in prompt for unauthenticated users
+  if (!session && !isSessionPending) {
+    return (
+      <div ref={chatWindowRef} className={styles.chatWindow}>
+        {/* Header */}
+        <div className={styles.header}>
+          <div className={styles.headerBrand}>
+            <div className={styles.headerIcon}>
+              <div className={styles.headerEye} />
+            </div>
+            <div className={styles.headerInfo}>
+              <h3 className={styles.headerTitle}>Robo AI</h3>
+              <p className={styles.headerSubtitle}>Your Physical AI & Robotics Guide</p>
+            </div>
+          </div>
+          <div className={styles.headerActions}>
+            <button
+              onClick={() => setIsOpen(false)}
+              className={styles.iconButton}
+              title="Close"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <line x1="18" y1="6" x2="6" y2="18" />
+                <line x1="6" y1="6" x2="18" y2="18" />
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        {/* Sign-in prompt with robot eye */}
+        <div className={styles.messages}>
+          <div className={styles.emptyState}>
+            <div className={styles.emptyIcon}>
+              <div className={styles.emptyRobotEye} />
+            </div>
+            <p className={styles.emptyTitle}>Welcome to Robo AI!</p>
+            <p className={styles.emptySubtitle}>
+              Sign in to chat and get personalized explanations on Physical AI & Robotics.
+            </p>
+            <button
+              type="button"
+              className={styles.authPromptBtn}
+              onClick={openSignIn}
+            >
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ marginRight: '8px' }}>
+                <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
+                <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+              </svg>
+              Sign In to Chat
+            </button>
+          </div>
+        </div>
+
+        {/* Disabled input area for visual context */}
+        <div className={styles.inputForm} style={{ opacity: 0.5, pointerEvents: 'none' }}>
+          <input
+            type="text"
+            placeholder="Sign in to ask questions..."
+            disabled
+            className={styles.input}
+          />
+          <button
+            type="button"
+            disabled
+            className={styles.sendButton}
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <line x1="22" y1="2" x2="11" y2="13" />
+              <polygon points="22 2 15 22 11 13 2 9 22 2" />
+            </svg>
+          </button>
+        </div>
+
+        {/* Auth Modals */}
+        <SignInModal
+          isOpen={authModal === 'signIn'}
+          onClose={closeAuthModal}
+          onSwitchToSignUp={openSignUp}
+          onForgotPassword={openForgotPassword}
+        />
+        <SignUpModal
+          isOpen={authModal === 'signUp'}
+          onClose={closeAuthModal}
+          onSwitchToSignIn={openSignIn}
+        />
+        <PasswordResetRequest
+          isOpen={authModal === 'forgotPassword'}
+          onClose={closeAuthModal}
+          onBackToSignIn={openSignIn}
+        />
+      </div>
+    );
+  }
+
+  // Loading state while checking session
+  if (isSessionPending) {
+    return (
+      <div ref={chatWindowRef} className={styles.chatWindow}>
+        <div className={styles.header}>
+          <div className={styles.headerBrand}>
+            <div className={styles.headerIcon}>
+              <div className={styles.headerEye} />
+            </div>
+            <div className={styles.headerInfo}>
+              <h3 className={styles.headerTitle}>Robo AI</h3>
+              <p className={styles.headerSubtitle}>Loading...</p>
+            </div>
+          </div>
+          <div className={styles.headerActions}>
+            <button
+              onClick={() => setIsOpen(false)}
+              className={styles.iconButton}
+              title="Close"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <line x1="18" y1="6" x2="6" y2="18" />
+                <line x1="6" y1="6" x2="18" y2="18" />
+              </svg>
+            </button>
+          </div>
+        </div>
+        <div className={styles.messages}>
+          <div className={styles.emptyState}>
+            <div className={styles.emptyIcon}>
+              <div className={styles.emptyRobotEye} />
+            </div>
+            <p className={styles.emptyTitle}>Loading...</p>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // Open state - authenticated user - full chat window
   return (
     <div ref={chatWindowRef} className={`${styles.chatWindow} ${isMaximized ? styles.maximized : ''}`}>
       {/* Header */}

@@ -1,0 +1,235 @@
+/**
+ * Profile Page Styles
+ * Uses plain CSS compatible with Tailwind v4
+ */
+
+.profile-page {
+  min-height: calc(100vh - 60px);
+  padding: 2rem 1rem;
+  background-color: #f9fafb;
+}
+
+[data-theme="dark"] .profile-page {
+  background-color: #111827;
+}
+
+.profile-card {
+  max-width: 32rem;
+  margin: 0 auto;
+  padding: 2rem;
+  background-color: #ffffff;
+  border-radius: 0.75rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+[data-theme="dark"] .profile-card {
+  background-color: #1f2937;
+}
+
+.profile-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #111827;
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+[data-theme="dark"] .profile-title {
+  color: #ffffff;
+}
+
+/* Avatar Section */
+.profile-avatar-section {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 1.5rem;
+}
+
+.profile-avatar {
+  width: 6rem;
+  height: 6rem;
+  border-radius: 9999px;
+  object-fit: cover;
+  background-color: #e5e7eb;
+}
+
+.profile-avatar--initials {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #3b82f6;
+  color: #ffffff;
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+/* Form */
+.profile-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.profile-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+}
+
+.profile-label {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #374151;
+}
+
+[data-theme="dark"] .profile-label {
+  color: #d1d5db;
+}
+
+.profile-input {
+  width: 100%;
+  padding: 0.625rem 0.875rem;
+  border: 1px solid #d1d5db;
+  border-radius: 0.5rem;
+  font-size: 1rem;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  background-color: #ffffff;
+  color: #111827;
+}
+
+.profile-input:focus {
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+}
+
+.profile-input--readonly {
+  background-color: #f3f4f6;
+  cursor: not-allowed;
+}
+
+[data-theme="dark"] .profile-input {
+  background-color: #374151;
+  border-color: #4b5563;
+  color: #ffffff;
+}
+
+[data-theme="dark"] .profile-input--readonly {
+  background-color: #1f2937;
+}
+
+.profile-hint {
+  font-size: 0.75rem;
+  color: #6b7280;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.profile-text {
+  color: #111827;
+}
+
+[data-theme="dark"] .profile-text {
+  color: #ffffff;
+}
+
+/* Badges */
+.profile-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.125rem 0.5rem;
+  font-size: 0.625rem;
+  font-weight: 500;
+  border-radius: 9999px;
+}
+
+.profile-badge--verified {
+  background-color: #dcfce7;
+  color: #16a34a;
+}
+
+[data-theme="dark"] .profile-badge--verified {
+  background-color: rgba(22, 163, 74, 0.2);
+}
+
+/* Messages */
+.profile-message {
+  padding: 0.75rem;
+  border-radius: 0.5rem;
+  font-size: 0.875rem;
+}
+
+.profile-message--success {
+  background-color: #f0fdf4;
+  border: 1px solid #bbf7d0;
+  color: #16a34a;
+}
+
+[data-theme="dark"] .profile-message--success {
+  background-color: rgba(22, 163, 74, 0.1);
+  border-color: rgba(22, 163, 74, 0.3);
+}
+
+.profile-message--error {
+  background-color: #fef2f2;
+  border: 1px solid #fecaca;
+  color: #ef4444;
+}
+
+[data-theme="dark"] .profile-message--error {
+  background-color: rgba(239, 68, 68, 0.1);
+  border-color: rgba(239, 68, 68, 0.3);
+}
+
+/* Buttons */
+.profile-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.625rem 1.25rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: background-color 0.2s, opacity 0.2s;
+  border: none;
+}
+
+.profile-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.profile-btn--primary {
+  background-color: #3b82f6;
+  color: #ffffff;
+  width: 100%;
+}
+
+.profile-btn--primary:hover:not(:disabled) {
+  background-color: #2563eb;
+}
+
+/* Links */
+.profile-links {
+  margin-top: 1.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid #e5e7eb;
+  text-align: center;
+}
+
+[data-theme="dark"] .profile-links {
+  border-color: #374151;
+}
+
+.profile-link {
+  color: #3b82f6;
+  text-decoration: none;
+  font-size: 0.875rem;
+}
+
+.profile-link:hover {
+  text-decoration: underline;
+}

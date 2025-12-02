@@ -84,6 +84,13 @@ const config: Config = {
       attributes: {},
       innerHTML: `window.__BOOK_ASSISTANT_API_URL__ = "${process.env.BOOK_ASSISTANT_API_URL || 'http://localhost:8001'}";`,
     },
+    // Auth Service URL - Configure with environment variable
+    // Used by Better-Auth client to connect to the authentication backend
+    {
+      tagName: "script",
+      attributes: {},
+      innerHTML: `window.__AUTH_SERVICE_URL__ = "${process.env.AUTH_SERVICE_URL || 'http://localhost:8002'}";`,
+    },
   ],
 
   // Even if you don't use internationalization, you can use this field to set
