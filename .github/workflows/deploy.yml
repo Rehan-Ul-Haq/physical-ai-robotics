@@ -75,6 +75,8 @@ jobs:
           # PanaversityFS: Fetch content from MCP server at build time
           PANAVERSITY_PLUGIN_ENABLED: ${{ vars.PANAVERSITY_PLUGIN_ENABLED || 'false' }}
           PANAVERSITY_SERVER_URL: ${{ secrets.PANAVERSITY_SERVER_URL }}
+          # Book Assistant API URL (backend on Render)
+          BOOK_ASSISTANT_API_URL: ${{ secrets.BOOK_ASSISTANT_API_URL }}
         run: npm run build
 
       - name: Upload build artifacts
