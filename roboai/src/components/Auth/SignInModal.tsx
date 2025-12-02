@@ -13,7 +13,7 @@
  * - Link to password reset
  */
 import React, { useState, useCallback, useEffect } from "react";
-import { signIn, useSession, authServiceURL } from "@/lib/auth";
+import { signIn, useSession, getAuthServiceURL } from "@/lib/auth";
 import { SSOButtons } from "./SSOButtons";
 
 interface SignInModalProps {
@@ -199,7 +199,7 @@ export function SignInModal({
     setIsResending(true);
     try {
       // Use direct fetch to Better-Auth send-verification-email endpoint
-      const response = await fetch(`${authServiceURL}/api/auth/send-verification-email`, {
+      const response = await fetch(`${getAuthServiceURL()}/api/auth/send-verification-email`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

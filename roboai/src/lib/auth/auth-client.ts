@@ -31,9 +31,6 @@ export const getAuthServiceURL = (): string => {
   return "http://localhost:8002";
 };
 
-// Export for components that need to access the URL directly
-export const authServiceURL = getAuthServiceURL();
-
 /**
  * Better-Auth client instance configured for the roboai application
  *
@@ -110,9 +107,6 @@ export const authClient = createAuthClient({
  * They are accessed via authClient directly when available.
  */
 export const { signIn, signUp, signOut, useSession } = authClient;
-
-// Export the auth service URL for components that need direct fetch
-export { authServiceURL };
 
 // Re-export the full client for advanced use cases and methods
 // that may be available depending on backend configuration
