@@ -378,6 +378,46 @@
 }
 
 /* ============================================================================
+   Navbar Auth Styles
+   ============================================================================ */
+
+.navbar-content-wrapper {
+  @apply flex items-center justify-between w-full;
+}
+
+.navbar-auth {
+  @apply flex items-center gap-2;
+  z-index: 100;
+}
+
+.navbar-auth--loading {
+  @apply min-w-[120px];
+}
+
+.navbar-auth__skeleton {
+  @apply w-20 h-8 rounded-lg;
+  @apply bg-gray-200 dark:bg-gray-700;
+  @apply animate-pulse;
+}
+
+.navbar-auth__btn {
+  @apply px-4 py-1.5 rounded-lg;
+  @apply font-medium text-sm;
+  @apply transition-all duration-200;
+  @apply cursor-pointer border-0;
+}
+
+.navbar-auth__btn--primary {
+  @apply bg-blue-600 hover:bg-blue-700;
+  @apply text-white;
+}
+
+.navbar-auth__btn--secondary {
+  @apply bg-transparent hover:bg-gray-100 dark:hover:bg-gray-700;
+  @apply text-gray-700 dark:text-gray-200;
+}
+
+/* ============================================================================
    Reset Password Page Styles
    ============================================================================ */
 

@@ -24,5 +24,11 @@ export { SSOButtons } from "./SSOButtons";
 // User Menu
 export { UserMenu } from "./UserMenu";
 
+// Navbar Auth
+export { NavbarAuth } from "./NavbarAuth";
+
 // Route Protection
 export { RequireAuth, useRequireAuth, getAuthRedirectUrl } from "./RequireAuth";
+
+// Navbar Integration
+export { NavbarAuth } from "./NavbarAuth";
