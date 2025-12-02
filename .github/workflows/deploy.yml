@@ -54,7 +54,7 @@ jobs:
         env:
           GA4_MEASUREMENT_ID: ${{ secrets.GA4_MEASUREMENT_ID }}
           BOOK_ASSISTANT_API_URL: ${{ secrets.BOOK_ASSISTANT_API_URL }}
-          AUTH_SERVICE_URL: ${{ secrets.AUTH_SERVICE_URL }}
+          REACT_APP_AUTH_SERVICE_URL: ${{ secrets.REACT_APP_AUTH_SERVICE_URL }}
         run: npm run build
 
       - name: Upload build artifacts

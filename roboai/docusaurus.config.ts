@@ -89,7 +89,7 @@ const config: Config = {
     {
       tagName: "script",
       attributes: {},
-      innerHTML: `window.__AUTH_SERVICE_URL__ = "${process.env.AUTH_SERVICE_URL || 'http://localhost:8002'}";`,
+      innerHTML: `window.__AUTH_SERVICE_URL__ = "${process.env.REACT_APP_AUTH_SERVICE_URL || 'http://localhost:8002'}";`,
     },
   ],
 
