@@ -9,22 +9,30 @@
 import { createAuthClient } from "better-auth/react";
 
 /**
- * Auth service URL - configured via docusaurus.config.ts headTags
- * In development: http://localhost:8002
- * In production: https://your-auth-service.onrender.com
- * 
- * The URL is injected as window.__AUTH_SERVICE_URL__ at build time.
+ * Auth service URL - determined by environment
+ * In development (localhost): http://localhost:8002
+ * In production: https://roboai-auth.onrender.com
  */
-const getAuthServiceURL = (): string => {
-  // Check if we're in browser and have the injected URL
-  if (typeof window !== "undefined" && (window as any).__AUTH_SERVICE_URL__) {
-    return (window as any).__AUTH_SERVICE_URL__;
+export const getAuthServiceURL = (): string => {
+  // Check if we're in browser
+  if (typeof window !== "undefined") {
+    // If window has the injected URL, use it
+    if ((window as any).__AUTH_SERVICE_URL__) {
+      return (window as any).__AUTH_SERVICE_URL__;
+    }
+    // Otherwise, detect based on hostname
+    if (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1") {
+      return "http://localhost:8002";
+    }
+    // Production - use Render URL
+    return "https://roboai-auth.onrender.com";
   }
-  // Fallback for SSR/build time
+  // SSR fallback
   return "http://localhost:8002";
 };
 
-const authServiceURL = getAuthServiceURL();
+// Export for components that need to access the URL directly
+export const authServiceURL = getAuthServiceURL();
 
 /**
  * Better-Auth client instance configured for the roboai application
@@ -37,7 +45,7 @@ const authServiceURL = getAuthServiceURL();
  * - Global error handling for rate limiting and unauthorized access
  */
 export const authClient = createAuthClient({
-  baseURL: authServiceURL,
+  baseURL: getAuthServiceURL(),
 
   fetchOptions: {
     // Required for cross-origin cookie handling
