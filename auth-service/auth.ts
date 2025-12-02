@@ -126,7 +126,8 @@ export const auth = betterAuth({
       options: {
         httpOnly: true,
         secure: process.env.NODE_ENV === "production",
-        sameSite: "lax" as const,
+        // Use "none" for cross-origin authentication (GitHub Pages <-> Render)
+        sameSite: process.env.NODE_ENV === "production" ? "none" as const : "lax" as const,
         path: "/",
       },
     },
