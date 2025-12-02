@@ -1,0 +1,22 @@
+{
+  "name": "physical-ai-robotics",
+  "version": "1.0.0",
+  "description": "Physical AI Robotics Book Platform with Authentication",
+  "private": true,
+  "scripts": {
+    "dev": "concurrently --names \"docs,auth\" --prefix-colors \"cyan,magenta\" \"npm run dev:docs\" \"npm run dev:auth\"",
+    "dev:docs": "cd roboai && npm start",
+    "dev:auth": "cd auth-service && npm run dev",
+    "build": "npm run build:auth && npm run build:docs",
+    "build:docs": "cd roboai && npm run build",
+    "build:auth": "cd auth-service && npm run build",
+    "install:all": "npm install && cd roboai && npm install && cd ../auth-service && npm install",
+    "migrate": "cd auth-service && npm run migrate"
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
