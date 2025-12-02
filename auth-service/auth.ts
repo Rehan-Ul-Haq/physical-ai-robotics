@@ -156,7 +156,7 @@ export const auth = betterAuth({
 
   // Email sending configuration using Gmail SMTP
   emailVerification: {
-    sendVerificationEmail: async ({ user, url, token }) => {
+    sendVerificationEmail: async ({ user, url, token }: { user: { email: string; name?: string }; url: string; token: string }) => {
       console.log(`[Email] Sending verification email to ${user.email}`);
       console.log(`[Email] Original verification URL: ${url}`);
       
@@ -196,7 +196,7 @@ export const auth = betterAuth({
         console.error(`[Email] Failed to send verification email:`, error);
       }
     },
-    sendResetPassword: async ({ user, url, token }) => {
+    sendResetPassword: async ({ user, url, token }: { user: { email: string; name?: string }; url: string; token: string }) => {
       console.log(`[Email] Sending password reset email to ${user.email}`);
       
       if (!process.env.GMAIL_USER || !process.env.GMAIL_APP_PASSWORD) {
@@ -263,7 +263,7 @@ export const auth = betterAuth({
   },
 
   // Hooks for OAuth and session events (T061-T063, T067-T068)
-  onRequest: async (request) => {
+  onRequest: async (request: Request) => {
     // Log all auth requests in development
     if (process.env.NODE_ENV !== "production") {
       console.log(`[Auth] Request: ${request.method} ${request.url}`);
