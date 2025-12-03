@@ -126,9 +126,11 @@ export const auth = betterAuth({
       name: "roboai_session",
       options: {
         httpOnly: true,
-        secure: process.env.NODE_ENV === "production",
+        // Always secure in production (Render always uses HTTPS)
+        secure: process.env.BETTER_AUTH_URL?.startsWith("https") || process.env.NODE_ENV === "production",
         // Use "none" for cross-origin authentication (GitHub Pages <-> Render)
-        sameSite: process.env.NODE_ENV === "production" ? "none" as const : "lax" as const,
+        // Check if we're on Render (HTTPS URL) or explicitly in production
+        sameSite: (process.env.BETTER_AUTH_URL?.startsWith("https") || process.env.NODE_ENV === "production") ? "none" as const : "lax" as const,
         path: "/",
       },
     },
