@@ -119,22 +119,8 @@ export const auth = betterAuth({
     freshAge: 0, // Session is always fresh if not expired
   },
 
-  // Cookie configuration (T114)
-  cookies: {
-    // Session cookie settings
-    sessionCookie: {
-      name: "roboai_session",
-      options: {
-        httpOnly: true,
-        // Always secure in production (Render always uses HTTPS)
-        secure: process.env.BETTER_AUTH_URL?.startsWith("https") || process.env.NODE_ENV === "production",
-        // MUST be "none" for cross-origin authentication (GitHub Pages <-> Render)
-        // localhost uses "lax" for security, production ALWAYS uses "none"
-        sameSite: process.env.BETTER_AUTH_URL?.includes("localhost") ? "lax" as const : "none" as const,
-        path: "/",
-      },
-    },
-  },
+  // NOTE: Cookie configuration moved to 'advanced.defaultCookieAttributes' below
+  // The 'cookies' option at this level is not supported in Better-Auth v1.4.4
 
   // Account configuration
   account: {
@@ -240,6 +226,19 @@ export const auth = betterAuth({
   advanced: {
     // Generate secure session tokens
     generateId: () => crypto.randomUUID(),
+
+    // Force secure cookies in production
+    useSecureCookies: process.env.BETTER_AUTH_URL?.startsWith("https") || process.env.NODE_ENV === "production",
+
+    // Global cookie attributes for ALL Better-Auth cookies (CORRECT WAY in v1.4.4)
+    defaultCookieAttributes: {
+      httpOnly: true,
+      secure: process.env.BETTER_AUTH_URL?.startsWith("https") || process.env.NODE_ENV === "production",
+      // CRITICAL: Must be "none" for cross-origin (GitHub Pages <-> Render)
+      sameSite: process.env.BETTER_AUTH_URL?.includes("localhost") ? "lax" : "none",
+      path: "/",
+    },
+
     // Cross-origin support
     crossSubDomainCookies: {
       enabled: false,
