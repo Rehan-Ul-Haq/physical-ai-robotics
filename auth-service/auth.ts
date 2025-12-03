@@ -128,9 +128,9 @@ export const auth = betterAuth({
         httpOnly: true,
         // Always secure in production (Render always uses HTTPS)
         secure: process.env.BETTER_AUTH_URL?.startsWith("https") || process.env.NODE_ENV === "production",
-        // Use "none" for cross-origin authentication (GitHub Pages <-> Render)
-        // Check if we're on Render (HTTPS URL) or explicitly in production
-        sameSite: (process.env.BETTER_AUTH_URL?.startsWith("https") || process.env.NODE_ENV === "production") ? "none" as const : "lax" as const,
+        // MUST be "none" for cross-origin authentication (GitHub Pages <-> Render)
+        // localhost uses "lax" for security, production ALWAYS uses "none"
+        sameSite: process.env.BETTER_AUTH_URL?.includes("localhost") ? "lax" as const : "none" as const,
         path: "/",
       },
     },
